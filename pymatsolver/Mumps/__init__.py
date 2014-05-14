@@ -1,4 +1,4 @@
-import MumpsInterface
+import MumpsInterface as MINT
 import scipy.sparse as sp, numpy as np
 from pymatsolver.Base import BaseSolver, SolverException
 
@@ -86,11 +86,21 @@ class MumpsSolver(BaseSolver):
     def isfactored(self):
         return self.pointer is not None
 
+    def _funhandle(self, ftype):
+        if self.A.dtype == float:
+            return {'F':MINT.factor_mumps,
+                    'S':MINT.solve_mumps,
+                    'D': MINT.destroy_mumps}[ftype]
+        elif self.A.dtype == complex:
+            return {'F':MINT.factor_mumps_cmplx,
+                    'S':MINT.solve_mumps_cmplx,
+                    'D': MINT.destroy_mumps_cmplx}[ftype]
+
     def factor(self):
         if self.isfactored: return
 
         sym = 1 if self.symmetric else 0
-        ierr, p = MumpsInterface.factor_mumps(sym,
+        ierr, p = self._funhandle('F')(sym,
                              self.A.data,
                              self.A.indices+1,
                              self.A.indptr+1)
@@ -106,11 +116,11 @@ class MumpsSolver(BaseSolver):
         n = self.A.shape[0]
         nrhs = rhs.size // n
         T = 1 if self.transpose else 0
-        sol = MumpsInterface.solve_mumps(self.pointer, nrhs, rhs, T)
+        sol = self._funhandle('S')(self.pointer, nrhs, rhs, T)
         return sol
 
     _solve1 = _solveM
 
     def clean(self):
-        MumpsInterface.destroy_mumps(self.pointer)
+        self._funhandle('D')(self.pointer)
         self.pointer = None

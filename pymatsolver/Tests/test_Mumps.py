@@ -28,6 +28,15 @@ class TestMumps(unittest.TestCase):
             self.assertLess(np.linalg.norm(Ainv * rhs[:,i] - sol[:,i]),TOL)
         self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf),TOL)
 
+    def test_1to5_cmplx(self):
+        rhs = self.rhs.astype(complex)
+        sol = self.sol.astype(complex)
+        self.A = self.A.astype(complex)
+        Ainv = MumpsSolver(self.A)
+        for i in range(3):
+            self.assertLess(np.linalg.norm(Ainv * rhs[:,i] - sol[:,i]),TOL)
+        self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf),TOL)
+
     def test_1to5_T(self):
         rhs = self.rhs
         sol = self.sol
