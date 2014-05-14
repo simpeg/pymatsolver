@@ -1,4 +1,4 @@
-import MumpsInterface as MINT
+import MumpsInterface as _MUMPSINT
 import scipy.sparse as sp, numpy as np
 from pymatsolver.Base import BaseSolver, SolverException
 
@@ -87,14 +87,21 @@ class MumpsSolver(BaseSolver):
         return self.pointer is not None
 
     def _funhandle(self, ftype):
+        """
+        switches the function handle between real and complex.
+
+        ftype in ['F','S','D']
+
+        means factor, solve, destroy
+        """
         if self.A.dtype == float:
-            return {'F':MINT.factor_mumps,
-                    'S':MINT.solve_mumps,
-                    'D': MINT.destroy_mumps}[ftype]
+            return {'F':_MUMPSINT.factor_mumps,
+                    'S':_MUMPSINT.solve_mumps,
+                    'D': _MUMPSINT.destroy_mumps}[ftype]
         elif self.A.dtype == complex:
-            return {'F':MINT.factor_mumps_cmplx,
-                    'S':MINT.solve_mumps_cmplx,
-                    'D': MINT.destroy_mumps_cmplx}[ftype]
+            return {'F':_MUMPSINT.factor_mumps_cmplx,
+                    'S':_MUMPSINT.solve_mumps_cmplx,
+                    'D': _MUMPSINT.destroy_mumps_cmplx}[ftype]
 
     def factor(self):
         if self.isfactored: return
