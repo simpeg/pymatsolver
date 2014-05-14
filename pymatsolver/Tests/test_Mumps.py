@@ -1,5 +1,5 @@
 import unittest
-from pymatsolver import MumpsSolver
+from pymatsolver import MumpsSolver, SolverException
 import numpy as np, scipy.sparse as sp
 
 TOL = 1e-12
@@ -26,6 +26,7 @@ class TestMumps(unittest.TestCase):
         Ainv = MumpsSolver(self.A)
         for i in range(3):
             self.assertLess(np.linalg.norm(Ainv * rhs[:,i] - sol[:,i]),TOL)
+        self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf),TOL)
 
     def test_1to5_T(self):
         rhs = self.rhs
@@ -34,6 +35,7 @@ class TestMumps(unittest.TestCase):
         AinvT = Ainv.T
         for i in range(3):
             self.assertLess(np.linalg.norm(AinvT.T * rhs[:,i] - sol[:,i]),TOL)
+        self.assertLess(np.linalg.norm(AinvT.T * rhs - sol, np.inf),TOL)
 
     def test_1to5_solve(self):
         rhs = self.rhs
@@ -41,6 +43,12 @@ class TestMumps(unittest.TestCase):
         Ainv = MumpsSolver(self.A)
         for i in range(3):
             self.assertLess(np.linalg.norm(Ainv.solve( rhs[:,i] ) - sol[:,i]),TOL)
+        self.assertLess(np.linalg.norm(Ainv.solve( rhs ) - sol, np.inf),TOL)
+
+    def test_singular(self):
+        A = sp.identity(5).tocsr()
+        A[-1,-1] = 0
+        self.assertRaises(SolverException, MumpsSolver, A)
 
 if __name__ == '__main__':
     unittest.main()

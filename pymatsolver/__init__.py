@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from Base import SolverException
+
 
 SolverHelp = {}
 AvailableSolvers = {

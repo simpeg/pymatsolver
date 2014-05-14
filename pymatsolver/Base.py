@@ -40,3 +40,7 @@ class BaseSolver(object):
         if type(val) is np.ndarray:
             return self.solve(val)
         raise TypeError('Can only multiply by a numpy array.')
+
+
+class SolverException(Exception):
+    pass
