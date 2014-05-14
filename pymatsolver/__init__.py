@@ -1,11 +1,33 @@
 #!/usr/bin/env python
 
 SolverHelp = {}
-AvailableSolvers = []
+AvailableSolvers = {
+    "TriangleFortran":  False,
+    "TrianglePython":   False,
+    "Mumps":            False,
+}
+
+
+try:
+    from Triangle.TriangleFortran import ForwardSolver, BackwardSolver
+    from Triangle.TrianglePython import ForwardSolver as _ForwardSolver, BackwardSolver as _BackwardSolver
+    AvailableSolvers['TriangleFortran'] = True
+except ImportError:
+    from Triangle.TrianglePython import ForwardSolver, BackwardSolver
+    AvailableSolvers['TrianglePython'] = True
+    SolverHelp['TriangleFortran'] = """Could not compile the Triangle Solvers
+Try something like:
+
+
+    cd pymatsolver/Triangle
+    make
+
+"""
+
 
 try:
     from Mumps import MumpsSolver
-    AvailableSolvers += ['Mumps']
+    AvailableSolvers['Mumps'] = True
 except ImportError, e:
     SolverHelp['Mumps'] = """Mumps is not working.
 
@@ -23,18 +45,4 @@ If you find a good way of doing it, please share.
 
 """
 
-try:
-    from Triangle.TriangleFortran import ForwardSolver, BackwardSolver
-    AvailableSolvers += ['TriangleFortran']
-except ImportError:
-    from Triangle.TrianglePython import ForwardSolver, BackwardSolver
-    AvailableSolvers += ['TrianglePython']
-    SolverHelp['Triangle'] = """Could not compile the Triangle Solvers
-Try something like:
-
-
-    cd pymatsolver/Triangle
-    make
-
-"""
 
