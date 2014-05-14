@@ -3,6 +3,14 @@ pymatsolver
 
 A sparse matrix solver for python.
 
+Solving Ax = b should be as easy as:
+
+```
+Ainv = Solver(A)
+x = Ainv * b
+```
+
+In pymatsolver I provide a number of wrappers to existing numerical packages. Nothing fancy here.
 
 
 Documentation:
