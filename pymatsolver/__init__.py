@@ -1,9 +1,10 @@
 #!/usr/bin/env python
-from Base import SolverException
+from Base import SolverException, DiagonalSolver
 
 
 SolverHelp = {}
 AvailableSolvers = {
+    "DiagonalSolver":   True,
     "TriangleFortran":  False,
     "TrianglePython":   False,
     "Mumps":            False,

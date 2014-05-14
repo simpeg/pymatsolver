@@ -44,3 +44,25 @@ class BaseSolver(object):
 
 class SolverException(Exception):
     pass
+
+
+class DiagonalSolver(BaseSolver):
+
+    _transposeClass = None
+
+    def __init__(self, A):
+        self.A = A
+        self._diagonal = A.diagonal()
+
+    def _solve1(self, rhs):
+        return rhs.flatten()/self._diagonal
+
+    def _solveM(self, rhs):
+        n = self.A.shape[0]
+        nrhs = rhs.size // n
+        return rhs/self._diagonal.repeat(nrhs).reshape((n,nrhs))
+
+if __name__ == '__main__':
+    A = sp.identity(5)*2.0
+    rhs = np.c_[np.arange(1,6),np.arange(2,11,2)]
+    print DiagonalSolver(A).solve(rhs)
