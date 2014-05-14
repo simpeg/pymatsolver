@@ -15,6 +15,3 @@ build:
 
 clean:
 	rm -f *.o *.mod *.so
-
-test:
-	python TEST.py
