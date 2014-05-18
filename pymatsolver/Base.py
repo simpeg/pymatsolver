@@ -1,5 +1,23 @@
 import scipy.sparse as sp, numpy as np
 
+def mkvc(x):
+    """Creates a vector with the number of dimension specified
+    """
+    if type(x) == np.matrix:
+        x = np.array(x)
+
+    if hasattr(x, 'tovec'):
+        x = x.tovec()
+
+    assert type(x) == np.ndarray, "Vector must be a numpy array"
+
+    return x.flatten(order='F')
+
+def sdiag(h):
+    """Sparse diagonal matrix"""
+    return sp.spdiags(mkvc(h), 0, h.size, h.size, format="csr")
+
+
 class BaseSolver(object):
 
     def __init__(self, A):

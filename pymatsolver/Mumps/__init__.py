@@ -1,5 +1,5 @@
 import MumpsInterface as _MUMPSINT
-import scipy.sparse as sp, numpy as np
+import scipy.sparse as sp, numpy as np, gc
 from pymatsolver.Base import BaseSolver, SolverException
 
 _mumpsErrors = {
@@ -54,6 +54,24 @@ _mumpsErrors = {
     +8:  "Warning return from the iterative refinement routine. More than ICNTL(10) iterations are required.",
 }
 
+
+class Pointer(object):
+    """Gets an int and a destroy call that gets called on garbage collection.
+
+        There can be multiple Solvers around the place that are pointing to the same factor in memory.
+
+        This ensures that when all references are removed, there is automatic garbage collection.
+
+        You can always clean the Solver, and it will explicitly call the destroy method.
+    """
+    def __init__(self, pointerINT, destroyCall):
+        self.INT = pointerINT
+        self.destroyCall = destroyCall
+
+    def __del__(self):
+        self.destroyCall(self.INT)
+
+
 class MumpsSolver(BaseSolver):
     """
 
@@ -65,7 +83,6 @@ class MumpsSolver(BaseSolver):
 
     transpose = False
     symmetric = False
-    pointer = None
 
     @property
     def T(self):
@@ -79,12 +96,14 @@ class MumpsSolver(BaseSolver):
 
         if fromPointer is None:
             self.factor()
-        else:
+        elif isinstance(fromPointer, Pointer):
             self.pointer = fromPointer
+        else:
+            raise Exception('Unknown pointer for construction.')
 
     @property
     def isfactored(self):
-        return self.pointer is not None
+        return getattr(self,'pointer',None) is not None
 
     def _funhandle(self, ftype):
         """
@@ -116,18 +135,23 @@ class MumpsSolver(BaseSolver):
         elif ierr > 0:
             print "Mumps Warning [%d] - %s" % (ierr, _mumpsErrors[ierr])
 
-        self.pointer = p
+        self.pointer = Pointer(p, self._funhandle('D'))
 
     def _solveM(self, rhs):
         rhs = rhs.flatten(order='F')
         n = self.A.shape[0]
         nrhs = rhs.size // n
         T = 1 if self.transpose else 0
-        sol = self._funhandle('S')(self.pointer, nrhs, rhs, T)
+        sol = self._funhandle('S')(self.pointer.INT, nrhs, rhs, T)
         return sol
 
     _solve1 = _solveM
 
     def clean(self):
-        self._funhandle('D')(self.pointer)
-        self.pointer = None
+        self._funhandle('D')(self.pointer.INT)
+        del self.pointer
+        gc.collect()
+
+
+
+
