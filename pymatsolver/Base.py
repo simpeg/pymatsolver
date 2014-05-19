@@ -34,7 +34,7 @@ class BaseSolver(object):
         newS = self._transposeClass(self.A.T)
         return newS
 
-    def solve(self, rhs):
+    def _solve(self, rhs):
 
         n = self.A.shape[0]
         assert rhs.size % n == 0, 'Incorrect shape of rhs.'
@@ -56,7 +56,7 @@ class BaseSolver(object):
 
     def __mul__(self, val):
         if type(val) is np.ndarray:
-            return self.solve(val)
+            return self._solve(val)
         raise TypeError('Can only multiply by a numpy array.')
 
 

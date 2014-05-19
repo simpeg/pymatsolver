@@ -55,7 +55,7 @@ _mumpsErrors = {
 }
 
 
-class Pointer(object):
+class _Pointer(object):
     """Gets an int and a destroy call that gets called on garbage collection.
 
         There can be multiple Solvers around the place that are pointing to the same factor in memory.
@@ -96,7 +96,7 @@ class MumpsSolver(BaseSolver):
 
         if fromPointer is None:
             self.factor()
-        elif isinstance(fromPointer, Pointer):
+        elif isinstance(fromPointer, _Pointer):
             self.pointer = fromPointer
         else:
             raise Exception('Unknown pointer for construction.')
@@ -135,9 +135,10 @@ class MumpsSolver(BaseSolver):
         elif ierr > 0:
             print "Mumps Warning [%d] - %s" % (ierr, _mumpsErrors[ierr])
 
-        self.pointer = Pointer(p, self._funhandle('D'))
+        self.pointer = _Pointer(p, self._funhandle('D'))
 
     def _solveM(self, rhs):
+        self.factor()
         rhs = rhs.flatten(order='F')
         n = self.A.shape[0]
         nrhs = rhs.size // n
