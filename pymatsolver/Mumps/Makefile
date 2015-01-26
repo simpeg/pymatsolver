@@ -1,5 +1,6 @@
 INCMUMPS  = -I/usr/local/Cellar/mumps/4.10.0/include -L/usr/local/Cellar/scotch5/5.1.12b/lib -I/usr/local/Cellar/scotch5/5.1.12b/include -I/usr/local/Cellar/open-mpi/1.8.3/include -L/usr/local/opt/libevent/lib -L/usr/local/Cellar/open-mpi/1.8.3/lib -lmpi
 
+# brew install mumps --with-scotch5 --without-mpi
 # Helpful: mpicc --showme
 
 LIB = -lmpiseq -lzmumps -ldmumps -lsmumps -lmumps_common -lblas -lpord -lcmumps
