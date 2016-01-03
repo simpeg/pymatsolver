@@ -29,8 +29,8 @@ install:
   # - pip install -r requirements.txt
   # - python setup.py install
   # - python setup.py build_ext --inplace
-  - cd pymatsolver/Mumps; make build
-  - cd pymatsolver/Triangle; make
+  - cd pymatsolver/Mumps; make build; cd ../..
+  - cd pymatsolver/Triangle; make; cd ../..
 
 # Run test
 script:
