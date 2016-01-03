@@ -34,7 +34,7 @@ install:
 
 # Run test
 script:
-  - nosetests --with-cov --cov SimPEG --cov-config .coveragerc -v -s
+  - nosetests --with-cov --cov pymatsolver --cov-config .coveragerc -v -s
 
 # Calculate coverage
 after_success:
