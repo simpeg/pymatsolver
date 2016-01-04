@@ -1,2 +1,5 @@
 *.pyc
 *.so
+build/
+dist/
+pymatsolver.egg-info/
