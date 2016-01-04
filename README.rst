@@ -78,10 +78,6 @@ This assumes that you have Brew and some python installed (numpy, scipy):
     python setup.py install
 
 
-Documentation:
-http://pymatsolver.readthedocs.org/en/latest/
-
-
 Code:
 https://github.com/rowanc1/pymatsolver
 
