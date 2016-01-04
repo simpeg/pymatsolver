@@ -26,6 +26,8 @@ A sparse matrix solver for python.
 
 Solving Ax = b should be as easy as:
 
+.. code-block:: python
+
     Ainv = Solver(A)
     x = Ainv * b
 
@@ -44,6 +46,8 @@ Linux
 -----
 
 From a clean install on Ubuntu:
+
+.. code-block:: bash
 
     apt-get update
     apt-get -y install gcc gfortran git libopenmpi-dev libmumps-seq-dev libblas-dev liblapack-dev
@@ -64,6 +68,8 @@ Mac
 ---
 
 This assumes that you have Brew and some python installed (numpy, scipy):
+
+.. code-block:: bash
 
     brew install mumps --with-scotch5 --without-mpi
 
