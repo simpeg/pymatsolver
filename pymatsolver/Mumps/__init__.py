@@ -152,7 +152,3 @@ class MumpsSolver(BaseSolver):
         self._funhandle('D')(self.pointer.INT)
         del self.pointer
         gc.collect()
-
-
-
-

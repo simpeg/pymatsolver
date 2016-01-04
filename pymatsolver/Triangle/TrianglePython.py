@@ -46,22 +46,3 @@ class BackwardSolver(BaseSolver):
         return x
 
     _solve1 = _solveM
-
-
-if __name__ == '__main__':
-    TOL = 1e-12
-    n = 30
-    A = sp.rand(n, n, 0.4) + sp.identity(n)
-    AL = sp.tril(A)
-    ALinv = ForwardSolver(AL)
-    e = np.ones((n,5))
-    rhs = AL * e
-    x = ALinv * rhs
-    print np.linalg.norm(e-x,np.inf), TOL
-
-    AU = sp.triu(A)
-    AUinv = BackwardSolver(AU)
-    e = np.ones((n,5))
-    rhs = AU * e
-    x = AUinv * rhs
-    print np.linalg.norm(e-x,np.inf), TOL
