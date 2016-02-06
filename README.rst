@@ -33,6 +33,14 @@ Solving Ax = b should be as easy as:
 
 In pymatsolver I provide a number of wrappers to existing numerical packages. Nothing fancy here.
 
+Solvers Available
+=================
+
+All solvers work with :code:`scipy.sparse` matricies, and a single or multiple right hand sides using :code:`numpy`:
+
+* L/U Triangular Solves (done in fortran)
+* Wrapping of SciPy matrix solvers (direct and indirect)
+* MUMPS (http://mumps.enseeiht.fr/) for real and imaginary components (fortran wrapper, mac/linux supported, with nice error messages!)
 
 Installing
 ==========
@@ -88,3 +96,5 @@ https://travis-ci.org/rowanc1/pymatsolver
 
 Bugs & Issues:
 https://github.com/rowanc1/pymatsolver/issues
+
+License: MIT
