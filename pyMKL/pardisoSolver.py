@@ -13,39 +13,39 @@ import scipy.sparse as sp
 
 """
 mtype options
-1 -> real and structurally symmetric
-2 -> real and symmetric positive definite
--2 -> real and symmetric indefinite
-3 -> complex and structurally symmetric
-4 -> complex and Hermitian positive definite
--4 -> complex and Hermitian indefinite
-6 -> complex and symmetric
-11 -> real and nonsymmetric
-13 -> complex and nonsymmetric
+  1 -> real and structurally symmetric
+  2 -> real and symmetric positive definite
+ -2 -> real and symmetric indefinite
+  3 -> complex and structurally symmetric
+  4 -> complex and Hermitian positive definite
+ -4 -> complex and Hermitian indefinite
+  6 -> complex and symmetric
+ 11 -> real and nonsymmetric
+ 13 -> complex and nonsymmetric
 
 
 phase options
-11 -> Analysis
-12 -> Analysis, numerical factorization
-13 -> Analysis, numerical factorization, solve, iterative refinement
-22 -> Numerical factorization
-23 -> Numerical factorization, solve, iterative refinement
-33 -> Solve, iterative refinement
+ 11 -> Analysis
+ 12 -> Analysis, numerical factorization
+ 13 -> Analysis, numerical factorization, solve, iterative refinement
+ 22 -> Numerical factorization
+ 23 -> Numerical factorization, solve, iterative refinement
+ 33 -> Solve, iterative refinement
 331 -> like phase=33, but only forward substitution
 332 -> like phase=33, but only diagonal substitution (if available)
 333 -> like phase=33, but only backward substitution
-0 -> Release internal memory for L and U matrix number mnum
--1 -> Release all internal memory for all matrices
+  0 -> Release internal memory for L and U matrix number mnum
+ -1 -> Release all internal memory for all matrices
 """
 
 class pardisoSolver(object):
     """docstring for pardisoSolver"""
     def __init__(self, A, mtype=11, verbose=False):
-        
+
         self.mtype = mtype
         self.n = A.shape[0]
 
-        # If A is symmetric, store only the upper triangular portion 
+        # If A is symmetric, store only the upper triangular portion
         if mtype in [2, -2, 3, 4, -4, 6]:
             A = sp.triu(A, format='csr')
         elif mtype in [11, 13]:
@@ -56,7 +56,7 @@ class pardisoSolver(object):
         else:
             msg = "Invalid mtype: mtype={}".format(mtype)
             raise ValueError(msg)
-        
+
         self.a = A.data
         self.ia = A.indptr
         self.ja = A.indices
@@ -93,7 +93,7 @@ class pardisoSolver(object):
 
 
     def run_pardiso(self, phase, rhs=None):
-        
+
         if rhs is None:
             nrhs = 0
             x = np.zeros(1)
