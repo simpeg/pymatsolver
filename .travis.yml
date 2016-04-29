@@ -1,0 +1,26 @@
+language: python
+python:
+  - 2.7
+  - 3.3
+  - 3.4
+  - 3.5
+sudo: false
+
+# Install packages
+install:
+  - pip install nose-cov python-coveralls
+  - pip install -r requirements.txt
+  - python setup.py install
+
+# Run test
+script:
+  - nosetests --with-cov --cov pyMKL --cov-config .coveragerc -v -s
+
+# Calculate coverage
+after_success:
+  - coveralls
+
+notifications:
+  email:
+    - dwfmarchant@gmail.com
+    - brendan@bitsmithy.net
