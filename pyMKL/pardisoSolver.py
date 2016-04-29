@@ -1,3 +1,11 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
+
 from pyMKL import pardisoinit, pardiso
 from ctypes import POINTER, byref, c_longlong, c_int, c_float
 import numpy as np
