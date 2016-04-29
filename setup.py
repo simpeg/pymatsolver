@@ -34,7 +34,6 @@ setup(
     packages = find_packages(),
     install_requires = ['numpy>=1.7',
                         'scipy>=0.13',
-                        'mkl>=11.3.1',
                         'future',
                        ],
     author = 'Dave Marchant',
