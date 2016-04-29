@@ -1,6 +1,7 @@
 from pyMKL import pardisoinit, pardiso
 from ctypes import POINTER, byref, c_longlong, c_int, c_float
 import numpy as np
+import scipy.sparse as sp
 
 """
 mtype options
@@ -31,10 +32,23 @@ phase options
 
 class pardisoSolver(object):
     """docstring for pardisoSolver"""
-    def __init__(self, A, mtype=11):
+    def __init__(self, A, mtype=11, verbose=False):
         
-        # Prep the matrix
-        self.A = A.tocsr()
+        self.mtype = mtype
+        self.n = A.shape[0]
+
+        # If A is symmetric, store only the upper triangular portion 
+        if mtype in [2, -2, 3, 4, -4, 6]:
+            A = sp.triu(A, format='csr')
+        elif mtype in [11, 13]:
+            A = A.tocsr()
+        elif mtype == 1:
+            msg = "mtype = 1 (real and structurally symmetric)"
+            raise NotImplementedError(msg)
+        else:
+            msg = "Invalid mtype: mtype={}".format(mtype)
+            raise ValueError(msg)
+        
         self.a = A.data
         self.ia = A.indptr
         self.ja = A.indices
@@ -43,14 +57,15 @@ class pardisoSolver(object):
         self._MKL_ia = self.ia.ctypes.data_as(POINTER(c_int))
         self._MKL_ja = self.ja.ctypes.data_as(POINTER(c_int))
 
-        self.mtype = mtype
-        self.n = A.shape[0]
-
         # Hardcode some parameters for now...
         self.maxfct = 1
         self.mnum = 1
         self.perm = 0
-        self.msglvl = 1
+
+        if verbose:
+            self.msglvl = 1
+        else:
+            self.msglvl = 0
 
         # Initialize handle to data structure
         self.pt = np.zeros(64, np.int64)
@@ -101,27 +116,3 @@ class pardisoSolver(object):
                 byref(c_int(ERR)))          # error
 
         return x
-    
-
-
-if __name__ == '__main__':
-    
-    import scipy.sparse as sp
-
-    nSize = 20
-    A = sp.rand(nSize, nSize, 0.05, format='csr', random_state=10)
-    A = A.T.dot(A) + sp.spdiags(np.ones(nSize), 0, nSize, nSize)
-    A = A.tocsr()
-
-    np.random.seed(1)
-    xTrue = np.random.rand(nSize)
-    rhs = A.dot(xTrue)
-
-    pSolve = pardisoSolver(A)
-
-    pSolve.run_pardiso(12)
-    x = pSolve.run_pardiso(33, rhs)
-
-    print np.linalg.norm(x-xTrue)/np.linalg.norm(xTrue)
-
-
