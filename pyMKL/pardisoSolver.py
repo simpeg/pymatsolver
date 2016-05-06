@@ -104,9 +104,12 @@ class pardisoSolver(object):
             x = np.zeros(1)
             rhs = np.zeros(1)
         else:
-            nrhs = 1
-            rhs = rhs.astype(self.dtype)
-            x = np.zeros(self.n, dtype=self.dtype)
+            if rhs.ndim == 1:
+                nrhs = 1
+            else:
+                nrhs = rhs.shape[0] 
+            rhs = rhs.astype(self.dtype).flatten(order='f')
+            x = np.zeros(nrhs*self.n, dtype=self.dtype)
 
         MKL_rhs = rhs.ctypes.data_as(self.ctypes_dtype)
         MKL_x = x.ctypes.data_as(self.ctypes_dtype)
@@ -129,4 +132,6 @@ class pardisoSolver(object):
                 MKL_x,                      # x
                 byref(c_int(ERR)))          # error
 
+        if nrhs > 1:
+            x = x.reshape((self.n, nrhs), order='f')
         return x

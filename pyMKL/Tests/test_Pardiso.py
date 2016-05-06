@@ -121,6 +121,44 @@ class TestPardiso_oneRHS(unittest.TestCase):
         x = pSolve.run_pardiso(33, rhs)
         self.assertLess(np.linalg.norm(x-xTrue)/np.linalg.norm(xTrue), 1e-12)
 
+class TestPardiso_multipleRHS(unittest.TestCase):
+    
+    nRHS = 20
+
+    def test_RealNonSym(self):
+        nSize = 100
+        A = sp.rand(nSize, nSize, 0.05, format='csr', random_state=100)
+        A = A + sp.spdiags(np.ones(nSize), 0, nSize, nSize)
+        A = A.tocsr()
+
+        np.random.seed(1)
+        xTrue = np.random.rand(nSize,self.nRHS)
+        rhs = A.dot(xTrue)
+
+        pSolve = pardisoSolver(A, mtype=11)
+
+        pSolve.run_pardiso(12)
+        x = pSolve.run_pardiso(33, rhs)
+
+        for i in range(self.nRHS):
+            self.assertLess(np.linalg.norm(x[:,i]-xTrue[:,i])/np.linalg.norm(xTrue[:,i]), 1e-12)
+
+    def test_ComplexHerm(self):
+        nSize = 100
+        A = sp.rand(nSize, nSize, 0.05, format='csr', random_state=100)
+        A.data = A.data + 1j*np.random.rand(A.nnz)
+        A = A.T.dot(A.conj()) + sp.spdiags(np.ones(nSize), 0, nSize, nSize)
+        A = A.tocsr()
+
+        np.random.seed(1)
+        xTrue = np.random.rand(nSize, self.nRHS) + 1j*np.random.rand(nSize, self.nRHS)
+        rhs = A.dot(xTrue)
+
+        pSolve = pardisoSolver(A, mtype=4)
+        pSolve.run_pardiso(12)
+        x = pSolve.run_pardiso(33, rhs)
+        for i in range(self.nRHS):
+            self.assertLess(np.linalg.norm(x[:,i]-xTrue[:,i])/np.linalg.norm(xTrue[:,i]), 1e-12)
 
 
 if __name__ == '__main__':
