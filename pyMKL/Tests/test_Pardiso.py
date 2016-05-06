@@ -1,3 +1,10 @@
+from __future__ import division
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+
 import unittest
 import numpy as np
 import scipy.sparse as sp
@@ -44,8 +51,8 @@ class TestPardiso_oneRHS(unittest.TestCase):
 
         A = sp.rand(nSize, nSize, 0.05, format='csr', random_state=100)
         d = np.ones(nSize)
-        d[nSize/2:] = -1.
-        A = A.T.dot(A) + sp.spdiags(d, 0, nSize, nSize)    
+        d[nSize//2:] = -1.
+        A = A.T.dot(A) + sp.spdiags(d, 0, nSize, nSize)
         A = A.tocsr()
 
         np.random.seed(1)

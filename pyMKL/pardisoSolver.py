@@ -1,3 +1,11 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
+
 from pyMKL import pardisoinit, pardiso
 from ctypes import POINTER, byref, c_longlong, c_int
 import numpy as np
@@ -6,35 +14,35 @@ from numpy import ctypeslib
 
 """
 mtype options
-1 -> real and structurally symmetric
-2 -> real and symmetric positive definite
--2 -> real and symmetric indefinite
-3 -> complex and structurally symmetric
-4 -> complex and Hermitian positive definite
--4 -> complex and Hermitian indefinite
-6 -> complex and symmetric
-11 -> real and nonsymmetric
-13 -> complex and nonsymmetric
+  1 -> real and structurally symmetric
+  2 -> real and symmetric positive definite
+ -2 -> real and symmetric indefinite
+  3 -> complex and structurally symmetric
+  4 -> complex and Hermitian positive definite
+ -4 -> complex and Hermitian indefinite
+  6 -> complex and symmetric
+ 11 -> real and nonsymmetric
+ 13 -> complex and nonsymmetric
 
 
 phase options
-11 -> Analysis
-12 -> Analysis, numerical factorization
-13 -> Analysis, numerical factorization, solve, iterative refinement
-22 -> Numerical factorization
-23 -> Numerical factorization, solve, iterative refinement
-33 -> Solve, iterative refinement
+ 11 -> Analysis
+ 12 -> Analysis, numerical factorization
+ 13 -> Analysis, numerical factorization, solve, iterative refinement
+ 22 -> Numerical factorization
+ 23 -> Numerical factorization, solve, iterative refinement
+ 33 -> Solve, iterative refinement
 331 -> like phase=33, but only forward substitution
 332 -> like phase=33, but only diagonal substitution (if available)
 333 -> like phase=33, but only backward substitution
-0 -> Release internal memory for L and U matrix number mnum
--1 -> Release all internal memory for all matrices
+  0 -> Release internal memory for L and U matrix number mnum
+ -1 -> Release all internal memory for all matrices
 """
 
 class pardisoSolver(object):
     """docstring for pardisoSolver"""
     def __init__(self, A, mtype=11, verbose=False):
-        
+
         self.mtype = mtype
         if mtype in [1, 3]:
             msg = "mtype = 1 - structurally symmetric matrices not supported"
@@ -98,7 +106,7 @@ class pardisoSolver(object):
 
 
     def run_pardiso(self, phase, rhs=None):
-        
+
         if rhs is None:
             nrhs = 0
             x = np.zeros(1)

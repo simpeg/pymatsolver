@@ -1,10 +1,17 @@
-from pyMKL import MKLlib
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+
+from . import MKLlib
 from ctypes import POINTER, c_int, c_longlong
 
 pardisoinit = MKLlib.pardisoinit
 
-pardisoinit.argtypes = [POINTER(c_longlong), 
-                        POINTER(c_int), 
+pardisoinit.argtypes = [POINTER(c_longlong),
+                        POINTER(c_int),
                         POINTER(c_int)]
 pardisoinit.restype = None
 
