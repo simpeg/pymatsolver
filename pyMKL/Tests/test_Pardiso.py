@@ -28,6 +28,8 @@ class TestPardiso_oneRHS(unittest.TestCase):
 
         pSolve.run_pardiso(12)
         x = pSolve.run_pardiso(33, rhs)
+        pSolve.clear()
+
         self.assertLess(np.linalg.norm(x-xTrue)/np.linalg.norm(xTrue), 1e-12)
 
     def test_RealSPD(self):
@@ -44,6 +46,7 @@ class TestPardiso_oneRHS(unittest.TestCase):
 
         pSolve.run_pardiso(12)
         x = pSolve.run_pardiso(33, rhs)
+        pSolve.clear()
 
         self.assertLess(np.linalg.norm(x-xTrue)/np.linalg.norm(xTrue), 1e-12)
 
@@ -63,6 +66,8 @@ class TestPardiso_oneRHS(unittest.TestCase):
 
         pSolve.run_pardiso(12)
         x = pSolve.run_pardiso(33, rhs)
+        pSolve.clear()
+
         self.assertLess(np.linalg.norm(x-xTrue)/np.linalg.norm(xTrue), 1e-12)
 
     def test_ComplexNonSym(self):
@@ -79,6 +84,8 @@ class TestPardiso_oneRHS(unittest.TestCase):
         pSolve = pardisoSolver(A, mtype=13)
         pSolve.run_pardiso(12)
         x = pSolve.run_pardiso(33, rhs)
+        pSolve.clear()
+
         self.assertLess(np.linalg.norm(x-xTrue)/np.linalg.norm(xTrue), 1e-12)
 
     def test_ComplexNonSym_RealRHS(self):
@@ -94,6 +101,8 @@ class TestPardiso_oneRHS(unittest.TestCase):
         pSolve = pardisoSolver(A, mtype=13)
         pSolve.run_pardiso(12)
         x = pSolve.run_pardiso(33, rhs)
+        pSolve.clear()
+
         self.assertLess(np.linalg.norm(A.dot(x)-rhs), 1e-12)
 
     def test_ComplexSym(self):
@@ -110,6 +119,8 @@ class TestPardiso_oneRHS(unittest.TestCase):
         pSolve = pardisoSolver(A, mtype=6)
         pSolve.run_pardiso(12)
         x = pSolve.run_pardiso(33, rhs)
+        pSolve.clear()
+
         self.assertLess(np.linalg.norm(x-xTrue)/np.linalg.norm(xTrue), 1e-12)
 
     def test_ComplexHerm(self):
@@ -126,6 +137,8 @@ class TestPardiso_oneRHS(unittest.TestCase):
         pSolve = pardisoSolver(A, mtype=4)
         pSolve.run_pardiso(12)
         x = pSolve.run_pardiso(33, rhs)
+        pSolve.clear()
+
         self.assertLess(np.linalg.norm(x-xTrue)/np.linalg.norm(xTrue), 1e-12)
 
 class TestPardiso_multipleRHS(unittest.TestCase):
@@ -146,6 +159,7 @@ class TestPardiso_multipleRHS(unittest.TestCase):
 
         pSolve.run_pardiso(12)
         x = pSolve.run_pardiso(33, rhs)
+        pSolve.clear()
 
         for i in range(self.nRHS):
             self.assertLess(np.linalg.norm(x[:,i]-xTrue[:,i])/np.linalg.norm(xTrue[:,i]), 1e-12)
@@ -164,6 +178,8 @@ class TestPardiso_multipleRHS(unittest.TestCase):
         pSolve = pardisoSolver(A, mtype=4)
         pSolve.run_pardiso(12)
         x = pSolve.run_pardiso(33, rhs)
+        pSolve.clear()
+        
         for i in range(self.nRHS):
             self.assertLess(np.linalg.norm(x[:,i]-xTrue[:,i])/np.linalg.norm(xTrue[:,i]), 1e-12)
 

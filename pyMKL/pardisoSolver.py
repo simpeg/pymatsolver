@@ -104,6 +104,8 @@ class pardisoSolver(object):
         self.iparm[23] = 1 # Use parallel factorization
         self.iparm[34] = 1 # Zero base indexing
 
+    def clear(self):
+        self.run_pardiso(phase=-1)
 
     def run_pardiso(self, phase, rhs=None):
 
