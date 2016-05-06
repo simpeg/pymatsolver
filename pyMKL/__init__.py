@@ -1,10 +1,8 @@
 import numpy as np
 import scipy.sparse as sp
-from ctypes import CDLL, cdll, RTLD_GLOBAL
-from ctypes import POINTER, byref, c_int, c_longlong
+from loadMKL import _loadMKL
 
-path = 'libmkl_intel_lp64.dylib'
-MKLlib = CDLL(path, RTLD_GLOBAL)
+MKLlib = _loadMKL()
 
 from pardisoInterface import pardisoinit, pardiso
 from pardisoSolver import pardisoSolver
