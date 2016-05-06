@@ -1,7 +1,8 @@
 from pyMKL import pardisoinit, pardiso
-from ctypes import POINTER, byref, c_longlong, c_int, c_float
+from ctypes import POINTER, byref, c_longlong, c_int
 import numpy as np
 import scipy.sparse as sp
+from numpy import ctypeslib
 
 """
 mtype options
@@ -35,25 +36,37 @@ class pardisoSolver(object):
     def __init__(self, A, mtype=11, verbose=False):
         
         self.mtype = mtype
-        self.n = A.shape[0]
-
-        # If A is symmetric, store only the upper triangular portion 
-        if mtype in [2, -2, 3, 4, -4, 6]:
-            A = sp.triu(A, format='csr')
-        elif mtype in [11, 13]:
-            A = A.tocsr()
-        elif mtype == 1:
-            msg = "mtype = 1 (real and structurally symmetric)"
+        if mtype in [1, 3]:
+            msg = "mtype = 1 - structurally symmetric matrices not supported"
             raise NotImplementedError(msg)
+        elif mtype in [2, -2, 4, -4, 6, 11, 13]:
+            pass
         else:
             msg = "Invalid mtype: mtype={}".format(mtype)
             raise ValueError(msg)
+            
+
+        self.n = A.shape[0]
+
+        if mtype in [4, -4, 6, 13]:
+            # Complex matrix
+            self.dtype = np.complex128
+        elif mtype in [2, -2, 11]:
+            # Real matrix
+            self.dtype = np.float64
+        self.ctypes_dtype = ctypeslib.ndpointer(self.dtype)
+
+        # If A is symmetric, store only the upper triangular portion 
+        if mtype in [2, -2, 4, -4, 6]:
+            A = sp.triu(A, format='csr')
+        elif mtype in [11, 13]:
+            A = A.tocsr()
         
         self.a = A.data
         self.ia = A.indptr
         self.ja = A.indices
 
-        self._MKL_a = self.a.ctypes.data_as(POINTER(c_float))
+        self._MKL_a = self.a.ctypes.data_as(self.ctypes_dtype)
         self._MKL_ia = self.ia.ctypes.data_as(POINTER(c_int))
         self._MKL_ja = self.ja.ctypes.data_as(POINTER(c_int))
 
@@ -92,10 +105,11 @@ class pardisoSolver(object):
             rhs = np.zeros(1)
         else:
             nrhs = 1
-            x = np.zeros(self.n)
+            rhs = rhs.astype(self.dtype)
+            x = np.zeros(self.n, dtype=self.dtype)
 
-        MKL_rhs = rhs.ctypes.data_as(POINTER(c_float))
-        MKL_x = x.ctypes.data_as(POINTER(c_float))
+        MKL_rhs = rhs.ctypes.data_as(self.ctypes_dtype)
+        MKL_x = x.ctypes.data_as(self.ctypes_dtype)
         ERR = 0
 
         pardiso(self._MKL_pt,               # pt
