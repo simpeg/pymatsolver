@@ -116,8 +116,12 @@ class pardisoSolver(object):
         else:
             if rhs.ndim == 1:
                 nrhs = 1
+            elif rhs.ndim == 2:
+                nrhs = rhs.shape[1]
             else:
-                nrhs = rhs.shape[0] 
+                msg = "Right hand side must either be a 1 or 2 dimensional "+\
+                      "array. Higher order right hand sides are not supported."
+                raise NotImplementedError(msg)
             rhs = rhs.astype(self.dtype).flatten(order='f')
             x = np.zeros(nrhs*self.n, dtype=self.dtype)
 

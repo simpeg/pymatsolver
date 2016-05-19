@@ -3,8 +3,8 @@ import sys, os
 
 platform = sys.platform
 
-libname = {'linux':'libmkl_rt.so',
-           'linux2':'libmkl_rt.so',
+libname = {'linux':'libmkl_rt.so', # works for python3 on linux
+           'linux2':'libmkl_rt.so', # works for python2 on linux
            'darwin':'libmkl_rt.dylib',
            'win32':'mkl_rt.dll'}
 
@@ -24,7 +24,7 @@ def _loadMKL():
                     libpath = sys.executable.split(os.sep)[:-1] + \
                               ['Library','bin',libname[platform]]
                 MKLlib = CDLL(os.path.join(*libpath))
-        except Exception:
-            raise 
+        except Exception as e: 
+            raise e
 
     return MKLlib
