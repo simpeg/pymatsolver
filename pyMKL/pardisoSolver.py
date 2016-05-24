@@ -40,8 +40,33 @@ phase options
 """
 
 class pardisoSolver(object):
-    """docstring for pardisoSolver"""
+    """Wrapper class for Intel MKL Pardiso solver. """
     def __init__(self, A, mtype=11, verbose=False):
+        '''
+        Parameters
+        ----------
+        A : scipy.sparse.csr.csr_matrix
+            sparse matrix in csr format.
+        mtype : int, optional
+            flag specifying the matrix type. The possible types are:
+
+            - 1 : real and structurally symmetric (not supported)
+            - 2 : real and symmetric positive definite
+            - -2 : real and symmetric indefinite
+            - 3 : complex and structurally symmetric (not supported)
+            - 4 : complex and Hermitian positive definite
+            - -4 : complex and Hermitian indefinite
+            - 6 : complex and symmetric
+            - 11 : real and nonsymmetric (default)
+            - 13 : complex and nonsymmetric
+        verbose : bool, optional
+            flag for verbose output. Default is False.
+
+        Returns
+        -------
+        None
+
+        '''
 
         self.mtype = mtype
         if mtype in [1, 3]:
@@ -105,9 +130,43 @@ class pardisoSolver(object):
         self.iparm[34] = 1 # Zero base indexing
 
     def clear(self):
+        '''
+        Clear the memory allocated from the solver.
+        '''
         self.run_pardiso(phase=-1)
 
     def run_pardiso(self, phase, rhs=None):
+        '''
+        Run specified phase of the Pardiso solver.
+
+        Parameters
+        ----------
+        phase : int
+            Flag setting the analysis type of the solver:
+
+            -  11 : Analysis
+            -  12 : Analysis, numerical factorization
+            -  13 : Analysis, numerical factorization, solve, iterative refinement
+            -  22 : Numerical factorization
+            -  23 : Numerical factorization, solve, iterative refinement
+            -  33 : Solve, iterative refinement
+            - 331 : like phase=33, but only forward substitution
+            - 332 : like phase=33, but only diagonal substitution (if available)
+            - 333 : like phase=33, but only backward substitution
+            -   0 : Release internal memory for L and U matrix number mnum
+            -  -1 : Release all internal memory for all matrices
+        rhs : ndarray, optional
+            Right hand side of the equation `A x = rhs`. Can either be a vector
+            (array of dimension 1) or a matrix (array of dimension 2). Default
+            is None.
+
+        Returns
+        -------
+        x : ndarray
+            Solution of the system `A x = rhs`, if `rhs` is provided. Is either
+            a vector or a column matrix.
+
+        '''
 
         if rhs is None:
             nrhs = 0
@@ -116,8 +175,12 @@ class pardisoSolver(object):
         else:
             if rhs.ndim == 1:
                 nrhs = 1
+            elif rhs.ndim == 2:
+                nrhs = rhs.shape[1]
             else:
-                nrhs = rhs.shape[0] 
+                msg = "Right hand side must either be a 1 or 2 dimensional "+\
+                      "array. Higher order right hand sides are not supported."
+                raise NotImplementedError(msg)
             rhs = rhs.astype(self.dtype).flatten(order='f')
             x = np.zeros(nrhs*self.n, dtype=self.dtype)
 
