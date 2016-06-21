@@ -66,6 +66,8 @@ if USE_CYTHON and "cleanall" not in args:
     from Cython.Build import cythonize
     extensions = cythonize(extensions)
 
+print sys.platform
+
 scripts = []
 if 'darwin' in sys.platform:
     subprocess.Popen("cd pymatsolver/Mumps;make build_mac", shell=True, executable="/bin/bash").wait()

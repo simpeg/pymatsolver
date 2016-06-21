@@ -9,7 +9,7 @@ subroutine factor_mumps( n, nnz, sym, A, jA, iA, ierr, pm_out )
 use mumps_mod, only: init, convert_to_mumps_format, factor_matrix, destroy
 implicit none
 
-INCLUDE 'dmumps_struc.h'
+INCLUDE '/usr/local/Cellar/mumps/5.0.1_2/libexec/include/dmumps_struc.h'
 
 integer(kind=8),intent(out):: pm_out   ! mumps pointer
 integer(kind=8),intent(in):: n  ! # of rows in A
@@ -55,7 +55,7 @@ use mumps_mod, only: solve
 
 implicit none
 
-INCLUDE 'dmumps_struc.h'
+INCLUDE '/usr/local/Cellar/mumps/5.0.1_2/libexec/include/dmumps_struc.h'
 
 integer(kind=8),intent(in):: pm_in  ! mumps pointer
 integer(kind=8),intent(in):: nrhs  ! # of right-hand-sides
@@ -83,7 +83,7 @@ subroutine destroy_mumps( pm_in )
 use mumps_mod, only: destroy
 
 implicit none
-INCLUDE 'dmumps_struc.h'
+INCLUDE '/usr/local/Cellar/mumps/5.0.1_2/libexec/include/dmumps_struc.h'
 
 integer(kind=8),intent(in):: pm_in  ! mumps pointer
 TYPE(DMUMPS_STRUC):: mumps_par
@@ -104,7 +104,7 @@ subroutine factor_mumps_cmplx( n, nnz, sym, A, jA, iA, ierr, pm_out )
 use mumps_cmplx_mod, only: init, convert_to_mumps_format, factor_matrix, destroy
 implicit none
 
-INCLUDE 'zmumps_struc.h'
+INCLUDE '/usr/local/Cellar/mumps/5.0.1_2/libexec/include/zmumps_struc.h'
 
 integer(kind=8),intent(out):: pm_out   ! mumps pointer
 integer(kind=8),intent(in):: n  ! # of rows in A
@@ -150,7 +150,7 @@ use mumps_cmplx_mod, only: solve
 
 implicit none
 
-INCLUDE 'zmumps_struc.h'
+INCLUDE '/usr/local/Cellar/mumps/5.0.1_2/libexec/include/zmumps_struc.h'
 
 integer(kind=8),intent(in):: pm_in  ! mumps pointer
 integer(kind=8),intent(in):: nrhs  ! # of right-hand-sides
@@ -176,7 +176,7 @@ subroutine destroy_mumps_cmplx( pm_in )
 use mumps_cmplx_mod, only: destroy
 
 implicit none
-INCLUDE 'zmumps_struc.h'
+INCLUDE '/usr/local/Cellar/mumps/5.0.1_2/libexec/include/zmumps_struc.h'
 
 integer(kind=8),intent(in):: pm_in  ! mumps pointer
 TYPE(ZMUMPS_STRUC):: mumps_par
