@@ -183,6 +183,24 @@ class TestPardiso_multipleRHS(unittest.TestCase):
         for i in range(self.nRHS):
             self.assertLess(np.linalg.norm(x[:,i]-xTrue[:,i])/np.linalg.norm(xTrue[:,i]), 1e-12)
 
+    def test_FactorSolve(self):
+        nSize = 100
+        A = sp.rand(nSize, nSize, 0.05, format='csr', random_state=100)
+        A = A + sp.spdiags(np.ones(nSize), 0, nSize, nSize)
+        A = A.tocsr()
+
+        np.random.seed(1)
+        xTrue = np.random.rand(nSize)
+        rhs = A.dot(xTrue)
+
+        pSolve = pardisoSolver(A, mtype=11)
+
+        pSolve.factor()
+        x = pSolve.solve(rhs)
+        pSolve.clear()
+
+        self.assertLess(np.linalg.norm(x-xTrue)/np.linalg.norm(xTrue), 1e-12)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -70,7 +70,7 @@ class pardisoSolver(object):
 
         self.mtype = mtype
         if mtype in [1, 3]:
-            msg = "mtype = 1 - structurally symmetric matrices not supported"
+            msg = "mtype = 1/3 - structurally symmetric matrices not supported"
             raise NotImplementedError(msg)
         elif mtype in [2, -2, 4, -4, 6, 11, 13]:
             pass
@@ -134,6 +134,13 @@ class pardisoSolver(object):
         Clear the memory allocated from the solver.
         '''
         self.run_pardiso(phase=-1)
+
+    def factor(self):
+        out = self.run_pardiso(phase=12)
+
+    def solve(self, rhs):
+        x = self.run_pardiso(phase=33, rhs=rhs)
+        return x
 
     def run_pardiso(self, phase, rhs=None):
         '''
