@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 """pymatsolver: Matrix Solvers for Python
 
 pymatsolver is a python package for easy to use matrix solvers.
@@ -35,7 +36,7 @@ args = sys.argv[1:]
 
 # Make a `cleanall` rule to get rid of intermediate and library files
 if "cleanall" in args:
-    print "Deleting cython files..."
+    print("Deleting cython files...")
     # Just in case the build directory was created by accident,
     # note that shell=True should be OK here because the command is constant.
     subprocess.Popen("rm -rf build", shell=True, executable="/bin/bash")
@@ -53,7 +54,7 @@ try:
     from Cython.Distutils import build_ext
     cythonKwargs = dict(cmdclass={'build_ext': build_ext})
     USE_CYTHON = True
-except Exception, e:
+except Exception as e:
     USE_CYTHON = False
     cythonKwargs = dict()
 
