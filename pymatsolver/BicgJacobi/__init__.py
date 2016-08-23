@@ -1,7 +1,6 @@
 import scipy.sparse as sp
 import numpy as np
 from pymatsolver.Base import BaseSolver
-from SimPEG import Utils
 
 def JacobiHandle(A):
     nSize = A.shape[0]
