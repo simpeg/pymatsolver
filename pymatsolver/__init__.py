@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from
 from Base import SolverException, DiagonalSolver
 
 
