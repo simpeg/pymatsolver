@@ -26,6 +26,7 @@ before_install:
 install:
   - conda install --yes pip python=$TRAVIS_PYTHON_VERSION numpy scipy=0.16.1 matplotlib cython ipython nose
   - pip install nose-cov python-coveralls
+  - pip install git+git://github.com/dwfmarchant/pyMKL.git
   - python setup.py install
   - python setup.py build_ext --inplace
 
