@@ -3,6 +3,11 @@ import numpy as np
 from pymatsolver.Base import BaseSolver
 from SimPEG import Utils
 
+def JacobiHandle(A):
+    nSize = A.shape[0]
+    Ainv = sp.spdiags(1./A.diagonal(), 0, nSize, nSize)
+    return sp.linalg.interface.aslinearoperator(Ainv)
+
 class BicgJacobiSolver(BaseSolver):
     """
 
@@ -26,12 +31,12 @@ class BicgJacobiSolver(BaseSolver):
         self.dtype = A.dtype
         self.solver = sp.linalg.bicgstab
         # Jacobi Preconditioner
-        self.M = sp.linalg.interface.aslinearoperator(Utils.sdiag(1/self.A.diagonal()))
+        self.M = JacobiHandle(A)
         self.isfactored = True
 
     def factor(self):
         if self.isfactored is not True:
-            self.M = sp.linalg.interface.aslinearoperator(Utils.sdiag(1/self.A.diagonal()))
+            self.M = JacobiHandle(self.A)
             self.isfactored = True
 
     def _solve1(self, rhs):
