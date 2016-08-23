@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from Base import SolverException, DiagonalSolver
+from .Base import SolverException, DiagonalSolver
 
 
 SolverHelp = {}
@@ -31,7 +31,7 @@ Try something like:
 try:
     from Mumps import MumpsSolver
     AvailableSolvers['Mumps'] = True
-except ImportError, e:
+except ImportError as e:
     SolverHelp['Mumps'] = """Mumps is not working.
 
 Ensure that you have Mumps installed, and know where the path to it is.

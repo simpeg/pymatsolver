@@ -1,3 +1,4 @@
+from __future__ import print_function
 import MumpsInterface as _MUMPSINT
 import scipy.sparse as sp, numpy as np, gc
 from pymatsolver.Base import BaseSolver, SolverException
@@ -133,7 +134,7 @@ class MumpsSolver(BaseSolver):
         if ierr < 0:
             raise SolverException("Mumps Exception [%d] - %s" % (ierr, _mumpsErrors[ierr]))
         elif ierr > 0:
-            print "Mumps Warning [%d] - %s" % (ierr, _mumpsErrors[ierr])
+            print("Mumps Warning [%d] - %s" % (ierr, _mumpsErrors[ierr]))
 
         self.pointer = _Pointer(p, self._funhandle('D'))
 
