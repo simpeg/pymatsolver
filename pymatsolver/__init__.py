@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from
 from Base import SolverException, DiagonalSolver
 
 
@@ -8,6 +9,7 @@ AvailableSolvers = {
     "TriangleFortran":  False,
     "TrianglePython":   False,
     "Mumps":            False,
+    "PardisoSolver":            False,
 }
 
 
@@ -34,6 +36,7 @@ try:
 except ImportError, e:
     SolverHelp['Mumps'] = """Mumps is not working.
 
+
 Ensure that you have Mumps installed, and know where the path to it is.
 
 Try something like:
@@ -48,4 +51,10 @@ If you find a good way of doing it, please share.
 
 """
 
+try:
+    from Pardiso import PardisoSolver
+    AvailableSolvers['PardisoSolver'] = True
+# except ImportError, e:
+except ImportError, e:
+    SolverHelp['PardisoSolver'] = """PardisoSolver is not working."""
 

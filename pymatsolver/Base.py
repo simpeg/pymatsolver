@@ -34,6 +34,7 @@ class BaseSolver(object):
 
 
     def clean(self):
+        print "base clean"
         pass
 
     def __mul__(self, val):
