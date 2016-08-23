@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from Base import SolverException, DiagonalSolver
+from BicgJacobi import BicgJacobiSolver
 
 
 SolverHelp = {}
