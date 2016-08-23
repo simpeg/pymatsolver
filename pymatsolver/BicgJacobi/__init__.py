@@ -1,4 +1,5 @@
 import scipy.sparse as sp
+from scipy.sparse.linalg import bicgstab
 import numpy as np
 from pymatsolver.Base import BaseSolver
 
@@ -28,7 +29,7 @@ class BicgJacobiSolver(BaseSolver):
         self.A = A
         self.symmetric = symmetric
         self.dtype = A.dtype
-        self.solver = sp.linalg.bicgstab
+        self.solver = bicgstab
         # Jacobi Preconditioner
         self.M = JacobiHandle(A)
         self.isfactored = True
@@ -58,11 +59,4 @@ class BicgJacobiSolver(BaseSolver):
         self.A = None
 
 
-if __name__ == '__main__':
-    from SimPEG import EM, np, Utils, sp, Mesh
-    mesh = Mesh.TensorMesh([40, 40, 40])
-    A = mesh.faceDiv*mesh.faceDiv.T
-    rhs = np.random.randn(mesh.nC)
-    RHS = np.c_[rhs, rhs]
-    Ainv_bicg = BicgJacobiSolver(A)
-    sol_bicg = Ainv_bicg*RHS
+# if __name__ == '__main__':

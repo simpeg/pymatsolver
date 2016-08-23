@@ -1,6 +1,7 @@
 import unittest
 from pymatsolver import PardisoSolver
-import numpy as np, scipy.sparse as sp
+import numpy as np
+import scipy.sparse as sp
 
 TOL = 1e-10
 
