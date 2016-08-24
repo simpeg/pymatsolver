@@ -1,6 +1,7 @@
 import unittest
 import numpy as np
 import scipy.sparse as sp
+import pymatsolver
 
 TOL = 1e-12
 
@@ -31,21 +32,23 @@ class TestMumps(unittest.TestCase):
         self.assertLess(np.linalg.norm(self.sol-X, np.inf), TOL)
         self.assertLess(np.linalg.norm(self.sol[:, 0]-x, np.inf), TOL)
 
-    def test_directLower_python(self):
-        from pymatsolver import _ForwardSolver
-        ALinv = _ForwardSolver(sp.tril(self.A))
-        X = ALinv * self.rhsL
-        x = ALinv * self.rhsL[:, 0]
-        self.assertLess(np.linalg.norm(self.sol-X, np.inf), TOL)
-        self.assertLess(np.linalg.norm(self.sol[:, 0]-x, np.inf), TOL)
+    if pymatsolver.AvailableSolvers['TrianglePython']:
 
-    def test_directLower_1_python(self):
-        from pymatsolver import _BackwardSolver
-        AUinv = _BackwardSolver(sp.triu(self.A))
-        X = AUinv * self.rhsU
-        x = AUinv * self.rhsU[:, 0]
-        self.assertLess(np.linalg.norm(self.sol-X, np.inf), TOL)
-        self.assertLess(np.linalg.norm(self.sol[:, 0]-x, np.inf), TOL)
+        def test_directLower_python(self):
+            from pymatsolver import _ForwardSolver
+            ALinv = _ForwardSolver(sp.tril(self.A))
+            X = ALinv * self.rhsL
+            x = ALinv * self.rhsL[:, 0]
+            self.assertLess(np.linalg.norm(self.sol-X, np.inf), TOL)
+            self.assertLess(np.linalg.norm(self.sol[:, 0]-x, np.inf), TOL)
+
+        def test_directLower_1_python(self):
+            from pymatsolver import _BackwardSolver
+            AUinv = _BackwardSolver(sp.triu(self.A))
+            X = AUinv * self.rhsU
+            x = AUinv * self.rhsU[:, 0]
+            self.assertLess(np.linalg.norm(self.sol-X, np.inf), TOL)
+            self.assertLess(np.linalg.norm(self.sol[:, 0]-x, np.inf), TOL)
 
 if __name__ == '__main__':
     unittest.main()

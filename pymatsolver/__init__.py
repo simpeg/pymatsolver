@@ -10,11 +10,11 @@ from .BicgJacobi import BicgJacobiSolver
 
 SolverHelp = {}
 AvailableSolvers = {
-    "DiagonalSolver":   True,
-    "TriangleFortran":  False,
-    "TrianglePython":   False,
-    "Mumps":            False,
-    "PardisoSolver":            False,
+    "DiagonalSolver":  True,
+    "TriangleFortran": False,
+    "TrianglePython":  False,
+    "Mumps":           False,
+    "Pardiso":         False,
 }
 
 
@@ -58,7 +58,7 @@ If you find a good way of doing it, please share.
 
 try:
     from .Pardiso import PardisoSolver
-    AvailableSolvers['PardisoSolver'] = True
+    AvailableSolvers['Pardiso'] = True
 except ImportError:
-    SolverHelp['PardisoSolver'] = """PardisoSolver is not working."""
+    SolverHelp['Pardiso'] = """PardisoSolver is not working."""
 
