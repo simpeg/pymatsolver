@@ -1,22 +1,29 @@
 #!/usr/bin/env python
-from Base import SolverException, DiagonalSolver
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+
+from .Base import SolverException, DiagonalSolver
+from .BicgJacobi import BicgJacobiSolver
 
 
 SolverHelp = {}
 AvailableSolvers = {
-    "DiagonalSolver":   True,
-    "TriangleFortran":  False,
-    "TrianglePython":   False,
-    "Mumps":            False,
+    "DiagonalSolver":  True,
+    "TriangleFortran": False,
+    "TrianglePython":  False,
+    "Mumps":           False,
+    "Pardiso":         False,
 }
 
 
 try:
-    from Triangle.TriangleFortran import ForwardSolver, BackwardSolver
-    from Triangle.TrianglePython import ForwardSolver as _ForwardSolver, BackwardSolver as _BackwardSolver
+    from .Triangle.TriangleFortran import ForwardSolver, BackwardSolver
+    from .Triangle.TrianglePython import ForwardSolver as _ForwardSolver, BackwardSolver as _BackwardSolver
     AvailableSolvers['TriangleFortran'] = True
 except ImportError:
-    from Triangle.TrianglePython import ForwardSolver, BackwardSolver
+    from .Triangle.TrianglePython import ForwardSolver, BackwardSolver
     AvailableSolvers['TrianglePython'] = True
     SolverHelp['TriangleFortran'] = """Could not compile the Triangle Solvers
 Try something like:
@@ -29,10 +36,11 @@ Try something like:
 
 
 try:
-    from Mumps import MumpsSolver
+    from .Mumps import MumpsSolver
     AvailableSolvers['Mumps'] = True
-except ImportError, e:
+except ImportError:
     SolverHelp['Mumps'] = """Mumps is not working.
+
 
 Ensure that you have Mumps installed, and know where the path to it is.
 
@@ -48,4 +56,9 @@ If you find a good way of doing it, please share.
 
 """
 
+try:
+    from .Pardiso import PardisoSolver
+    AvailableSolvers['Pardiso'] = True
+except ImportError:
+    SolverHelp['Pardiso'] = """PardisoSolver is not working."""
 
