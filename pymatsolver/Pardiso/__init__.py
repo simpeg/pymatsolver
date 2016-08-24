@@ -3,7 +3,7 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
 from pymatsolver.Base import BaseSolver
-from pyMKL import pardisoSolver
+from pyMKL import pardisoSolver as _pardisoSolver
 
 
 class PardisoSolver(BaseSolver):
@@ -23,51 +23,58 @@ class PardisoSolver(BaseSolver):
 
     """
 
-    transpose = False
-    symmetric = False
-    isfactored = None
-    dtype = None
-    solver = pardisoSolver
-    knownmatType = {"RealSymPD": 2, "RealSym": 1, "RealNonSym": 11, "RealSymID"
-                    "CompSym": 3, "CompNonSym": 13,
-                    "CompHermPD": 4, "CompHermID": -4}
-    mtype = None
+    isfactored = False
 
-    def __init__(self, A, symmetric=True, mtype=None):
+    def __init__(self, A, **kwargs):
         self.A = A
-        self.symmetric = symmetric
-        self.dtype = A.dtype
-        if mtype is None:
-            self.solver = pardisoSolver(A.tocsc(), mtype=self._funhandle())
-        else:
-            self.solver = pardisoSolver(A.tocsc(),
-                                        mtype=self.knownmatType[mtype])
-        self.solver.factor()
-        self.isfactored = True
+        self.setKwargs(**kwargs)
+        self.solver = _pardisoSolver(
+            A.tocsc(),
+            mtype=self._martixType()
+        )
 
-    def _funhandle(self):
+    def _martixType(self):
         """
             Set basic matrix type:
 
-                2: real symmetric postivie definite
-                11: real nonsymmetric
-                6: complex symmetric
-                13: complex nonsymmetric
+            Real::
+
+                 1:  structurally symmetric
+                 2:  symmetric positive definite
+                -2:  symmetric indefinite
+                11:  nonsymmetric
+
+            Complex::
+
+                 6:  symmetric
+                 4:  hermitian positive definite
+                -4:  hermitian indefinite
+                 3:  structurally symmetric
+                13:  nonsymmetric
 
         """
-        if self.dtype == float:
-            if self.symmetric:
-                # real symmetric postivie definite
-                return 2
+
+        if self.is_real:
+            if self.is_symmetric:
+                if self.is_positive_definite:
+                    return 2
+                else:
+                    return -2
+            elif self.is_structurally_symmetric:
+                return 1
             else:
-                # real nonsymmetric
                 return 11
-        elif self.dtype == complex:
-            if self.symmetric:
-                # complex symmetric
+        else:
+            if self.is_symmetric:
                 return 6
+            elif self.is_hermitian:
+                if self.is_positive_definite:
+                    return 4
+                else:
+                    return -4
+            elif self.is_structurally_symmetric:
+                return 3
             else:
-                # complex nonsymmetric
                 return 13
 
     def factor(self):
