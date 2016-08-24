@@ -57,4 +57,3 @@ try:
 # except ImportError, e:
 except ImportError, e:
     SolverHelp['PardisoSolver'] = """PardisoSolver is not working."""
-

@@ -5,7 +5,7 @@ import scipy.sparse as sp
 TOL = 1e-12
 
 
-class TestMumps(unittest.TestCase):
+class TestTriangle(unittest.TestCase):
 
     def setUp(self):
         n = 50
