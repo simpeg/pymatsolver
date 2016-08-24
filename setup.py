@@ -87,7 +87,8 @@ setup(
     packages=find_packages(),
     install_requires=[
         'numpy>=1.7',
-        'scipy>=0.13'
+        'scipy>=0.13',
+        'pyMKL'
     ],
     author="Rowan Cockett",
     author_email="rowanc1@gmail.com",
