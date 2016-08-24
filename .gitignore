@@ -5,3 +5,4 @@ dist/
 pymatsolver.egg-info/
 *.sublime-workspace
 *.sublime-project
+*.dSYM

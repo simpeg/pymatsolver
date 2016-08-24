@@ -4,8 +4,8 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
 
-from Base import SolverException, DiagonalSolver
-from BicgJacobi import BicgJacobiSolver
+from .Base import SolverException, DiagonalSolver
+from .BicgJacobi import BicgJacobiSolver
 
 
 SolverHelp = {}
@@ -19,11 +19,11 @@ AvailableSolvers = {
 
 
 try:
-    from Triangle.TriangleFortran import ForwardSolver, BackwardSolver
-    from Triangle.TrianglePython import ForwardSolver as _ForwardSolver, BackwardSolver as _BackwardSolver
+    from .Triangle.TriangleFortran import ForwardSolver, BackwardSolver
+    from .Triangle.TrianglePython import ForwardSolver as _ForwardSolver, BackwardSolver as _BackwardSolver
     AvailableSolvers['TriangleFortran'] = True
 except ImportError:
-    from Triangle.TrianglePython import ForwardSolver, BackwardSolver
+    from .Triangle.TrianglePython import ForwardSolver, BackwardSolver
     AvailableSolvers['TrianglePython'] = True
     SolverHelp['TriangleFortran'] = """Could not compile the Triangle Solvers
 Try something like:
@@ -36,7 +36,7 @@ Try something like:
 
 
 try:
-    from Mumps import MumpsSolver
+    from .Mumps import MumpsSolver
     AvailableSolvers['Mumps'] = True
 except ImportError:
     SolverHelp['Mumps'] = """Mumps is not working.
@@ -57,7 +57,7 @@ If you find a good way of doing it, please share.
 """
 
 try:
-    from Pardiso import PardisoSolver
+    from .Pardiso import PardisoSolver
     AvailableSolvers['PardisoSolver'] = True
 except ImportError:
     SolverHelp['PardisoSolver'] = """PardisoSolver is not working."""

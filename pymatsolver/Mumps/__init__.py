@@ -135,9 +135,9 @@ class MumpsSolver(BaseSolver):
                              self.A.indices+1,
                              self.A.indptr+1)
         if ierr < 0:
-            raise SolverException("Mumps Exception [%d] - %s" % (ierr, _mumpsErrors[ierr]))
+            raise SolverException("Mumps Exception [{}] - {}".format(ierr, _mumpsErrors[ierr]))
         elif ierr > 0:
-            print "Mumps Warning [%d] - %s" % (ierr, _mumpsErrors[ierr])
+            print("Mumps Warning [{}] - {}".format(ierr, _mumpsErrors[ierr]))
 
         self.pointer = _Pointer(p, self._funhandle('D'))
 
