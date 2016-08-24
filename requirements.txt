@@ -2,4 +2,4 @@ numpy
 scipy
 ipython
 matplotlib
-git+git://github.com/dwfmarchant/pyMKL.git
+pyMKL
