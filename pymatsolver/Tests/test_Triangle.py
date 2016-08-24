@@ -6,7 +6,7 @@ import pymatsolver
 TOL = 1e-12
 
 
-class TestMumps(unittest.TestCase):
+class TestTriangle(unittest.TestCase):
 
     def setUp(self):
         n = 50
@@ -32,7 +32,7 @@ class TestMumps(unittest.TestCase):
         self.assertLess(np.linalg.norm(self.sol-X, np.inf), TOL)
         self.assertLess(np.linalg.norm(self.sol[:, 0]-x, np.inf), TOL)
 
-    if pymatsolver.AvailableSolvers['TrianglePython']:
+    if pymatsolver.AvailableSolvers['TriangleFortran']:
 
         def test_directLower_python(self):
             from pymatsolver import _ForwardSolver

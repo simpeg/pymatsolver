@@ -14,7 +14,10 @@ class TestMumps(unittest.TestCase):
             n = 5
             irn = np.r_[0, 1, 3, 4, 1, 0, 4, 2, 1, 2, 0, 2]
             jcn = np.r_[1, 2, 2, 4, 0, 0, 1, 3, 4, 1, 2, 2]
-            a = np.r_[3.0, -3.0, 2.0, 1.0, 3.0, 2.0, 4.0, 2.0, 6.0, -1.0, 4.0, 1.0]
+            a = np.r_[
+                3.0, -3.0, 2.0, 1.0, 3.0, 2.0,
+                4.0, 2.0, 6.0, -1.0, 4.0, 1.0
+            ]
             rhs = np.r_[20.0, 24.0, 9.0, 6.0, 13.0]
             rhs = np.c_[rhs, 10*rhs, 100*rhs]
             sol = np.r_[1., 2., 3., 4., 5.]
@@ -29,7 +32,9 @@ class TestMumps(unittest.TestCase):
             sol = self.sol
             Ainv = pymatsolver.MumpsSolver(self.A)
             for i in range(3):
-                self.assertLess(np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL)
+                self.assertLess(
+                    np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL
+                )
             self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
 
         def test_1to5_cmplx(self):
@@ -38,7 +43,9 @@ class TestMumps(unittest.TestCase):
             self.A = self.A.astype(complex)
             Ainv = pymatsolver.MumpsSolver(self.A)
             for i in range(3):
-                self.assertLess(np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL)
+                self.assertLess(
+                    np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL
+                )
             self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
 
         def test_1to5_T(self):
@@ -47,7 +54,9 @@ class TestMumps(unittest.TestCase):
             Ainv = pymatsolver.MumpsSolver(self.A)
             AinvT = Ainv.T
             for i in range(3):
-                self.assertLess(np.linalg.norm(AinvT.T * rhs[:, i] - sol[:, i]), TOL)
+                self.assertLess(
+                    np.linalg.norm(AinvT.T * rhs[:, i] - sol[:, i]), TOL
+                )
             self.assertLess(np.linalg.norm(AinvT.T * rhs - sol, np.inf), TOL)
 
         # def test_singular(self):
@@ -69,7 +78,8 @@ class TestMumps(unittest.TestCase):
 
             for Ainv in solvers:
                 self.assertLess(
-                    np.linalg.norm(Ainv * rhs - x)/np.linalg.norm(rhs), TOL)
+                    np.linalg.norm(Ainv * rhs - x)/np.linalg.norm(rhs), TOL
+                )
 
 if __name__ == '__main__':
     unittest.main()
