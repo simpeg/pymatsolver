@@ -62,18 +62,20 @@ cython_files = []
 extensions = [Extension(f, [f+ext]) for f in cython_files]
 
 if USE_CYTHON and "cleanall" not in args:
-    from Cython.Build import cythonize
     extensions = cythonize(extensions)
 
 scripts = []
-if 'darwin' in sys.platform:
-    subprocess.Popen("cd pymatsolver/Mumps;make build_mac", shell=True, executable="/bin/bash").wait()
+if (sys.version_info > (3, 0)):
+    pass
 else:
-    subprocess.Popen("cd pymatsolver/Mumps;make build", shell=True, executable="/bin/bash").wait()
-scripts += ['pymatsolver/Mumps/MumpsInterface.so','pymatsolver/Mumps/mumps_cmplx_p.f90','pymatsolver/Mumps/mumps_p.f90','pymatsolver/Mumps/mumps_interface.f90']
+    if 'darwin' in sys.platform:
+        subprocess.Popen("cd pymatsolver/Mumps;make build_mac", shell=True, executable="/bin/bash").wait()
+    else:
+        subprocess.Popen("cd pymatsolver/Mumps;make build", shell=True, executable="/bin/bash").wait()
+    scripts += ['pymatsolver/Mumps/MumpsInterface.so','pymatsolver/Mumps/mumps_cmplx_p.f90','pymatsolver/Mumps/mumps_p.f90','pymatsolver/Mumps/mumps_interface.f90']
 
 subprocess.Popen("cd pymatsolver/Triangle;make", shell=True, executable="/bin/bash").wait()
-scripts += ['pymatsolver/Triangle/TriSolve.so','pymatsolver/Triangle/TriSolve.f']
+scripts += ['pymatsolver/Triangle/TriSolve.so', 'pymatsolver/Triangle/TriSolve.f']
 
 
 with open("README.rst") as f:
