@@ -74,8 +74,8 @@ else:
         subprocess.Popen("cd pymatsolver/Mumps;make build", shell=True, executable="/bin/bash").wait()
     scripts += ['pymatsolver/Mumps/MumpsInterface.so','pymatsolver/Mumps/mumps_cmplx_p.f90','pymatsolver/Mumps/mumps_p.f90','pymatsolver/Mumps/mumps_interface.f90']
 
-subprocess.Popen("cd pymatsolver/Triangle;make", shell=True, executable="/bin/bash").wait()
-scripts += ['pymatsolver/Triangle/TriSolve.so', 'pymatsolver/Triangle/TriSolve.f']
+    subprocess.Popen("cd pymatsolver/Triangle;make", shell=True, executable="/bin/bash").wait()
+    scripts += ['pymatsolver/Triangle/TriSolve.so', 'pymatsolver/Triangle/TriSolve.f']
 
 
 with open("README.rst") as f:
