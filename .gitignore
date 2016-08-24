@@ -63,3 +63,5 @@ target/
 *.sublime-project
 *.sublime-workspace
 *.dSYM
+
+*.DS_Store
