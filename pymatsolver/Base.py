@@ -1,4 +1,9 @@
-import scipy.sparse as sp, numpy as np
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+import numpy as np
+
 
 class BaseSolver(object):
 
@@ -34,7 +39,7 @@ class BaseSolver(object):
 
 
     def clean(self):
-        print "base clean"
+        print("base clean")
         pass
 
     def __mul__(self, val):
@@ -61,4 +66,4 @@ class DiagonalSolver(BaseSolver):
     def _solveM(self, rhs):
         n = self.A.shape[0]
         nrhs = rhs.size // n
-        return rhs/self._diagonal.repeat(nrhs).reshape((n,nrhs))
+        return rhs/self._diagonal.repeat(nrhs).reshape((n, nrhs))
