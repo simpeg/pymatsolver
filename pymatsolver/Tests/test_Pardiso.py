@@ -5,6 +5,7 @@ import scipy.sparse as sp
 
 TOL = 1e-10
 
+
 class TestPardiso(unittest.TestCase):
 
     def setUp(self):
@@ -27,8 +28,8 @@ class TestPardiso(unittest.TestCase):
         sol = self.sol
         Ainv = PardisoSolver(self.A, symmetric=True)
         for i in range(3):
-            self.assertLess(np.linalg.norm(Ainv * rhs[:,i] - sol[:,i]),TOL)
-        self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf),TOL)
+            self.assertLess(np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL)
+        self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
         Ainv.clean()
 
     def test_T(self):
@@ -37,9 +38,11 @@ class TestPardiso(unittest.TestCase):
         Ainv = PardisoSolver(self.A, symmetric=True)
         AinvT = Ainv.T
         for i in range(3):
-            self.assertLess(np.linalg.norm(AinvT.T * rhs[:,i] - sol[:,i]),TOL)
-        self.assertLess(np.linalg.norm(AinvT.T * rhs - sol, np.inf),TOL)
+            self.assertLess(
+                np.linalg.norm(AinvT.T * rhs[:, i] - sol[:, i]), TOL)
+        self.assertLess(np.linalg.norm(AinvT.T * rhs - sol, np.inf), TOL)
         Ainv.clean()
+
 
 class TestPardisoComplex(unittest.TestCase):
 
@@ -58,14 +61,13 @@ class TestPardisoComplex(unittest.TestCase):
         self.rhs = rhs
         self.sol = sol
 
-
     def test(self):
         rhs = self.rhs
         sol = self.sol
         Ainv = PardisoSolver(self.A, symmetric=True)
         for i in range(3):
-            self.assertLess(np.linalg.norm(Ainv * rhs[:,i] - sol[:,i]),TOL)
-        self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf),TOL)
+            self.assertLess(np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL)
+        self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
         Ainv.clean()
 
     def test_T(self):
@@ -74,10 +76,9 @@ class TestPardisoComplex(unittest.TestCase):
         Ainv = PardisoSolver(self.A, symmetric=True)
         AinvT = Ainv.T
         for i in range(3):
-            self.assertLess(np.linalg.norm(AinvT.T * rhs[:,i] - sol[:,i]),TOL)
-        self.assertLess(np.linalg.norm(AinvT.T * rhs - sol, np.inf),TOL)
-
-
+            self.assertLess(
+                np.linalg.norm(AinvT.T * rhs[:, i] - sol[:, i]), TOL)
+        self.assertLess(np.linalg.norm(AinvT.T * rhs - sol, np.inf), TOL)
 
 
 if __name__ == '__main__':

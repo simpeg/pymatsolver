@@ -1,7 +1,6 @@
-import scipy.sparse as sp
-import numpy as np
 from pymatsolver.Base import BaseSolver
 from pyMKL import pardisoSolver
+
 
 class PardisoSolver(BaseSolver):
     """
@@ -34,7 +33,7 @@ class PardisoSolver(BaseSolver):
         self.A = A
         self.symmetric = symmetric
         self.dtype = A.dtype
-        if mtype == None:
+        if mtype is None:
             self.solver = pardisoSolver(A.tocsc(), mtype=self._funhandle())
         else:
             self.solver = pardisoSolver(A.tocsc(),
@@ -54,19 +53,18 @@ class PardisoSolver(BaseSolver):
         """
         if self.dtype == float:
             if self.symmetric:
-                #real symmetric postivie definite
+                # real symmetric postivie definite
                 return 2
             else:
-                #real nonsymmetric
+                # real nonsymmetric
                 return 11
         elif self.dtype == complex:
             if self.symmetric:
-                #complex symmetric
+                # complex symmetric
                 return 6
             else:
-                #complex nonsymmetric
+                # complex nonsymmetric
                 return 13
-
 
     def factor(self):
         if self.isfactored is not True:

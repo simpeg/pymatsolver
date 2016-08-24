@@ -5,6 +5,7 @@ import scipy.sparse as sp
 
 TOL = 1e-6
 
+
 class TestBicgJacobi(unittest.TestCase):
 
     def setUp(self):
@@ -24,23 +25,23 @@ class TestBicgJacobi(unittest.TestCase):
 
     def test(self):
         rhs = self.rhs
-        sol = self.sol
         Ainv = BicgJacobiSolver(self.A, symmetric=True)
         solb = Ainv*rhs
         for i in range(3):
-            err = np.linalg.norm(self.A*solb[:, i] - rhs[:, i]) / np.linalg.norm(rhs[:, i])
+            err = np.linalg.norm(
+                self.A*solb[:, i] - rhs[:, i]) / np.linalg.norm(rhs[:, i])
             self.assertLess(err, TOL)
         Ainv.clean()
 
     def test_T(self):
         rhs = self.rhs
-        sol = self.sol
         Ainv = BicgJacobiSolver(self.A, symmetric=True)
         Ainv.maxIter = 2000
         AinvT = Ainv.T
         solb = AinvT*rhs
         for i in range(3):
-            err = np.linalg.norm(self.A.T*solb[:, i] - rhs[:, i]) / np.linalg.norm(rhs[:, i])
+            err = np.linalg.norm(
+                self.A.T*solb[:, i] - rhs[:, i]) / np.linalg.norm(rhs[:, i])
             self.assertLess(err, TOL)
         Ainv.clean()
 
@@ -62,29 +63,27 @@ class TestPardisoComplex(unittest.TestCase):
         self.rhs = rhs
         self.sol = sol
 
-
     def test(self):
         rhs = self.rhs
-        sol = self.sol
         Ainv = BicgJacobiSolver(self.A, symmetric=True)
         solb = Ainv*rhs
         for i in range(3):
-            err = np.linalg.norm(self.A*solb[:, i] - rhs[:, i]) / np.linalg.norm(rhs[:, i])
+            err = np.linalg.norm(
+                self.A*solb[:, i] - rhs[:, i]) / np.linalg.norm(rhs[:, i])
             self.assertLess(err, TOL)
         Ainv.clean()
 
     def test_T(self):
         rhs = self.rhs
-        sol = self.sol
         Ainv = BicgJacobiSolver(self.A, symmetric=True)
         Ainv.maxIter = 2000
         AinvT = Ainv.T
         solb = AinvT*rhs
         for i in range(3):
-            err = np.linalg.norm(self.A.T*solb[:, i] - rhs[:, i]) / np.linalg.norm(rhs[:, i])
+            err = np.linalg.norm(
+                self.A.T*solb[:, i] - rhs[:, i]) / np.linalg.norm(rhs[:, i])
             self.assertLess(err, TOL)
         Ainv.clean()
-
 
 
 if __name__ == '__main__':
