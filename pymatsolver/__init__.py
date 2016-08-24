@@ -38,7 +38,7 @@ Try something like:
 try:
     from Mumps import MumpsSolver
     AvailableSolvers['Mumps'] = True
-except ImportError, e:
+except ImportError:
     SolverHelp['Mumps'] = """Mumps is not working.
 
 
@@ -59,7 +59,6 @@ If you find a good way of doing it, please share.
 try:
     from Pardiso import PardisoSolver
     AvailableSolvers['PardisoSolver'] = True
-# except ImportError, e:
-except ImportError, e:
+except ImportError:
     SolverHelp['PardisoSolver'] = """PardisoSolver is not working."""
 

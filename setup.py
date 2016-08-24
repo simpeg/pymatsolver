@@ -52,7 +52,7 @@ try:
     from Cython.Distutils import build_ext
     cythonKwargs = dict(cmdclass={'build_ext': build_ext})
     USE_CYTHON = True
-except Exception, e:
+except Exception:
     USE_CYTHON = False
     cythonKwargs = dict()
 
