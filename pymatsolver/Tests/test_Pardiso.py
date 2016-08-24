@@ -28,7 +28,9 @@ class TestPardiso(unittest.TestCase):
         sol = self.sol
         Ainv = PardisoSolver(self.A, symmetric=True)
         for i in range(3):
-            self.assertLess(np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL)
+            self.assertLess(
+                np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL
+            )
         self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
         Ainv.clean()
 
@@ -39,7 +41,8 @@ class TestPardiso(unittest.TestCase):
         AinvT = Ainv.T
         for i in range(3):
             self.assertLess(
-                np.linalg.norm(AinvT.T * rhs[:, i] - sol[:, i]), TOL)
+                np.linalg.norm(AinvT.T * rhs[:, i] - sol[:, i]), TOL
+            )
         self.assertLess(np.linalg.norm(AinvT.T * rhs - sol, np.inf), TOL)
         Ainv.clean()
 
@@ -66,7 +69,9 @@ class TestPardisoComplex(unittest.TestCase):
         sol = self.sol
         Ainv = PardisoSolver(self.A, symmetric=True)
         for i in range(3):
-            self.assertLess(np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL)
+            self.assertLess(
+                np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL
+            )
         self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
         Ainv.clean()
 
@@ -77,7 +82,8 @@ class TestPardisoComplex(unittest.TestCase):
         AinvT = Ainv.T
         for i in range(3):
             self.assertLess(
-                np.linalg.norm(AinvT.T * rhs[:, i] - sol[:, i]), TOL)
+                np.linalg.norm(AinvT.T * rhs[:, i] - sol[:, i]), TOL
+            )
         self.assertLess(np.linalg.norm(AinvT.T * rhs - sol, np.inf), TOL)
 
 
