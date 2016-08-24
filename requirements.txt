@@ -1,4 +1,4 @@
 numpy
 scipy
-ipython
 matplotlib
+mkl

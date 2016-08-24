@@ -7,7 +7,6 @@ pymatsolver is a python package for easy to use matrix solvers.
 
 import numpy as np
 
-import os, os.path
 import sys
 import subprocess
 
@@ -16,19 +15,19 @@ from setuptools import find_packages
 from distutils.extension import Extension
 
 CLASSIFIERS = [
-'Development Status :: 4 - Beta',
-'Intended Audience :: Developers',
-'Intended Audience :: Science/Research',
-'License :: OSI Approved :: MIT License',
-'Programming Language :: Python',
-'Topic :: Scientific/Engineering',
-'Topic :: Scientific/Engineering :: Mathematics',
-'Topic :: Scientific/Engineering :: Physics',
-'Operating System :: Microsoft :: Windows',
-'Operating System :: POSIX',
-'Operating System :: Unix',
-'Operating System :: MacOS',
-'Natural Language :: English',
+    'Development Status :: 4 - Beta',
+    'Intended Audience :: Developers',
+    'Intended Audience :: Science/Research',
+    'License :: OSI Approved :: MIT License',
+    'Programming Language :: Python',
+    'Topic :: Scientific/Engineering',
+    'Topic :: Scientific/Engineering :: Mathematics',
+    'Topic :: Scientific/Engineering :: Physics',
+    'Operating System :: Microsoft :: Windows',
+    'Operating System :: POSIX',
+    'Operating System :: Unix',
+    'Operating System :: MacOS',
+    'Natural Language :: English',
 ]
 
 args = sys.argv[1:]
@@ -63,7 +62,6 @@ cython_files = []
 extensions = [Extension(f, [f+ext]) for f in cython_files]
 
 if USE_CYTHON and "cleanall" not in args:
-    from Cython.Build import cythonize
     extensions = cythonize(extensions)
 
 scripts = []
@@ -71,36 +69,36 @@ if 'darwin' in sys.platform:
     subprocess.Popen("cd pymatsolver/Mumps;make build_mac", shell=True, executable="/bin/bash").wait()
 else:
     subprocess.Popen("cd pymatsolver/Mumps;make build", shell=True, executable="/bin/bash").wait()
-scripts += ['pymatsolver/Mumps/MumpsInterface.so','pymatsolver/Mumps/mumps_cmplx_p.f90','pymatsolver/Mumps/mumps_p.f90','pymatsolver/Mumps/mumps_interface.f90']
+scripts += ['pymatsolver/Mumps/MumpsInterface.so', 'pymatsolver/Mumps/mumps_cmplx_p.f90','pymatsolver/Mumps/mumps_p.f90', 'pymatsolver/Mumps/mumps_interface.f90']
 
 subprocess.Popen("cd pymatsolver/Triangle;make", shell=True, executable="/bin/bash").wait()
-scripts += ['pymatsolver/Triangle/TriSolve.so','pymatsolver/Triangle/TriSolve.f']
+scripts += ['pymatsolver/Triangle/TriSolve.so', 'pymatsolver/Triangle/TriSolve.f']
 
 
 with open("README.rst") as f:
     LONG_DESCRIPTION = ''.join(f.readlines())
 
 setup(
-    name = "pymatsolver",
-    version = "0.0.2",
-    packages = find_packages(),
-    install_requires = [
-                        'numpy>=1.7',
-                        'scipy>=0.13'
-                       ],
-    author = "Rowan Cockett",
-    author_email = "rowanc1@gmail.com",
-    description = "pymatsolver: Matrix Solvers for Python",
-    long_description = LONG_DESCRIPTION,
-    license = "MIT",
-    keywords = "matrix solver",
-    url = "http://simpeg.xyz/",
-    download_url = "http://github.com/rowanc1/pymatsolver",
+    name="pymatsolver",
+    version="0.0.2",
+    packages=find_packages(),
+    install_requires=[
+        'numpy>=1.7',
+        'scipy>=0.13'
+    ],
+    author="Rowan Cockett",
+    author_email="rowanc1@gmail.com",
+    description="pymatsolver: Matrix Solvers for Python",
+    long_description=LONG_DESCRIPTION,
+    license="MIT",
+    keywords="matrix solver",
+    url="http://simpeg.xyz/",
+    download_url="http://github.com/simpeg/pymatsolver",
     classifiers=CLASSIFIERS,
-    platforms = ["Windows", "Linux", "Solaris", "Mac OS-X", "Unix"],
-    use_2to3 = False,
+    platforms=["Windows", "Linux", "Solaris", "Mac OS-X", "Unix"],
+    use_2to3=False,
     include_dirs=[np.get_include()],
-    ext_modules = extensions,
+    ext_modules=extensions,
     scripts=scripts,
     **cythonKwargs
 )
