@@ -26,12 +26,13 @@ class PardisoSolver(BaseSolver):
     isfactored = False
 
     def __init__(self, A, **kwargs):
+        A = A.tocsr()
         if not A.has_sorted_indices:
             A.sort_indices()
         self.A = A
         self.setKwargs(**kwargs)
         self.solver = _pardisoSolver(
-            A.tocsc(),
+            A,
             mtype=self._martixType()
         )
 
@@ -62,8 +63,6 @@ class PardisoSolver(BaseSolver):
                     return 2
                 else:
                     return -2
-            elif self.is_structurally_symmetric:
-                return 1
             else:
                 return 11
         else:
@@ -74,8 +73,6 @@ class PardisoSolver(BaseSolver):
                     return 4
                 else:
                     return -4
-            elif self.is_structurally_symmetric:
-                return 3
             else:
                 return 13
 
