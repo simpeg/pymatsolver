@@ -62,8 +62,6 @@ class PardisoSolver(BaseSolver):
                     return 2
                 else:
                     return -2
-            elif self.is_structurally_symmetric:
-                return 1
             else:
                 return 11
         else:
@@ -74,8 +72,6 @@ class PardisoSolver(BaseSolver):
                     return 4
                 else:
                     return -4
-            elif self.is_structurally_symmetric:
-                return 3
             else:
                 return 13
 

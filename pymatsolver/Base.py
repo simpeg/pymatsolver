@@ -96,17 +96,7 @@ class BaseSolver(object):
 
     @is_symmetric.setter
     def is_symmetric(self, value):
-        if value is True:
-            self.is_structurally_symmetric = True
         self._is_symmetric = value
-
-    @property
-    def is_structurally_symmetric(self):
-        return getattr(self, '_is_structurally_symmetric', False)
-
-    @is_structurally_symmetric.setter
-    def is_structurally_symmetric(self, value):
-        self._is_structurally_symmetric = value
 
     @property
     def is_hermitian(self):

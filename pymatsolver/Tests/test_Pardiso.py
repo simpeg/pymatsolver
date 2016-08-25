@@ -89,6 +89,7 @@ class TestPardisoFDEM(unittest.TestCase):
         rhs = self.rhs
         Ainv = PardisoSolver(self.A, check_accuracy=True)
         sol = Ainv * rhs
+        sol = Ainv * rhs.real
 
 
 class TestPardisoComplex(unittest.TestCase):
