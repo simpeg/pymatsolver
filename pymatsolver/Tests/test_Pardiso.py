@@ -74,6 +74,23 @@ class TestPardisoNotSymmetric(unittest.TestCase):
         Ainv.clean()
 
 
+class TestPardisoFDEM(unittest.TestCase):
+
+    def setUp(self):
+        import os
+        base_path = os.path.split(__file__)[0] + os.path.sep + 'fdem/'
+        data = np.load(base_path + 'A_data.npy')
+        indices = np.load(base_path + 'A_indices.npy')
+        indptr = np.load(base_path + 'A_indptr.npy')
+        self.A = sp.csr_matrix((data, indices, indptr), shape=(13872, 13872))
+        self.rhs = np.load(base_path + 'RHS.npy')
+
+    def test(self):
+        rhs = self.rhs
+        Ainv = PardisoSolver(self.A, check_accuracy=True)
+        sol = Ainv * rhs
+
+
 class TestPardisoComplex(unittest.TestCase):
 
     def setUp(self):
