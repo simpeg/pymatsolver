@@ -26,8 +26,8 @@ class PardisoSolver(BaseSolver):
     isfactored = False
 
     def __init__(self, A, **kwargs):
+        A = A.tocsr()
         if not A.has_sorted_indices:
-            A = A.tocsr()
             A.sort_indices()
         self.A = A
         self.setKwargs(**kwargs)
