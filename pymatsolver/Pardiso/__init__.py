@@ -27,11 +27,12 @@ class PardisoSolver(BaseSolver):
 
     def __init__(self, A, **kwargs):
         if not A.has_sorted_indices:
+            A = A.tocsr()
             A.sort_indices()
         self.A = A
         self.setKwargs(**kwargs)
         self.solver = _pardisoSolver(
-            A.tocsc(),
+            A,
             mtype=self._martixType()
         )
 
