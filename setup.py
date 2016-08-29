@@ -64,6 +64,8 @@ extensions = [Extension(f, [f+ext]) for f in cython_files]
 if USE_CYTHON and "cleanall" not in args:
     extensions = cythonize(extensions)
 
+print sys.platform
+
 scripts = []
 if (sys.version_info > (3, 0)):
     pass
