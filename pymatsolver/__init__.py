@@ -27,6 +27,7 @@ AvailableSolvers = {
 try:
     from pymatsolver.direct import Pardiso
     AvailableSolvers['Pardiso'] = True
+    ParadisoSolver = Pardiso  # backwards compatibility
 except ImportError:
     SolverHelp['Pardiso'] = """Pardiso is not working
 
@@ -37,6 +38,7 @@ to be installed through conda.
 try:
     from pymatsolver.mumps import Mumps
     AvailableSolvers['Mumps'] = True
+    MumpsSolver = Mumps  # backwards compatibility
 except ImportError:
     SolverHelp['Mumps'] = """Mumps is not working.
 
