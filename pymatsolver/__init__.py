@@ -55,7 +55,7 @@ brew install mumps --with-scotch5 --without-mpi
 mpicc --showme
 """
 
-__version__ = '0.0.3'
+__version__ = '0.1.0'
 __author__ = 'Rowan Cockett'
 __license__ = 'MIT'
 __copyright__ = 'Copyright 2017 Rowan Cockett'
