@@ -2,19 +2,16 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
+
 import numpy as np
 
 
-class SolverException(Exception):
-    pass
-
-
-class BaseSolver(object):
+class Base(object):
 
     def __init__(self, A):
         self.A = A.tocsr()
 
-    def setKwargs(self, ignore=None,  **kwargs):
+    def set_kwargs(self, ignore=None,  **kwargs):
         """
             Sets key word arguments (kwargs) that are present in the object,
             throw an error if they don't exist.
@@ -56,7 +53,7 @@ class BaseSolver(object):
             msg = 'Accuracy on solve is above tolerance: {0:e} > {1:e}'.format(
                 nrm, self.accuracy_tol
             )
-            raise SolverException(msg)
+            raise Exception(msg)
 
     def _solve(self, rhs):
 
@@ -78,7 +75,6 @@ class BaseSolver(object):
             return x.reshape((n, nrhs), order='F')
 
     def clean(self):
-        print("base clean")
         pass
 
     def __mul__(self, val):
@@ -118,7 +114,7 @@ class BaseSolver(object):
         self._is_positive_definite = value
 
 
-class DiagonalSolver(BaseSolver):
+class Diagonal(Base):
 
     _transposeClass = None
 
@@ -133,3 +129,49 @@ class DiagonalSolver(BaseSolver):
         n = self.A.shape[0]
         nrhs = rhs.size // n
         return rhs/self._diagonal.repeat(nrhs).reshape((n, nrhs))
+
+
+class Forward(Base):
+
+    _transposeClass = None
+
+    def __init__(self, A):
+        self.A = A.tocsr()
+
+    def _solveM(self, rhs):
+
+        vals = self.A.data
+        rowptr = self.A.indptr
+        colind = self.A.indices
+        x = np.empty_like(rhs)
+        for i in range(self.A.shape[0]):
+            ith_row = vals[rowptr[i]:rowptr[i+1]]
+            cols = colind[rowptr[i]:rowptr[i+1]]
+            x_vals = x[cols]
+            x[i] = (rhs[i] - np.dot(ith_row[:-1], x_vals[:-1])) / ith_row[-1]
+        return x
+
+    _solve1 = _solveM
+
+
+class Backward(Base):
+
+    _transposeClass = None
+
+    def __init__(self, A):
+        self.A = A.tocsr()
+
+    def _solveM(self, rhs):
+
+        vals = self.A.data
+        rowptr = self.A.indptr
+        colind = self.A.indices
+        x = np.empty_like(rhs)
+        for i in reversed(range(self.A.shape[0])):
+            ith_row = vals[rowptr[i]:rowptr[i+1]]
+            cols = colind[rowptr[i]:rowptr[i+1]]
+            x_vals = x[cols]
+            x[i] = (rhs[i] - np.dot(ith_row[1:], x_vals[1:])) / ith_row[0]
+        return x
+
+    _solve1 = _solveM
