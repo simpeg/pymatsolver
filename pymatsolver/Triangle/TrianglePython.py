@@ -2,11 +2,12 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
+
 import numpy as np
-from pymatsolver.Base import BaseSolver
+from pymatsolver.solvers import Base
 
 
-class ForwardSolver(BaseSolver):
+class Forward(Base):
 
     _transposeClass = None
 
@@ -29,7 +30,7 @@ class ForwardSolver(BaseSolver):
     _solve1 = _solveM
 
 
-class BackwardSolver(BaseSolver):
+class Backward(Base):
 
     _transposeClass = None
 

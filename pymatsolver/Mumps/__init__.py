@@ -8,7 +8,7 @@ try:
 except ImportError:
     _mumpsExists = False
 import gc
-from pymatsolver.Base import BaseSolver, SolverException
+from pymatsolver.solvers import Base
 
 _mumpsErrors = {
     -1:  "An error occurred on processor INFO(2).",
@@ -81,7 +81,7 @@ if _mumpsExists:
         def __del__(self):
             self.destroyCall(self.INT)
 
-    class MumpsSolver(BaseSolver):
+    class Mumps(Base):
         """
 
         documentation::
@@ -136,7 +136,8 @@ if _mumpsExists:
                         'D': _MUMPSINT.destroy_mumps_cmplx}[ftype]
 
         def factor(self):
-            if self.isfactored: return
+            if self.isfactored:
+                return
 
             sym = 1 if self.symmetric else 0
             ierr, p = self._funhandle('F')(
@@ -146,7 +147,7 @@ if _mumpsExists:
                 self.A.indptr+1
             )
             if ierr < 0:
-                raise SolverException("Mumps Exception [{}] - {}".format(ierr, _mumpsErrors[ierr]))
+                raise Exception("Mumps Exception [{}] - {}".format(ierr, _mumpsErrors[ierr]))
             elif ierr > 0:
                 print("Mumps Warning [{}] - {}".format(ierr, _mumpsErrors[ierr]))
 

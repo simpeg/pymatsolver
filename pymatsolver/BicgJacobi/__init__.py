@@ -5,7 +5,7 @@ from __future__ import absolute_import
 import scipy.sparse as sp
 from scipy.sparse.linalg import bicgstab
 import numpy as np
-from pymatsolver.Base import BaseSolver
+from pymatsolver.solvers import Base
 
 
 def JacobiHandle(A):
@@ -14,7 +14,7 @@ def JacobiHandle(A):
     return sp.linalg.interface.aslinearoperator(Ainv)
 
 
-class BicgJacobiSolver(BaseSolver):
+class BicgJacobi(Base):
     """
         Bicg Solver with Jacobi preconditioner
     """

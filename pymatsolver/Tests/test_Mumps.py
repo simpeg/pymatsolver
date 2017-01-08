@@ -30,7 +30,7 @@ class TestMumps(unittest.TestCase):
         def test_1to5(self):
             rhs = self.rhs
             sol = self.sol
-            Ainv = pymatsolver.MumpsSolver(self.A)
+            Ainv = pymatsolver.Mumps(self.A)
             for i in range(3):
                 self.assertLess(
                     np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL
@@ -41,7 +41,7 @@ class TestMumps(unittest.TestCase):
             rhs = self.rhs.astype(complex)
             sol = self.sol.astype(complex)
             self.A = self.A.astype(complex)
-            Ainv = pymatsolver.MumpsSolver(self.A)
+            Ainv = pymatsolver.Mumps(self.A)
             for i in range(3):
                 self.assertLess(
                     np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL
@@ -51,7 +51,7 @@ class TestMumps(unittest.TestCase):
         def test_1to5_T(self):
             rhs = self.rhs
             sol = self.sol
-            Ainv = pymatsolver.MumpsSolver(self.A)
+            Ainv = pymatsolver.Mumps(self.A)
             AinvT = Ainv.T
             for i in range(3):
                 self.assertLess(
@@ -62,14 +62,14 @@ class TestMumps(unittest.TestCase):
         # def test_singular(self):
         #     A = sp.identity(5).tocsr()
         #     A[-1,-1] = 0
-        #     self.assertRaises(SolverException, pymatsolver.MumpsSolver, A)
+        #     self.assertRaises(SolverException, pymatsolver.Mumps, A)
 
         def test_multiFactorsInMem(self):
             n = 100
             A = sp.rand(n, n, 0.7)+sp.identity(n)
             x = np.ones((n, 10))
             rhs = A * x
-            solvers = [pymatsolver.MumpsSolver(A) for _ in range(20)]
+            solvers = [pymatsolver.Mumps(A) for _ in range(20)]
 
             for Ainv in solvers:
                 self.assertLess(

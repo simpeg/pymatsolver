@@ -1,9 +1,9 @@
-import scipy.sparse as sp, numpy as np
-from pymatsolver.Base import BaseSolver
+from pymatsolver.solvers import Base
 
 import TriSolve
 
-class ForwardSolver(BaseSolver):
+
+class Forward(Base):
 
     _transposeClass = None
 
@@ -20,7 +20,7 @@ class ForwardSolver(BaseSolver):
         return TriSolve.forward(A.data, A.indptr, A.indices, rhs, self.A.nnz, *rhs.shape)
 
 
-class BackwardSolver(BaseSolver):
+class Backward(Base):
 
     _transposeClass = None
 

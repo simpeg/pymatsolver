@@ -1,5 +1,5 @@
 import unittest
-from pymatsolver import PardisoSolver, SolverException
+from pymatsolver import Pardiso
 import numpy as np
 import scipy.sparse as sp
 
@@ -26,7 +26,7 @@ class TestPardiso(unittest.TestCase):
     def test(self):
         rhs = self.rhs
         sol = self.sol
-        Ainv = PardisoSolver(self.A, is_symmetric=True)
+        Ainv = Pardiso(self.A, is_symmetric=True)
         for i in range(3):
             self.assertLess(np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL)
         self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
@@ -35,7 +35,7 @@ class TestPardiso(unittest.TestCase):
     def test_T(self):
         rhs = self.rhs
         sol = self.sol
-        Ainv = PardisoSolver(self.A, is_symmetric=True)
+        Ainv = Pardiso(self.A, is_symmetric=True)
         AinvT = Ainv.T
         for i in range(3):
             self.assertLess(
@@ -63,11 +63,11 @@ class TestPardisoNotSymmetric(unittest.TestCase):
     def test(self):
         rhs = self.rhs
         sol = self.sol
-        Ainv = PardisoSolver(self.A, is_symmetric=True, check_accuracy=True)
-        self.assertRaises(SolverException, lambda: Ainv * rhs)
+        Ainv = Pardiso(self.A, is_symmetric=True, check_accuracy=True)
+        self.assertRaises(Exception, lambda: Ainv * rhs)
         Ainv.clean()
 
-        Ainv = PardisoSolver(self.A)
+        Ainv = Pardiso(self.A)
         for i in range(3):
             self.assertLess(np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL)
         self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
@@ -87,7 +87,7 @@ class TestPardisoFDEM(unittest.TestCase):
 
     def test(self):
         rhs = self.rhs
-        Ainv = PardisoSolver(self.A, check_accuracy=True)
+        Ainv = Pardiso(self.A, check_accuracy=True)
         sol = Ainv * rhs
         sol = Ainv * rhs.real
 
@@ -112,7 +112,7 @@ class TestPardisoComplex(unittest.TestCase):
     def test(self):
         rhs = self.rhs
         sol = self.sol
-        Ainv = PardisoSolver(self.A, is_symmetric=True)
+        Ainv = Pardiso(self.A, is_symmetric=True)
         for i in range(3):
             self.assertLess(np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL)
         self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
@@ -121,7 +121,7 @@ class TestPardisoComplex(unittest.TestCase):
     def test_T(self):
         rhs = self.rhs
         sol = self.sol
-        Ainv = PardisoSolver(self.A, is_symmetric=True)
+        Ainv = Pardiso(self.A, is_symmetric=True)
         AinvT = Ainv.T
         for i in range(3):
             self.assertLess(

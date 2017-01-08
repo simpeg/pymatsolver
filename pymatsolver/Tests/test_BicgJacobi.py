@@ -1,5 +1,5 @@
 import unittest
-from pymatsolver import BicgJacobiSolver
+from pymatsolver import BicgJacobi
 import numpy as np
 import scipy.sparse as sp
 
@@ -25,7 +25,7 @@ class TestBicgJacobi(unittest.TestCase):
 
     def test(self):
         rhs = self.rhs
-        Ainv = BicgJacobiSolver(self.A, symmetric=True)
+        Ainv = BicgJacobi(self.A, symmetric=True)
         solb = Ainv*rhs
         for i in range(3):
             err = np.linalg.norm(
@@ -35,7 +35,7 @@ class TestBicgJacobi(unittest.TestCase):
 
     def test_T(self):
         rhs = self.rhs
-        Ainv = BicgJacobiSolver(self.A, symmetric=True)
+        Ainv = BicgJacobi(self.A, symmetric=True)
         Ainv.maxIter = 2000
         AinvT = Ainv.T
         solb = AinvT*rhs
@@ -65,7 +65,7 @@ class TestPardisoComplex(unittest.TestCase):
 
     def test(self):
         rhs = self.rhs
-        Ainv = BicgJacobiSolver(self.A, symmetric=True)
+        Ainv = BicgJacobi(self.A, symmetric=True)
         solb = Ainv*rhs
         for i in range(3):
             err = np.linalg.norm(
@@ -75,7 +75,7 @@ class TestPardisoComplex(unittest.TestCase):
 
     def test_T(self):
         rhs = self.rhs
-        Ainv = BicgJacobiSolver(self.A, symmetric=True)
+        Ainv = BicgJacobi(self.A, symmetric=True)
         Ainv.maxIter = 2000
         AinvT = Ainv.T
         solb = AinvT*rhs

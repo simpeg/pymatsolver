@@ -17,16 +17,16 @@ class TestTriangle(unittest.TestCase):
         self.rhsL = sp.tril(self.A) * self.sol
 
     def test_directLower(self):
-        from pymatsolver import ForwardSolver
-        ALinv = ForwardSolver(sp.tril(self.A))
+        from pymatsolver import Forward
+        ALinv = Forward(sp.tril(self.A))
         X = ALinv * self.rhsL
         x = ALinv * self.rhsL[:, 0]
         self.assertLess(np.linalg.norm(self.sol-X, np.inf), TOL)
         self.assertLess(np.linalg.norm(self.sol[:, 0]-x, np.inf), TOL)
 
     def test_directLower_1(self):
-        from pymatsolver import BackwardSolver
-        AUinv = BackwardSolver(sp.triu(self.A))
+        from pymatsolver import Backward
+        AUinv = Backward(sp.triu(self.A))
         X = AUinv * self.rhsU
         x = AUinv * self.rhsU[:, 0]
         self.assertLess(np.linalg.norm(self.sol-X, np.inf), TOL)
@@ -35,16 +35,16 @@ class TestTriangle(unittest.TestCase):
     if pymatsolver.AvailableSolvers['TriangleFortran']:
 
         def test_directLower_python(self):
-            from pymatsolver import _ForwardSolver
-            ALinv = _ForwardSolver(sp.tril(self.A))
+            from pymatsolver import _Forward
+            ALinv = _Forward(sp.tril(self.A))
             X = ALinv * self.rhsL
             x = ALinv * self.rhsL[:, 0]
             self.assertLess(np.linalg.norm(self.sol-X, np.inf), TOL)
             self.assertLess(np.linalg.norm(self.sol[:, 0]-x, np.inf), TOL)
 
         def test_directLower_1_python(self):
-            from pymatsolver import _BackwardSolver
-            AUinv = _BackwardSolver(sp.triu(self.A))
+            from pymatsolver import _Backward
+            AUinv = _Backward(sp.triu(self.A))
             X = AUinv * self.rhsU
             x = AUinv * self.rhsU[:, 0]
             self.assertLess(np.linalg.norm(self.sol-X, np.inf), TOL)

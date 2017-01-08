@@ -4,26 +4,34 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
 
-from .Base import SolverException, DiagonalSolver
-from .BicgJacobi import BicgJacobiSolver
+from pymatsolver.solvers import Diagonal
+from pymatsolver.wrappers import WrapDirect
+from pymatsolver.wrappers import WrapIterative
+from pymatsolver.wrappers import Solver
+from pymatsolver.wrappers import SolverLU
+from pymatsolver.wrappers import SolverCG
+from pymatsolver.BicgJacobi import BicgJacobi
 
 
 SolverHelp = {}
 AvailableSolvers = {
-    "DiagonalSolver":  True,
+    "Diagonal": True,
+    "Solver": True,
+    "SolverLU": True,
+    "SolverCG": True,
     "TriangleFortran": False,
-    "TrianglePython":  False,
-    "Mumps":           False,
-    "Pardiso":         False,
+    "TrianglePython": False,
+    "Mumps": False,
+    "Pardiso": False,
 }
 
 
 try:
-    from .Triangle.TriangleFortran import ForwardSolver, BackwardSolver
-    from .Triangle.TrianglePython import ForwardSolver as _ForwardSolver, BackwardSolver as _BackwardSolver
+    from pymatsolver.Triangle.TriangleFortran import Forward, Backward
+    from pymatsolver.Triangle.TrianglePython import Forward as _Forward, Backward as _Backward
     AvailableSolvers['TriangleFortran'] = True
 except ImportError:
-    from .Triangle.TrianglePython import ForwardSolver, BackwardSolver
+    from pymatsolver.Triangle.TrianglePython import Forward, Backward
     AvailableSolvers['TrianglePython'] = True
     SolverHelp['TriangleFortran'] = """Could not compile the Triangle Solvers
 Try something like:
@@ -36,7 +44,7 @@ Try something like:
 
 
 try:
-    from .Mumps import MumpsSolver
+    from pymatsolver.Mumps import Mumps
     AvailableSolvers['Mumps'] = True
 except ImportError:
     SolverHelp['Mumps'] = """Mumps is not working.
@@ -57,8 +65,7 @@ If you find a good way of doing it, please share.
 """
 
 try:
-    from .Pardiso import PardisoSolver
+    from pymatsolver.Pardiso import Pardiso
     AvailableSolvers['Pardiso'] = True
 except ImportError:
     SolverHelp['Pardiso'] = """PardisoSolver is not working."""
-
