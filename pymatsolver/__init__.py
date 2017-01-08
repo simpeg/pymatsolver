@@ -13,8 +13,6 @@ from pymatsolver.wrappers import SolverCG
 
 from pymatsolver.iterative import BicgJacobi
 
-
-SolverHelp = {}
 AvailableSolvers = {
     "Diagonal": True,
     "Solver": True,
@@ -28,9 +26,9 @@ try:
     from pymatsolver.direct import Pardiso
     AvailableSolvers['Pardiso'] = True
 except ImportError:
-    SolverHelp['Pardiso'] = """PardisoSolver is not working."""
+    pass
 
-__version__   = '0.0.2'
-__author__    = 'Rowan Cockett'
-__license__   = 'MIT'
+__version__ = '0.0.2'
+__author__ = 'Rowan Cockett'
+__license__ = 'MIT'
 __copyright__ = 'Copyright 2017 Rowan Cockett'
