@@ -29,12 +29,12 @@ with open("README.rst") as f:
 
 setup(
     name="pymatsolver",
-    version="0.1.0",
+    version="0.1.1",
     packages=find_packages(),
     install_requires=[
         'numpy>=1.7',
         'scipy>=0.13',
-        'pyMKL>=0.1.0'
+        'pyMKL>=0.0.3'
     ],
     author="Rowan Cockett",
     author_email="rowanc1@gmail.com",
