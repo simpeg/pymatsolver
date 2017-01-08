@@ -5,11 +5,8 @@ pymatsolver is a python package for easy to use matrix solvers.
 
 """
 
-import numpy as np
-
 from distutils.core import setup
 from setuptools import find_packages
-from distutils.extension import Extension
 
 CLASSIFIERS = [
     'Development Status :: 4 - Beta',
@@ -49,6 +46,5 @@ setup(
     download_url="http://github.com/rowanc1/pymatsolver",
     classifiers=CLASSIFIERS,
     platforms=["Windows", "Linux", "Solaris", "Mac OS-X", "Unix"],
-    use_2to3=False,
-    include_dirs=[np.get_include()]
+    use_2to3=False
 )
