@@ -29,10 +29,3 @@ after_success:
 - bash <(curl -s https://codecov.io/bash)
 notifications:
   slack: simpeg:1KZq5giMtlJJ58TijIPgqf7n
-deploy:
-  provider: pypi
-  user: rowanc1
-  password:
-    secure: FnDzt9VVdjlMGcxJYKhlrPSJBMo45T9pJP1yxl4SkPCM03uawO6RPGUEoOzKZUmC4fk3nCCWGfHZw3EnxjhWwhXvhqHCll3HNOy6/q6qkyfN6WQi2mGvS3JNf/0ZEMKaJcsgHp+orrhZHQsFFEiOFufoL3XcJ7/L9T42WvA5j0A=
-  on:
-    tags: true
