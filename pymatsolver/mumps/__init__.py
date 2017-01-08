@@ -1,14 +1,11 @@
 from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import division
+from __future__ import absolute_import
 
-try:
-    import MumpsInterface as _MUMPSINT
-    _mumpsExists = True
-except ImportError:
-    _mumpsExists = False
 import gc
 from pymatsolver.solvers import Base
+from . import MumpsInterface as _MUMPSINT
 
 _mumpsErrors = {
     -1:  "An error occurred on processor INFO(2).",
@@ -63,111 +60,106 @@ _mumpsErrors = {
 }
 
 
-if _mumpsExists:
+class _Pointer(object):
+    """Gets an int and a destroy call that gets called on garbage collection.
 
-    class _Pointer(object):
-        """Gets an int and a destroy call that gets called on garbage collection.
+        There can be multiple Solvers around the place that are pointing to the same factor in memory.
 
-            There can be multiple Solvers around the place that are pointing to the same factor in memory.
+        This ensures that when all references are removed, there is automatic garbage collection.
 
-            This ensures that when all references are removed, there is automatic garbage collection.
+        You can always clean the Solver, and it will explicitly call the destroy method.
+    """
+    def __init__(self, pointerINT, destroyCall):
+        self.INT = pointerINT
+        self.destroyCall = destroyCall
 
-            You can always clean the Solver, and it will explicitly call the destroy method.
-        """
-        def __init__(self, pointerINT, destroyCall):
-            self.INT = pointerINT
-            self.destroyCall = destroyCall
+    def __del__(self):
+        self.destroyCall(self.INT)
 
-        def __del__(self):
-            self.destroyCall(self.INT)
+class Mumps(Base):
+    """
 
-    class Mumps(Base):
-        """
+    documentation::
 
-        documentation::
+        http://mumps.enseeiht.fr/doc/userguide_4.10.0.pdf
 
-            http://mumps.enseeiht.fr/doc/userguide_4.10.0.pdf
+    """
 
-        """
+    transpose = False
+    symmetric = False
 
-        transpose = False
-        symmetric = False
+    @property
+    def T(self):
+        newMS = self.__class__(
+            self.A,
+            symmetric=self.symmetric,
+            fromPointer=self.pointer
+        )
+        newMS.transpose = not self.transpose
+        return newMS
 
-        @property
-        def T(self):
-            newMS = self.__class__(
-                self.A,
-                symmetric=self.symmetric,
-                fromPointer=self.pointer
-            )
-            newMS.transpose = not self.transpose
-            return newMS
+    def __init__(self, A, symmetric=False, fromPointer=None):
+        self.A = A.tocsc()
+        self.symmetric = symmetric
 
-        def __init__(self, A, symmetric=False, fromPointer=None):
-            self.A = A.tocsc()
-            self.symmetric = symmetric
-
-            if fromPointer is None:
-                self.factor()
-            elif isinstance(fromPointer, _Pointer):
-                self.pointer = fromPointer
-            else:
-                raise Exception('Unknown pointer for construction.')
-
-        @property
-        def isfactored(self):
-            return getattr(self, 'pointer', None) is not None
-
-        def _funhandle(self, ftype):
-            """
-            switches the function handle between real and complex.
-
-            ftype in ['F','S','D']
-
-            means factor, solve, destroy
-            """
-            if self.A.dtype == float:
-                return {'F': _MUMPSINT.factor_mumps,
-                        'S': _MUMPSINT.solve_mumps,
-                        'D': _MUMPSINT.destroy_mumps}[ftype]
-            elif self.A.dtype == complex:
-                return {'F': _MUMPSINT.factor_mumps_cmplx,
-                        'S': _MUMPSINT.solve_mumps_cmplx,
-                        'D': _MUMPSINT.destroy_mumps_cmplx}[ftype]
-
-        def factor(self):
-            if self.isfactored:
-                return
-
-            sym = 1 if self.symmetric else 0
-            ierr, p = self._funhandle('F')(
-                sym,
-                self.A.data,
-                self.A.indices+1,
-                self.A.indptr+1
-            )
-            if ierr < 0:
-                raise Exception("Mumps Exception [{}] - {}".format(ierr, _mumpsErrors[ierr]))
-            elif ierr > 0:
-                print("Mumps Warning [{}] - {}".format(ierr, _mumpsErrors[ierr]))
-
-            self.pointer = _Pointer(p, self._funhandle('D'))
-
-        def _solveM(self, rhs):
+        if fromPointer is None:
             self.factor()
-            rhs = rhs.flatten(order='F')
-            n = self.A.shape[0]
-            nrhs = rhs.size // n
-            T = 1 if self.transpose else 0
-            sol = self._funhandle('S')(self.pointer.INT, nrhs, rhs, T)
-            return sol
+        elif isinstance(fromPointer, _Pointer):
+            self.pointer = fromPointer
+        else:
+            raise Exception('Unknown pointer for construction.')
 
-        _solve1 = _solveM
+    @property
+    def isfactored(self):
+        return getattr(self, 'pointer', None) is not None
 
-        def clean(self):
-            self._funhandle('D')(self.pointer.INT)
-            del self.pointer
-            gc.collect()
+    def _funhandle(self, ftype):
+        """
+        switches the function handle between real and complex.
 
+        ftype in ['F','S','D']
 
-del _mumpsExists
+        means factor, solve, destroy
+        """
+        if self.A.dtype == float:
+            return {'F': _MUMPSINT.factor_mumps,
+                    'S': _MUMPSINT.solve_mumps,
+                    'D': _MUMPSINT.destroy_mumps}[ftype]
+        elif self.A.dtype == complex:
+            return {'F': _MUMPSINT.factor_mumps_cmplx,
+                    'S': _MUMPSINT.solve_mumps_cmplx,
+                    'D': _MUMPSINT.destroy_mumps_cmplx}[ftype]
+
+    def factor(self):
+        if self.isfactored:
+            return
+
+        sym = 1 if self.symmetric else 0
+        ierr, p = self._funhandle('F')(
+            sym,
+            self.A.data,
+            self.A.indices+1,
+            self.A.indptr+1
+        )
+        if ierr < 0:
+            raise Exception("Mumps Exception [{}] - {}".format(ierr, _mumpsErrors[ierr]))
+        elif ierr > 0:
+            print("Mumps Warning [{}] - {}".format(ierr, _mumpsErrors[ierr]))
+
+        self.pointer = _Pointer(p, self._funhandle('D'))
+
+    def _solveM(self, rhs):
+        self.factor()
+        rhs = rhs.flatten(order='F')
+        n = self.A.shape[0]
+        nrhs = rhs.size // n
+        T = 1 if self.transpose else 0
+        sol = self._funhandle('S')(self.pointer.INT, nrhs, rhs, T)
+        return sol
+
+    _solve1 = _solveM
+
+    def clean(self):
+        self._funhandle('D')(self.pointer.INT)
+        del self.pointer
+        gc.collect()

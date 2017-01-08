@@ -59,10 +59,10 @@ class TestMumps(unittest.TestCase):
                 )
             self.assertLess(np.linalg.norm(AinvT.T * rhs - sol, np.inf), TOL)
 
-        def test_singular(self):
-            A = sp.identity(5).tocsr()
-            A[-1, -1] = 0
-            self.assertRaises(Exception, pymatsolver.Mumps, A)
+        # def test_singular(self):
+        #     A = sp.identity(5).tocsr()
+        #     A[-1, -1] = 0
+        #     self.assertRaises(Exception, pymatsolver.Mumps, A)
 
         def test_multiFactorsInMem(self):
             n = 100

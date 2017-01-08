@@ -40,6 +40,7 @@ build:
 
 clean:
 	rm -f *.o *.mod *.so
+	rm -rf *.dSYM
 
 test:
 	cd ..;nosetests
