@@ -6,3 +6,4 @@ pymatsolver.egg-info/
 *.sublime-workspace
 *.sublime-project
 *.dSYM
+docs/_build/*

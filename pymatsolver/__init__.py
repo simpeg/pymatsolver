@@ -29,3 +29,8 @@ try:
     AvailableSolvers['Pardiso'] = True
 except ImportError:
     SolverHelp['Pardiso'] = """PardisoSolver is not working."""
+
+__version__   = '0.0.2'
+__author__    = 'Rowan Cockett'
+__license__   = 'MIT'
+__copyright__ = 'Copyright 2017 Rowan Cockett'
