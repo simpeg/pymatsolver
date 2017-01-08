@@ -4,13 +4,14 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
 
-from pymatsolver.solvers import Diagonal
+from pymatsolver.solvers import Diagonal, Forward, Backward
 from pymatsolver.wrappers import WrapDirect
 from pymatsolver.wrappers import WrapIterative
 from pymatsolver.wrappers import Solver
 from pymatsolver.wrappers import SolverLU
 from pymatsolver.wrappers import SolverCG
-from pymatsolver.BicgJacobi import BicgJacobi
+
+from pymatsolver.iterative import BicgJacobi
 
 
 SolverHelp = {}
@@ -19,28 +20,10 @@ AvailableSolvers = {
     "Solver": True,
     "SolverLU": True,
     "SolverCG": True,
-    "TriangleFortran": False,
-    "TrianglePython": False,
+    "Triangle": True,
     "Mumps": False,
     "Pardiso": False,
 }
-
-
-try:
-    from pymatsolver.Triangle.TriangleFortran import Forward, Backward
-    from pymatsolver.Triangle.TrianglePython import Forward as _Forward, Backward as _Backward
-    AvailableSolvers['TriangleFortran'] = True
-except ImportError:
-    from pymatsolver.Triangle.TrianglePython import Forward, Backward
-    AvailableSolvers['TrianglePython'] = True
-    SolverHelp['TriangleFortran'] = """Could not compile the Triangle Solvers
-Try something like:
-
-
-    cd pymatsolver/Triangle
-    make
-
-"""
 
 
 try:
@@ -65,7 +48,7 @@ If you find a good way of doing it, please share.
 """
 
 try:
-    from pymatsolver.Pardiso import Pardiso
+    from pymatsolver.direct import Pardiso
     AvailableSolvers['Pardiso'] = True
 except ImportError:
     SolverHelp['Pardiso'] = """PardisoSolver is not working."""

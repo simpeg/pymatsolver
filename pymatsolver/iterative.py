@@ -2,22 +2,21 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
+
+import numpy as np
 import scipy.sparse as sp
 from scipy.sparse.linalg import bicgstab
-import numpy as np
 from pymatsolver.solvers import Base
 
 
-def JacobiHandle(A):
+def _jacobi_operator(A):
     nSize = A.shape[0]
     Ainv = sp.spdiags(1./A.diagonal(), 0, nSize, nSize)
     return sp.linalg.interface.aslinearoperator(Ainv)
 
 
 class BicgJacobi(Base):
-    """
-        Bicg Solver with Jacobi preconditioner
-    """
+    """Bicg Solver with Jacobi preconditioner"""
 
     isfactored = None
     solver = None
@@ -31,12 +30,12 @@ class BicgJacobi(Base):
         self.dtype = A.dtype
         self.solver = bicgstab
         # Jacobi Preconditioner
-        self.M = JacobiHandle(A)
+        self.M = _jacobi_operator(A)
         self.isfactored = True
 
     def factor(self):
         if self.isfactored is not True:
-            self.M = JacobiHandle(self.A)
+            self.M = _jacobi_operator(self.A)
             self.isfactored = True
 
     def _solve1(self, rhs):

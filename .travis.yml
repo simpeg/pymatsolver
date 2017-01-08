@@ -25,7 +25,7 @@ before_install:
 
 # Install packages
 install:
-  - conda install --yes pip python=$TRAVIS_PYTHON_VERSION numpy scipy=0.16.1 matplotlib cython ipython nose
+  - conda install --yes pip python=$TRAVIS_PYTHON_VERSION numpy scipy nose
   - pip install nose-cov python-coveralls pyMKL
   - python setup.py install
   - python setup.py build_ext --inplace
@@ -36,8 +36,7 @@ script:
 
 # Calculate coverage
 after_success:
-  - coveralls --config_file .coveragerc
+  - bash <(curl -s https://codecov.io/bash)
 
 notifications:
-  email:
-    - rowanc1@gmail.com
+  slack: simpeg:1KZq5giMtlJJ58TijIPgqf7n
