@@ -27,8 +27,8 @@ AvailableSolvers = {
 try:
     from pymatsolver.direct import Pardiso
     AvailableSolvers['Pardiso'] = True
-    ParadisoSolver = Pardiso  # backwards compatibility
-except ImportError:
+    PardisoSolver = Pardiso  # backwards compatibility
+except Exception:
     SolverHelp['Pardiso'] = """Pardiso is not working
 
 Ensure that you have pyMKL installed, which may also require Python
@@ -39,7 +39,7 @@ try:
     from pymatsolver.mumps import Mumps
     AvailableSolvers['Mumps'] = True
     MumpsSolver = Mumps  # backwards compatibility
-except ImportError:
+except Exception:
     SolverHelp['Mumps'] = """Mumps is not working.
 
 Ensure that you have Mumps installed, and know where the path to it is.
@@ -55,7 +55,7 @@ brew install mumps --with-scotch5 --without-mpi
 mpicc --showme
 """
 
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 __author__ = 'Rowan Cockett'
 __license__ = 'MIT'
 __copyright__ = 'Copyright 2017 Rowan Cockett'
