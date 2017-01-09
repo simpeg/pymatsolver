@@ -27,7 +27,7 @@ AvailableSolvers = {
 try:
     from pymatsolver.direct import Pardiso
     AvailableSolvers['Pardiso'] = True
-    ParadisoSolver = Pardiso  # backwards compatibility
+    PardisoSolver = Pardiso  # backwards compatibility
 except ImportError:
     SolverHelp['Pardiso'] = """Pardiso is not working
 
