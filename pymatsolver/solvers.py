@@ -4,9 +4,20 @@ from __future__ import division
 from __future__ import absolute_import
 
 import numpy as np
+import properties
 
 
-class Base(object):
+class Base(properties.HasProperties):
+
+    check_accuracy = properties.Bool(
+        "check the accuracy of the solve?",
+        default = False
+    )
+
+    accuracy_tol = properties.Float(
+        "tolerance on the accuracy of the solver",
+        default=1e-6
+    )
 
     def __init__(self, A):
         self.A = A.tocsr()
@@ -40,9 +51,6 @@ class Base(object):
             )
         newS = self._transposeClass(self.A.T)
         return newS
-
-    check_accuracy = False
-    accuracy_tol = 1e-6
 
     def _compute_accuracy(self, rhs, x):
         nrm = np.linalg.norm(np.ravel(self.A*x - rhs), np.inf)

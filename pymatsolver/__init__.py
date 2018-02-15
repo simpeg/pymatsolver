@@ -10,6 +10,7 @@ from pymatsolver.wrappers import WrapIterative
 from pymatsolver.wrappers import Solver
 from pymatsolver.wrappers import SolverLU
 from pymatsolver.wrappers import SolverCG
+from pymatsolver.wrappers import SolverBiCG
 
 from pymatsolver.iterative import BicgJacobi
 
