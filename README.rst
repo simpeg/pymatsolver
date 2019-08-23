@@ -2,19 +2,19 @@ pymatsolver
 ***********
 
 .. image:: https://img.shields.io/pypi/v/pymatsolver.svg
-    :target: https://crate.io/packages/pymatsolver/
+    :target: https://pypi.python.org/pypi/pymatsolver
     :alt: Latest PyPI version
 
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
-    :target: https://github.com/rowanc1/pymatsolver/blob/master/LICENSE
+    :target: https://github.com/simpeg/pymatsolver/blob/master/LICENSE
     :alt: MIT license.
 
 .. image:: https://img.shields.io/travis/rowanc1/pymatsolver.svg
-    :target: https://travis-ci.org/rowanc1/pymatsolver
+    :target: https://travis-ci.org/simpeg/pymatsolver
     :alt: Travis CI build status
 
-.. image:: https://codecov.io/gh/rowanc1/pymatsolver/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/rowanc1/pymatsolver
+.. image:: https://codecov.io/gh/simpeg/pymatsolver/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/simpeg/pymatsolver
     :alt: Coverage status
 
 
@@ -27,7 +27,7 @@ Solving Ax = b should be as easy as:
     Ainv = Solver(A)
     x = Ainv * b
 
-In pymatsolver I provide a number of wrappers to existing numerical packages. Nothing fancy here.
+In pymatsolver we provide a number of wrappers to existing numerical packages. Nothing fancy here.
 
 Solvers Available
 =================
@@ -43,9 +43,9 @@ All solvers work with :code:`scipy.sparse` matricies, and a single or multiple r
 Installing Mumps
 ================
 
-I have not been able to get the pip install to work because of multiple dependencies on fortran libraries.
+We have not been able to get the pip install to work because of multiple dependencies on fortran libraries.
 However, the linux and mac installs are relatively easy. Note that you must have mumps pre-installed,
-currently I have only got this working for the sequential version, so when you are installing,
+currently we have only got this working for the sequential version, so when you are installing,
 you will need to point to that one. You can also look at the `.travis.yml` file for how to get it working on TravisCI.
 
 Linux
@@ -93,14 +93,14 @@ This command is helpful for finding dependencies. You should also take note of h
 
 
 Code:
-https://github.com/rowanc1/pymatsolver
+https://github.com/simpeg/pymatsolver
 
 
 Tests:
-https://travis-ci.org/rowanc1/pymatsolver
+https://travis-ci.org/simpeg/pymatsolver
 
 
 Bugs & Issues:
-https://github.com/rowanc1/pymatsolver/issues
+https://github.com/simpeg/pymatsolver/issues
 
 License: MIT
