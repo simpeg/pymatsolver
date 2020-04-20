@@ -1,12 +1,8 @@
 language: python
 python:
-- 2.7
-- 3.4
 - 3.5
 - 3.6
-matrix:
-  allow_failures:
-    - python: 3.6
+- 3.7
 sudo: false
 addons:
   apt:
@@ -30,7 +26,6 @@ install:
 - pip install nose-cov python-coveralls pyMKL
 - conda install --yes -c conda-forge properties discretize
 - python setup.py install
-- make mumps
 script:
 - nosetests --with-cov --cov pymatsolver --cov-config .coveragerc -v -s
 after_success:
