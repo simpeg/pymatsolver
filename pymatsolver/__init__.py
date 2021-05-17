@@ -56,7 +56,7 @@ to be installed through conda.
 # mpicc --showme
 # """
 
-__version__ = '0.1.2'
+__version__ = '0.1.3'
 __author__ = 'Rowan Cockett'
 __license__ = 'MIT'
 __copyright__ = 'Copyright 2017 Rowan Cockett'
