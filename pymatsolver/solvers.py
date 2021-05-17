@@ -88,7 +88,10 @@ class Base(properties.HasProperties):
 
     def __del__(self):
         """Destruct to call clean when object is garbage collected."""
-        self.clean()
+        try:
+            self.clean()
+        except:
+            pass
 
     def __mul__(self, val):
         if type(val) is np.ndarray:
