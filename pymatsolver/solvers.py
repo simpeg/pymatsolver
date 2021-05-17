@@ -5,6 +5,7 @@ from __future__ import absolute_import
 
 import numpy as np
 import properties
+import warnings
 
 
 class Base(properties.HasProperties):
@@ -25,7 +26,7 @@ class Base(properties.HasProperties):
     def set_kwargs(self, ignore=None,  **kwargs):
         """
             Sets key word arguments (kwargs) that are present in the object,
-            throw an error if they don't exist.
+            throw a warning if they don't exist.
         """
         if ignore is None:
             ignore = []
@@ -35,7 +36,7 @@ class Base(properties.HasProperties):
             if hasattr(self, attr):
                 setattr(self, attr, kwargs[attr])
             else:
-                raise Exception('{0!s} attr is not recognized'.format(attr))
+                warnings.warn('{0!s} attr is not recognized and will be unused'.format(attr))
 
     @property
     def _transposeClass(self):
@@ -84,6 +85,13 @@ class Base(properties.HasProperties):
 
     def clean(self):
         pass
+
+    def __del__(self):
+        """Destruct to call clean when object is garbage collected."""
+        try:
+            self.clean()
+        except:
+            pass
 
     def __mul__(self, val):
         if type(val) is np.ndarray:

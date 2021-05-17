@@ -6,6 +6,27 @@ from __future__ import absolute_import
 from pymatsolver.solvers import Base
 from pyMKL import pardisoSolver as _pardisoSolver
 
+from pyMKL import mkl_set_num_threads, mkl_get_max_threads
+
+import os
+_omp_threads = os.environ.get('OMP_NUM_THREADS')
+if _omp_threads is not None:
+    _max_threads = _omp_threads
+else:
+    _max_threads = mkl_get_max_threads()
+
+
+def _set_threads(n_threads):
+    global _n_threads
+    try:
+        mkl_set_num_threads(n_threads)
+    except TypeError:
+        raise TypeError('n_threads must be an Integer')
+    _n_threads = n_threads
+
+
+_set_threads(_max_threads)
+
 
 class Pardiso(Base):
     """
@@ -86,6 +107,18 @@ class Pardiso(Base):
         self.factor()
         sol = self.solver.solve(rhs)
         return sol
+
+    @property
+    def n_threads(self):
+        """
+        Number of threads to use for the Pardiso solver routine. This property
+        is global to all Pardiso solver objects for a single python process.
+        """
+        return _n_threads
+
+    @n_threads.setter
+    def n_threads(self, n_threads):
+        _set_threads(n_threads)
 
     _solve1 = _solveM
 

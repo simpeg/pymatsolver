@@ -43,6 +43,22 @@ class TestPardiso(unittest.TestCase):
         self.assertLess(np.linalg.norm(AinvT.T * rhs - sol, np.inf), TOL)
         Ainv.clean()
 
+    def test_n_threads(self):
+        print('testing setting n_threads')
+        Ainv = Pardiso(self.A, is_symmetric=True, n_threads=1)
+        self.assertEqual(Ainv.n_threads, 1)
+
+        Ainv2 = Pardiso(self.A, is_symmetric=True, n_threads=4)
+        self.assertEqual(Ainv2.n_threads, 4)
+        self.assertEqual(Ainv2.n_threads, Ainv.n_threads)
+
+        Ainv.n_threads = 3
+        self.assertEqual(Ainv.n_threads, 3)
+        self.assertEqual(Ainv2.n_threads, Ainv.n_threads)
+
+        with self.assertRaises(TypeError):
+            Ainv.n_threads = 2.3
+
 
 class TestPardisoNotSymmetric(unittest.TestCase):
 
@@ -128,7 +144,6 @@ class TestPardisoComplex(unittest.TestCase):
                 np.linalg.norm(AinvT.T * rhs[:, i] - sol[:, i]), TOL
             )
         self.assertLess(np.linalg.norm(AinvT.T * rhs - sol, np.inf), TOL)
-
 
 if __name__ == '__main__':
     unittest.main()
