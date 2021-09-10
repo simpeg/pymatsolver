@@ -11,7 +11,12 @@ from pyMKL import mkl_set_num_threads, mkl_get_max_threads
 import os
 _omp_threads = os.environ.get('OMP_NUM_THREADS')
 if _omp_threads is not None:
-    _max_threads = _omp_threads
+    try:
+        _max_threads = int(_omp_threads)
+    except TypeError:
+        print(f"OMP_NUM_THREADS is uninterpretable as an int, saw {_omp_threads}")
+        print("Defaulting to mkl_get_max_threads()")
+        _max_threads = mkl_get_max_threads()
 else:
     _max_threads = mkl_get_max_threads()
 
