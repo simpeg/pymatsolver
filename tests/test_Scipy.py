@@ -24,7 +24,7 @@ def dotest(MYSOLVER, multi=False, A=None, **solverOpts):
         Gy = sp.kron(
             sp.eye(nx),
             sp.kron(
-                sp.diags([-1, 1], [-1, 0], shape=(ny+1, ny))
+                sp.diags([-1, 1], [-1, 0], shape=(ny+1, ny)),
                 sp.eye(nz),
             )
         )
