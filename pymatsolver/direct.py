@@ -22,11 +22,11 @@ class Pardiso(Base):
         self.set_kwargs(**kwargs)
         self.solver = MKLPardisoSolver(
             self.A,
-            matrix_type=self._martixType(),
+            matrix_type=self._matrixType(),
             factor=False
         )
 
-    def _martixType(self):
+    def _matrixType(self):
         """
             Set basic matrix type:
 
@@ -46,7 +46,6 @@ class Pardiso(Base):
                 13:  nonsymmetric
 
         """
-
         if self.is_real:
             if self.is_symmetric:
                 if self.is_positive_definite:
@@ -67,10 +66,11 @@ class Pardiso(Base):
                 return 13
 
     def factor(self, A=None):
+        if A is not None:
+            self._factored = False
+            self.A = A
         if not self._factored:
-            if A is None:
-                A = self.A
-            self.solver.refactor(A)
+            self.solver.refactor(self.A)
             self._factored = True
 
     def _solveM(self, rhs):

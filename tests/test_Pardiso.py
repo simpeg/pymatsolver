@@ -36,6 +36,25 @@ class TestPardiso(unittest.TestCase):
             self.assertLess(np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL)
         self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
 
+    def test_refactor(self):
+        rhs = self.rhs
+        sol = self.sol
+        A = self.A
+        Ainv = Pardiso(A, is_symmetric=True)
+        for i in range(3):
+            self.assertLess(np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL)
+        self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
+
+        # scale rows and collumns
+        D = sp.diags(np.random.rand(A.shape[0]) + 1.0)
+        A2 = D.T @ A @ D
+
+        rhs2 = A2 @ sol
+        Ainv.factor(A2)
+        for i in range(3):
+            self.assertLess(np.linalg.norm(Ainv * rhs2[:, i] - sol[:, i]), TOL)
+        self.assertLess(np.linalg.norm(Ainv * rhs2 - sol, np.inf), TOL)
+
     def test_T(self):
         rhs = self.rhs
         sol = self.sol
