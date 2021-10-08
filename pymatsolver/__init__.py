@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
-
 from pymatsolver.solvers import Diagonal, Forward, Backward
 from pymatsolver.wrappers import WrapDirect
 from pymatsolver.wrappers import WrapIterative
@@ -11,7 +5,6 @@ from pymatsolver.wrappers import Solver
 from pymatsolver.wrappers import SolverLU
 from pymatsolver.wrappers import SolverCG
 from pymatsolver.wrappers import SolverBiCG
-
 from pymatsolver.iterative import BicgJacobi
 
 SolverHelp = {}
@@ -32,7 +25,7 @@ try:
 except Exception:
     SolverHelp['Pardiso'] = """Pardiso is not working
 
-Ensure that you have pyMKL installed, which may also require Python
+Ensure that you have pydiso installed, which may also require Python
 to be installed through conda.
 """
 

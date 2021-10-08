@@ -1,27 +1,41 @@
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
-
 import numpy as np
-import properties
 import warnings
 
 
-class Base(properties.HasProperties):
-
-    check_accuracy = properties.Bool(
-        "check the accuracy of the solve?",
-        default = False
-    )
-
-    accuracy_tol = properties.Float(
-        "tolerance on the accuracy of the solver",
-        default=1e-6
-    )
-
+class Base():
     def __init__(self, A):
         self.A = A.tocsr()
+
+    @property
+    def check_accuracy(self):
+        """check the accuracy of the solve?"""
+        check = getattr(self, "_check_accuracy", None)
+        if check is None:
+            return False
+        return check
+
+    @check_accuracy.settr
+    def check_accuracy(self, value):
+        try:
+            # Do this to do a lazy cast to boolean
+            self._check_accuracy = value == True
+        except Exception:
+            raise TypeError("check_accuracy must be a boolean value")
+
+    @property
+    def accuracy_tol(self):
+        "tolerance on the accuracy of the solver"
+        acc = getattr(self, "_accuracy_tol", None)
+        if acc is None:
+            return 1e-6
+        return acc
+
+    @accuracy_tol.settr
+    def accuracy_tol(self, value):
+        try:
+            self._accuracy_tol = float(value)
+        except Exception:
+            raise TypeError("accuracy_tol must be a float value")
 
     def set_kwargs(self, ignore=None,  **kwargs):
         """

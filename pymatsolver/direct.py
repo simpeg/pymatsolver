@@ -1,61 +1,29 @@
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
-
 from pymatsolver.solvers import Base
-from pyMKL import pardisoSolver as _pardisoSolver
-
-from pyMKL import mkl_set_num_threads, mkl_get_max_threads
-
-import os
-_omp_threads = os.environ.get('OMP_NUM_THREADS')
-if _omp_threads is not None:
-    _max_threads = _omp_threads
-else:
-    _max_threads = mkl_get_max_threads()
-
-
-def _set_threads(n_threads):
-    global _n_threads
-    try:
-        mkl_set_num_threads(n_threads)
-    except TypeError:
-        raise TypeError('n_threads must be an Integer')
-    _n_threads = n_threads
-
-
-_set_threads(_max_threads)
+from pydiso.mkl_solver import MKLPardisoSolver
+from pydiso.mkl_solver import set_mkl_pardiso_threads, get_mkl_pardiso_max_threads
 
 
 class Pardiso(Base):
     """
-
     Pardiso Solver
 
-    Wrapped by David Marchant
-
-        https://github.com/dwfmarchant/pyMKL
+        https://github.com/simpeg/pydiso
 
 
     documentation::
 
         http://www.pardiso-project.org/
-
-
     """
 
     isfactored = False
 
     def __init__(self, A, **kwargs):
-        A = A.tocsr()
-        if not A.has_sorted_indices:
-            A.sort_indices()
         self.A = A
         self.set_kwargs(**kwargs)
-        self.solver = _pardisoSolver(
-            A,
-            mtype=self._martixType()
+        self.solver = MKLPardisoSolver(
+            self.A,
+            matrix_type=self._martixType(),
+            factor=False
         )
 
     def _martixType(self):
@@ -98,9 +66,11 @@ class Pardiso(Base):
             else:
                 return 13
 
-    def factor(self):
+    def factor(self, A=None):
         if self.isfactored is not True:
-            self.solver.factor()
+            if A is None:
+                A = self.A
+            self.solver.refactor(A)
             self.isfactored = True
 
     def _solveM(self, rhs):
@@ -114,13 +84,10 @@ class Pardiso(Base):
         Number of threads to use for the Pardiso solver routine. This property
         is global to all Pardiso solver objects for a single python process.
         """
-        return _n_threads
+        return get_mkl_pardiso_max_threads()
 
     @n_threads.setter
     def n_threads(self, n_threads):
-        _set_threads(n_threads)
+        set_mkl_pardiso_threads(n_threads)
 
     _solve1 = _solveM
-
-    def clean(self):
-        self.solver.clear()
