@@ -1,6 +1,6 @@
 import unittest
 from pymatsolver import Solver, Diagonal, SolverCG, SolverLU
-import discretize
+import scipy.sparse as sp
 import numpy as np
 
 TOLD = 1e-10
@@ -12,27 +12,38 @@ np.random.seed(77)
 
 def dotest(MYSOLVER, multi=False, A=None, **solverOpts):
     if A is None:
-        h1 = np.ones(10)*100.
-        h2 = np.ones(10)*100.
-        h3 = np.ones(10)*100.
-
-        h = [h1, h2, h3]
-
-        M = discretize.TensorMesh(h)
-
-        D = M.faceDiv
-        G = -M.faceDiv.T
-        Msig = M.getFaceInnerProduct()
-        A = D*Msig*G
-        A[-1, -1] *= 1/M.vol[-1]  # remove the null space from the matrix
+        nx, ny, nz = 10, 10, 10
+        n = nx * ny * nz
+        Gz = sp.kron(
+            sp.eye(nx),
+            sp.kron(
+                sp.eye(ny),
+                sp.diags([-1, 1], [-1, 0], shape=(nz+1, nz))
+            )
+        )
+        Gy = sp.kron(
+            sp.eye(nx),
+            sp.kron(
+                sp.diags([-1, 1], [-1, 0], shape=(ny+1, ny))
+                sp.eye(nz),
+            )
+        )
+        Gx = sp.kron(
+            sp.diags([-1, 1], [-1, 0], shape=(nx+1, nx)),
+            sp.kron(
+                sp.eye(ny),
+                sp.eye(nz),
+            )
+        )
+        A = Gx.T @ Gx + Gy.T @ Gy + Gz.T @ Gz
     else:
-        M = discretize.TensorMesh([A.shape[0]])
+        n = A.shape[0]
 
     Ainv = MYSOLVER(A, **solverOpts)
     if multi:
-        e = np.ones(M.nC)
+        e = np.ones(n)
     else:
-        e = np.ones((M.nC, numRHS))
+        e = np.ones((n, numRHS))
     rhs = A * e
     x = Ainv * rhs
     Ainv.clean()
@@ -56,13 +67,13 @@ class TestSolver(unittest.TestCase):
     def test_iterative_diag_1(self):
         self.assertLess(dotest(
             Diagonal, False,
-            A=discretize.utils.sdiag(np.random.rand(10)+1.0)
+            A=sp.diags(np.random.rand(10)+1.0)
         ), TOLI)
 
     def test_iterative_diag_M(self):
         self.assertLess(dotest(
             Diagonal, True,
-            A=discretize.utils.sdiag(np.random.rand(10)+1.0)
+            A=sp.diags(np.random.rand(10)+1.0)
         ), TOLI)
 
     def test_iterative_cg_1(self):
