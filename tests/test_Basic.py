@@ -17,6 +17,11 @@ class TestBasic(unittest.TestCase):
 
         sol = rhs/2.0
 
+        with self.assertRaises(TypeError):
+            Diagonal(A, check_accuracy=np.array([1, 2, 3]))
+        with self.assertRaises(TypeError):
+            Diagonal(A, accuracy_tol=0)
+
         self.assertLess(np.linalg.norm(sol-X, np.inf), TOL)
         self.assertLess(np.linalg.norm(sol[:, 0]-x, np.inf), TOL)
 

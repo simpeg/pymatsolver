@@ -16,11 +16,11 @@ class Base():
 
     @check_accuracy.setter
     def check_accuracy(self, value):
-        try:
-            # Do this to do a lazy cast to boolean
-            self._check_accuracy = value == True
-        except Exception:
-            raise TypeError("check_accuracy must be a boolean value")
+        # Do this to do a lazy cast to boolean
+        test = (value == True)
+        if not isinstance(test, bool):
+            raise TypeError("check_accuracy must be either True or False")
+        self._check_accuracy = test
 
     @property
     def accuracy_tol(self):
