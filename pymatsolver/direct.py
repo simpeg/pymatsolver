@@ -15,7 +15,7 @@ class Pardiso(Base):
         http://www.pardiso-project.org/
     """
 
-    isfactored = False
+    _factored = False
 
     def __init__(self, A, **kwargs):
         self.A = A
@@ -67,11 +67,11 @@ class Pardiso(Base):
                 return 13
 
     def factor(self, A=None):
-        if self.isfactored is not True:
+        if not self._factored:
             if A is None:
                 A = self.A
             self.solver.refactor(A)
-            self.isfactored = True
+            self._factored = True
 
     def _solveM(self, rhs):
         self.factor()
