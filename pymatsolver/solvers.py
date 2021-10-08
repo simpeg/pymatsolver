@@ -3,18 +3,18 @@ import warnings
 
 
 class Base():
+    _accuracy_tol = 1e-6
+    _check_accuracy = False
+
     def __init__(self, A):
         self.A = A.tocsr()
 
     @property
     def check_accuracy(self):
         """check the accuracy of the solve?"""
-        check = getattr(self, "_check_accuracy", None)
-        if check is None:
-            return False
-        return check
+        return self._check_accuracy
 
-    @check_accuracy.settr
+    @check_accuracy.setter
     def check_accuracy(self, value):
         try:
             # Do this to do a lazy cast to boolean
@@ -25,12 +25,9 @@ class Base():
     @property
     def accuracy_tol(self):
         "tolerance on the accuracy of the solver"
-        acc = getattr(self, "_accuracy_tol", None)
-        if acc is None:
-            return 1e-6
-        return acc
+        return self._accuracy_tol
 
-    @accuracy_tol.settr
+    @accuracy_tol.setter
     def accuracy_tol(self, value):
         try:
             self._accuracy_tol = float(value)
