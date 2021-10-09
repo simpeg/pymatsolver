@@ -1,3 +1,51 @@
+"""
+===
+API
+===
+.. currentmodule:: pymatsolver
+
+.. autosummary::
+  :toctree: generated/
+
+  solvers.Base
+
+Basic Solvers
+=============
+
+Diagonal
+--------
+.. autosummary::
+  :toctree: generated/
+
+  Diagonal
+
+Triangular
+----------
+.. autosummary::
+  :toctree: generated/
+
+  Forward
+  Backward
+
+Iterative Solvers
+=================
+
+.. autosummary::
+  :toctree: generated/
+
+  SolverCG
+  BicgJacobi
+
+Direct Solvers
+==============
+
+.. autosummary::
+  :toctree: generated/
+
+  Solver
+  SolverLU
+  Pardiso
+"""
 from pymatsolver.solvers import Diagonal, Forward, Backward
 from pymatsolver.wrappers import WrapDirect
 from pymatsolver.wrappers import WrapIterative

@@ -46,6 +46,14 @@ jobs:
       run: |
         pytest --cov-config=.coveragerc --cov-report=xml --cov=pymatsolver -s -v
 
+    - name: Test Documentation
+      if: ${{ matrix.os == 'ubuntu-latest' }} and {{ matrix.python-version == '3.8' }}
+      run: |
+        pip install -r requirements_docs.txt
+        cd docs
+        make html
+        cd ..
+
     - name: Upload coverage
       if: ${{ matrix.os == 'ubuntu-latest' }} and {{ matrix.python-version == '3.8' }}
       uses: codecov/codecov-action@v2
@@ -76,6 +84,7 @@ jobs:
         conda list
         conda config --show
         conda install --quiet --yes -c conda-forge pip numpy scipy pydiso
+        pip install -r requirements_docs.txt
 
     - name: Install Our Package
       run: |

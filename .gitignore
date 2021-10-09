@@ -7,3 +7,4 @@ pymatsolver.egg-info/
 *.sublime-project
 *.dSYM
 docs/_build/*
+docs/generated
