@@ -1,8 +1,3 @@
-from __future__ import unicode_literals
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
-
 import numpy as np
 from scipy.sparse import linalg
 from pymatsolver.solvers import Base
@@ -121,4 +116,3 @@ Solver = WrapDirect(linalg.spsolve, factorize=False, name="Solver")
 SolverLU = WrapDirect(linalg.splu, factorize=True, name="SolverLU")
 SolverCG = WrapIterative(linalg.cg, name="SolverCG")
 SolverBiCG = WrapIterative(linalg.bicgstab, name="SolverBiCG")
-

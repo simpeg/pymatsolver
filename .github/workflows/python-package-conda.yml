@@ -1,0 +1,116 @@
+name: Testing
+
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build-and-test:
+    name: Testing (${{ matrix.python-version }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+        python-version: [3.7, 3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Conda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        auto-update-conda: true
+        activate-environment: dev
+        python-version: ${{ matrix.python-version }}
+    - name: Install Env
+      run: |
+        conda info
+        conda list
+        conda config --show
+        conda install --quiet --yes -c conda-forge pip numpy scipy pytest pytest-cov pydiso
+
+    - name: Install Our Package
+      run: |
+        pip install -v -e .
+        conda list
+
+    - name: Run Tests
+      run: |
+        pytest --cov-config=.coveragerc --cov-report=xml --cov=pymatsolver -s -v
+
+    - name: Test Documentation
+      if: ${{ matrix.os == 'ubuntu-latest' }} and {{ matrix.python-version == '3.8' }}
+      run: |
+        pip install -r requirements_docs.txt
+        cd docs
+        make html
+        cd ..
+
+    - name: Upload coverage
+      if: ${{ matrix.os == 'ubuntu-latest' }} and {{ matrix.python-version == '3.8' }}
+      uses: codecov/codecov-action@v2
+      with:
+        verbose: true # optional (default = false)
+
+  distribute:
+    name: Distributing from 3.8
+    needs: build-and-test
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Conda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        auto-update-conda: true
+        activate-environment: dev
+        python-version: 3.8
+
+    - name: Install Env
+      run: |
+        conda info
+        conda list
+        conda config --show
+        conda install --quiet --yes -c conda-forge pip numpy scipy pydiso
+        pip install -r requirements_docs.txt
+
+    - name: Install Our Package
+      run: |
+        pip install -v -e .
+
+    - name: Generate Source Distribution
+      run: |
+        python setup.py sdist
+
+    - name: Build Documentation
+      run: |
+        cd docs
+        make html
+        cd ..
+
+    - name: GitHub Pages
+      uses: crazy-max/ghaction-github-pages@v2.5.0
+      with:
+        build_dir: docs/_build/html
+        jekyll: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: pypi-publish
+      uses: pypa/gh-action-pypi-publish@v1.4.2
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
+        skip_existing: true
