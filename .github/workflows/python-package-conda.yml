@@ -94,6 +94,20 @@ jobs:
       run: |
         python setup.py sdist
 
+    - name: Build Documentation
+      run: |
+        cd docs
+        make html
+        cd ..
+
+    - name: GitHub Pages
+      uses: crazy-max/ghaction-github-pages@v2.5.0
+      with:
+        build_dir: docs/_build/html
+        jekyll: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: pypi-publish
       uses: pypa/gh-action-pypi-publish@v1.4.2
       with:
