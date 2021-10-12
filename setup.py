@@ -29,7 +29,7 @@ with open("README.rst") as f:
 
 setup(
     name="pymatsolver",
-    version="0.1.3",
+    version="0.2.0",
     packages=find_packages(exclude=['*mumps']),
     install_requires=[
         'numpy>=1.7',
