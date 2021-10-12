@@ -55,6 +55,7 @@ class Base():
 
     @property
     def T(self):
+        "The transpose operator for this class"
         if self._transposeClass is None:
             raise Exception(
                 'The transpose for the {} class is not possible.'.format(

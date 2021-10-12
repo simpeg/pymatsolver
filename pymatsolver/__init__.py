@@ -70,7 +70,7 @@ try:
     from pymatsolver.direct import Pardiso
     AvailableSolvers['Pardiso'] = True
     PardisoSolver = Pardiso  # backwards compatibility
-except Exception:
+except ImportError:
     SolverHelp['Pardiso'] = """Pardiso is not working
 
 Ensure that you have pydiso installed, which may also require Python
