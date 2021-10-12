@@ -1,0 +1,6 @@
+pymatsolver.BicgJacobi.\_\_mul\_\_
+==================================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: BicgJacobi.__mul__

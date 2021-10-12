@@ -1,0 +1,37 @@
+﻿pymatsolver.Diagonal
+====================
+
+.. currentmodule:: pymatsolver
+
+.. inheritance-diagram:: Diagonal
+    :parts: 1
+
+.. autoclass:: Diagonal
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Diagonal.__mul__
+         Diagonal.clean
+         Diagonal.set_kwargs
+      
+         Diagonal.__mul__
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Diagonal.T
+         Diagonal.accuracy_tol
+         Diagonal.check_accuracy
+         Diagonal.is_hermitian
+         Diagonal.is_positive_definite
+         Diagonal.is_real
+         Diagonal.is_symmetric
+  
+  

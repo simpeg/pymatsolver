@@ -1,0 +1,6 @@
+pymatsolver.Backward.T
+======================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Backward.T

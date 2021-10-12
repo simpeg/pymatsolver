@@ -1,0 +1,6 @@
+pymatsolver.Pardiso.is\_symmetric
+=================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Pardiso.is_symmetric

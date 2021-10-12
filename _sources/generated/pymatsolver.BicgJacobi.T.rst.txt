@@ -1,0 +1,6 @@
+pymatsolver.BicgJacobi.T
+========================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: BicgJacobi.T

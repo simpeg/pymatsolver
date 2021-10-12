@@ -1,0 +1,41 @@
+﻿pymatsolver.BicgJacobi
+======================
+
+.. currentmodule:: pymatsolver
+
+.. inheritance-diagram:: BicgJacobi
+    :parts: 1
+
+.. autoclass:: BicgJacobi
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         BicgJacobi.__mul__
+         BicgJacobi.clean
+         BicgJacobi.factor
+         BicgJacobi.set_kwargs
+      
+         BicgJacobi.__mul__
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         BicgJacobi.T
+         BicgJacobi.accuracy_tol
+         BicgJacobi.check_accuracy
+         BicgJacobi.is_hermitian
+         BicgJacobi.is_positive_definite
+         BicgJacobi.is_real
+         BicgJacobi.is_symmetric
+         BicgJacobi.maxiter
+         BicgJacobi.solver
+         BicgJacobi.tol
+  
+  

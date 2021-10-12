@@ -1,0 +1,36 @@
+﻿pymatsolver.solvers.Base
+========================
+
+.. currentmodule:: pymatsolver.solvers
+
+.. inheritance-diagram:: Base
+    :parts: 1
+
+.. autoclass:: Base
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Base.__mul__
+         Base.clean
+         Base.set_kwargs
+      
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Base.T
+         Base.accuracy_tol
+         Base.check_accuracy
+         Base.is_hermitian
+         Base.is_positive_definite
+         Base.is_real
+         Base.is_symmetric
+  
+  

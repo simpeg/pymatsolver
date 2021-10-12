@@ -1,0 +1,6 @@
+pymatsolver.Pardiso.n\_threads
+==============================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Pardiso.n_threads

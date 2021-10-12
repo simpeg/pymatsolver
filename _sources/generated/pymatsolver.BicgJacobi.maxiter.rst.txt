@@ -1,0 +1,6 @@
+pymatsolver.BicgJacobi.maxiter
+==============================
+
+.. currentmodule:: pymatsolver
+
+.. autoattribute:: BicgJacobi.maxiter

@@ -1,0 +1,6 @@
+pymatsolver.Forward.\_\_mul\_\_
+===============================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Forward.__mul__

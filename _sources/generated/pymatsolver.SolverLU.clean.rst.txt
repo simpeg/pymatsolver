@@ -1,0 +1,6 @@
+pymatsolver.SolverLU.clean
+==========================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: SolverLU.clean

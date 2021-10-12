@@ -1,0 +1,6 @@
+pymatsolver.Diagonal.is\_hermitian
+==================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Diagonal.is_hermitian

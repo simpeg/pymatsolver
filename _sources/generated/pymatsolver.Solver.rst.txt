@@ -1,0 +1,37 @@
+﻿pymatsolver.Solver
+==================
+
+.. currentmodule:: pymatsolver
+
+.. inheritance-diagram:: Solver
+    :parts: 1
+
+.. autoclass:: Solver
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Solver.__mul__
+         Solver.clean
+         Solver.set_kwargs
+      
+         Solver.__mul__
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Solver.T
+         Solver.accuracy_tol
+         Solver.check_accuracy
+         Solver.is_hermitian
+         Solver.is_positive_definite
+         Solver.is_real
+         Solver.is_symmetric
+  
+  

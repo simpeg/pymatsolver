@@ -1,0 +1,6 @@
+pymatsolver.BicgJacobi.tol
+==========================
+
+.. currentmodule:: pymatsolver
+
+.. autoattribute:: BicgJacobi.tol

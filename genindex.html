@@ -1,0 +1,552 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index &#8212; pymatsolver 0.2.0 documentation</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/blank.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/logo-block.ico"/>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+<a class="navbar-brand" href="index.html">
+<p class="title">pymatsolver</p>
+</a>
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="api.html">
+  API
+ </a>
+</li>
+
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://simpeg.xyz">SimPEG<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="http://slack.simpeg.xyz">Contact<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/simpeg/pymatsolverr" rel="noopener" target="_blank" title="GitHub">
+            <span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://slack.simpeg.xyz/" rel="noopener" target="_blank" title="Slack">
+            <span><i class="fab fa-slack"></i></span>
+            <label class="sr-only">Slack</label>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://simpeg.discourse.group/" rel="noopener" target="_blank" title="Discourse">
+            <span><i class="fab fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.youtube.com/c/geoscixyz" rel="noopener" target="_blank" title="Youtube">
+            <span><i class="fab fa-youtube"></i></span>
+            <label class="sr-only">Youtube</label>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://twitter.com/simpegpy" rel="noopener" target="_blank" title="Twitter">
+            <span><i class="fab fa-twitter"></i></span>
+            <label class="sr-only">Twitter</label>
+          </a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#_"><strong>_</strong></a>
+ | <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ 
+</div>
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.Backward.__mul__.html#pymatsolver.Backward.__mul__">__mul__() (pymatsolver.Backward method)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.BicgJacobi.__mul__.html#pymatsolver.BicgJacobi.__mul__">(pymatsolver.BicgJacobi method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Diagonal.__mul__.html#pymatsolver.Diagonal.__mul__">(pymatsolver.Diagonal method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Forward.__mul__.html#pymatsolver.Forward.__mul__">(pymatsolver.Forward method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Pardiso.__mul__.html#pymatsolver.Pardiso.__mul__">(pymatsolver.Pardiso method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Solver.__mul__.html#pymatsolver.Solver.__mul__">(pymatsolver.Solver method)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverCG.__mul__.html#pymatsolver.SolverCG.__mul__">(pymatsolver.SolverCG method)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverLU.__mul__.html#pymatsolver.SolverLU.__mul__">(pymatsolver.SolverLU method)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.__mul__.html#pymatsolver.solvers.Base.__mul__">(pymatsolver.solvers.Base method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.Backward.accuracy_tol.html#pymatsolver.Backward.accuracy_tol">accuracy_tol (pymatsolver.Backward property)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.BicgJacobi.accuracy_tol.html#pymatsolver.BicgJacobi.accuracy_tol">(pymatsolver.BicgJacobi property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Diagonal.accuracy_tol.html#pymatsolver.Diagonal.accuracy_tol">(pymatsolver.Diagonal property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Forward.accuracy_tol.html#pymatsolver.Forward.accuracy_tol">(pymatsolver.Forward property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Pardiso.accuracy_tol.html#pymatsolver.Pardiso.accuracy_tol">(pymatsolver.Pardiso property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Solver.accuracy_tol.html#pymatsolver.Solver.accuracy_tol">(pymatsolver.Solver property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverCG.accuracy_tol.html#pymatsolver.SolverCG.accuracy_tol">(pymatsolver.SolverCG property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverLU.accuracy_tol.html#pymatsolver.SolverLU.accuracy_tol">(pymatsolver.SolverLU property)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.accuracy_tol.html#pymatsolver.solvers.Base.accuracy_tol">(pymatsolver.solvers.Base property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.Backward.html#pymatsolver.Backward">Backward (class in pymatsolver)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.solvers.Base.html#pymatsolver.solvers.Base">Base (class in pymatsolver.solvers)</a>
+</li>
+      <li><a href="generated/pymatsolver.BicgJacobi.html#pymatsolver.BicgJacobi">BicgJacobi (class in pymatsolver)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.Backward.check_accuracy.html#pymatsolver.Backward.check_accuracy">check_accuracy (pymatsolver.Backward property)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.BicgJacobi.check_accuracy.html#pymatsolver.BicgJacobi.check_accuracy">(pymatsolver.BicgJacobi property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Diagonal.check_accuracy.html#pymatsolver.Diagonal.check_accuracy">(pymatsolver.Diagonal property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Forward.check_accuracy.html#pymatsolver.Forward.check_accuracy">(pymatsolver.Forward property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Pardiso.check_accuracy.html#pymatsolver.Pardiso.check_accuracy">(pymatsolver.Pardiso property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Solver.check_accuracy.html#pymatsolver.Solver.check_accuracy">(pymatsolver.Solver property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverCG.check_accuracy.html#pymatsolver.SolverCG.check_accuracy">(pymatsolver.SolverCG property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverLU.check_accuracy.html#pymatsolver.SolverLU.check_accuracy">(pymatsolver.SolverLU property)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.check_accuracy.html#pymatsolver.solvers.Base.check_accuracy">(pymatsolver.solvers.Base property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.Backward.clean.html#pymatsolver.Backward.clean">clean() (pymatsolver.Backward method)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.BicgJacobi.clean.html#pymatsolver.BicgJacobi.clean">(pymatsolver.BicgJacobi method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Diagonal.clean.html#pymatsolver.Diagonal.clean">(pymatsolver.Diagonal method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Forward.clean.html#pymatsolver.Forward.clean">(pymatsolver.Forward method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Pardiso.clean.html#pymatsolver.Pardiso.clean">(pymatsolver.Pardiso method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Solver.clean.html#pymatsolver.Solver.clean">(pymatsolver.Solver method)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverCG.clean.html#pymatsolver.SolverCG.clean">(pymatsolver.SolverCG method)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverLU.clean.html#pymatsolver.SolverLU.clean">(pymatsolver.SolverLU method)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.clean.html#pymatsolver.solvers.Base.clean">(pymatsolver.solvers.Base method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.Diagonal.html#pymatsolver.Diagonal">Diagonal (class in pymatsolver)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.BicgJacobi.factor.html#pymatsolver.BicgJacobi.factor">factor() (pymatsolver.BicgJacobi method)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.Pardiso.factor.html#pymatsolver.Pardiso.factor">(pymatsolver.Pardiso method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.Forward.html#pymatsolver.Forward">Forward (class in pymatsolver)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.Backward.is_hermitian.html#pymatsolver.Backward.is_hermitian">is_hermitian (pymatsolver.Backward property)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.BicgJacobi.is_hermitian.html#pymatsolver.BicgJacobi.is_hermitian">(pymatsolver.BicgJacobi property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Diagonal.is_hermitian.html#pymatsolver.Diagonal.is_hermitian">(pymatsolver.Diagonal property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Forward.is_hermitian.html#pymatsolver.Forward.is_hermitian">(pymatsolver.Forward property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Pardiso.is_hermitian.html#pymatsolver.Pardiso.is_hermitian">(pymatsolver.Pardiso property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Solver.is_hermitian.html#pymatsolver.Solver.is_hermitian">(pymatsolver.Solver property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverCG.is_hermitian.html#pymatsolver.SolverCG.is_hermitian">(pymatsolver.SolverCG property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverLU.is_hermitian.html#pymatsolver.SolverLU.is_hermitian">(pymatsolver.SolverLU property)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.is_hermitian.html#pymatsolver.solvers.Base.is_hermitian">(pymatsolver.solvers.Base property)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/pymatsolver.Backward.is_positive_definite.html#pymatsolver.Backward.is_positive_definite">is_positive_definite (pymatsolver.Backward property)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.BicgJacobi.is_positive_definite.html#pymatsolver.BicgJacobi.is_positive_definite">(pymatsolver.BicgJacobi property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Diagonal.is_positive_definite.html#pymatsolver.Diagonal.is_positive_definite">(pymatsolver.Diagonal property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Forward.is_positive_definite.html#pymatsolver.Forward.is_positive_definite">(pymatsolver.Forward property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Pardiso.is_positive_definite.html#pymatsolver.Pardiso.is_positive_definite">(pymatsolver.Pardiso property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Solver.is_positive_definite.html#pymatsolver.Solver.is_positive_definite">(pymatsolver.Solver property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverCG.is_positive_definite.html#pymatsolver.SolverCG.is_positive_definite">(pymatsolver.SolverCG property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverLU.is_positive_definite.html#pymatsolver.SolverLU.is_positive_definite">(pymatsolver.SolverLU property)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.is_positive_definite.html#pymatsolver.solvers.Base.is_positive_definite">(pymatsolver.solvers.Base property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.Backward.is_real.html#pymatsolver.Backward.is_real">is_real (pymatsolver.Backward property)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.BicgJacobi.is_real.html#pymatsolver.BicgJacobi.is_real">(pymatsolver.BicgJacobi property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Diagonal.is_real.html#pymatsolver.Diagonal.is_real">(pymatsolver.Diagonal property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Forward.is_real.html#pymatsolver.Forward.is_real">(pymatsolver.Forward property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Pardiso.is_real.html#pymatsolver.Pardiso.is_real">(pymatsolver.Pardiso property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Solver.is_real.html#pymatsolver.Solver.is_real">(pymatsolver.Solver property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverCG.is_real.html#pymatsolver.SolverCG.is_real">(pymatsolver.SolverCG property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverLU.is_real.html#pymatsolver.SolverLU.is_real">(pymatsolver.SolverLU property)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.is_real.html#pymatsolver.solvers.Base.is_real">(pymatsolver.solvers.Base property)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/pymatsolver.Backward.is_symmetric.html#pymatsolver.Backward.is_symmetric">is_symmetric (pymatsolver.Backward property)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.BicgJacobi.is_symmetric.html#pymatsolver.BicgJacobi.is_symmetric">(pymatsolver.BicgJacobi property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Diagonal.is_symmetric.html#pymatsolver.Diagonal.is_symmetric">(pymatsolver.Diagonal property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Forward.is_symmetric.html#pymatsolver.Forward.is_symmetric">(pymatsolver.Forward property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Pardiso.is_symmetric.html#pymatsolver.Pardiso.is_symmetric">(pymatsolver.Pardiso property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Solver.is_symmetric.html#pymatsolver.Solver.is_symmetric">(pymatsolver.Solver property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverCG.is_symmetric.html#pymatsolver.SolverCG.is_symmetric">(pymatsolver.SolverCG property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverLU.is_symmetric.html#pymatsolver.SolverLU.is_symmetric">(pymatsolver.SolverLU property)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.is_symmetric.html#pymatsolver.solvers.Base.is_symmetric">(pymatsolver.solvers.Base property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.BicgJacobi.maxiter.html#pymatsolver.BicgJacobi.maxiter">maxiter (pymatsolver.BicgJacobi attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    module
+
+      <ul>
+        <li><a href="api.html#module-pymatsolver">pymatsolver</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.Pardiso.n_threads.html#pymatsolver.Pardiso.n_threads">n_threads (pymatsolver.Pardiso property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.Pardiso.html#pymatsolver.Pardiso">Pardiso (class in pymatsolver)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    pymatsolver
+
+      <ul>
+        <li><a href="api.html#module-pymatsolver">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.Backward.set_kwargs.html#pymatsolver.Backward.set_kwargs">set_kwargs() (pymatsolver.Backward method)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.BicgJacobi.set_kwargs.html#pymatsolver.BicgJacobi.set_kwargs">(pymatsolver.BicgJacobi method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Diagonal.set_kwargs.html#pymatsolver.Diagonal.set_kwargs">(pymatsolver.Diagonal method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Forward.set_kwargs.html#pymatsolver.Forward.set_kwargs">(pymatsolver.Forward method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Pardiso.set_kwargs.html#pymatsolver.Pardiso.set_kwargs">(pymatsolver.Pardiso method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Solver.set_kwargs.html#pymatsolver.Solver.set_kwargs">(pymatsolver.Solver method)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverCG.set_kwargs.html#pymatsolver.SolverCG.set_kwargs">(pymatsolver.SolverCG method)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverLU.set_kwargs.html#pymatsolver.SolverLU.set_kwargs">(pymatsolver.SolverLU method)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.set_kwargs.html#pymatsolver.solvers.Base.set_kwargs">(pymatsolver.solvers.Base method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.Solver.html#pymatsolver.Solver">Solver (class in pymatsolver)</a>
+</li>
+      <li><a href="generated/pymatsolver.BicgJacobi.solver.html#pymatsolver.BicgJacobi.solver">solver (pymatsolver.BicgJacobi attribute)</a>
+</li>
+      <li><a href="generated/pymatsolver.SolverCG.html#pymatsolver.SolverCG">SolverCG (class in pymatsolver)</a>
+</li>
+      <li><a href="generated/pymatsolver.SolverLU.html#pymatsolver.SolverLU">SolverLU (class in pymatsolver)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.Backward.T.html#pymatsolver.Backward.T">T (pymatsolver.Backward property)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.BicgJacobi.T.html#pymatsolver.BicgJacobi.T">(pymatsolver.BicgJacobi property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Diagonal.T.html#pymatsolver.Diagonal.T">(pymatsolver.Diagonal property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Forward.T.html#pymatsolver.Forward.T">(pymatsolver.Forward property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Pardiso.T.html#pymatsolver.Pardiso.T">(pymatsolver.Pardiso property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Solver.T.html#pymatsolver.Solver.T">(pymatsolver.Solver property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverCG.T.html#pymatsolver.SolverCG.T">(pymatsolver.SolverCG property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverLU.T.html#pymatsolver.SolverLU.T">(pymatsolver.SolverLU property)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.T.html#pymatsolver.solvers.Base.T">(pymatsolver.solvers.Base property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.BicgJacobi.tol.html#pymatsolver.BicgJacobi.tol">tol (pymatsolver.BicgJacobi attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2017, Rowan Cockett.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+﻿pymatsolver.SolverLU
+====================
+
+.. currentmodule:: pymatsolver
+
+.. inheritance-diagram:: SolverLU
+    :parts: 1
+
+.. autoclass:: SolverLU
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         SolverLU.__mul__
+         SolverLU.clean
+         SolverLU.set_kwargs
+      
+         SolverLU.__mul__
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         SolverLU.T
+         SolverLU.accuracy_tol
+         SolverLU.check_accuracy
+         SolverLU.is_hermitian
+         SolverLU.is_positive_definite
+         SolverLU.is_real
+         SolverLU.is_symmetric
+  
+  

@@ -1,0 +1,6 @@
+pymatsolver.solvers.Base.is\_hermitian
+======================================
+
+.. currentmodule:: pymatsolver.solvers
+
+.. autoproperty:: Base.is_hermitian

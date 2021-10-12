@@ -1,0 +1,6 @@
+pymatsolver.BicgJacobi.set\_kwargs
+==================================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: BicgJacobi.set_kwargs

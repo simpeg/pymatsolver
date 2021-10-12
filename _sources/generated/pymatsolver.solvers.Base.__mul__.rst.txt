@@ -1,0 +1,6 @@
+pymatsolver.solvers.Base.\_\_mul\_\_
+====================================
+
+.. currentmodule:: pymatsolver.solvers
+
+.. automethod:: Base.__mul__

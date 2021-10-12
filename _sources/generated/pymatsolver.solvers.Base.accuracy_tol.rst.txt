@@ -1,0 +1,6 @@
+pymatsolver.solvers.Base.accuracy\_tol
+======================================
+
+.. currentmodule:: pymatsolver.solvers
+
+.. autoproperty:: Base.accuracy_tol

@@ -1,0 +1,6 @@
+pymatsolver.SolverCG.is\_positive\_definite
+===========================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: SolverCG.is_positive_definite

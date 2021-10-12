@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>pymatsolver &#8212; pymatsolver 0.2.0 documentation</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/blank.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/logo-block.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API" href="api.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+<a class="navbar-brand" href="#">
+<p class="title">pymatsolver</p>
+</a>
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="api.html">
+  API
+ </a>
+</li>
+
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://simpeg.xyz">SimPEG<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="http://slack.simpeg.xyz">Contact<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/simpeg/pymatsolverr" rel="noopener" target="_blank" title="GitHub">
+            <span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://slack.simpeg.xyz/" rel="noopener" target="_blank" title="Slack">
+            <span><i class="fab fa-slack"></i></span>
+            <label class="sr-only">Slack</label>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://simpeg.discourse.group/" rel="noopener" target="_blank" title="Discourse">
+            <span><i class="fab fa-discourse"></i></span>
+            <label class="sr-only">Discourse</label>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.youtube.com/c/geoscixyz" rel="noopener" target="_blank" title="Youtube">
+            <span><i class="fab fa-youtube"></i></span>
+            <label class="sr-only">Youtube</label>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://twitter.com/simpegpy" rel="noopener" target="_blank" title="Twitter">
+            <span><i class="fab fa-twitter"></i></span>
+            <label class="sr-only">Twitter</label>
+          </a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#solvers-available">
+   Solvers Available
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#installing-mumps">
+   Installing Mumps
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#linux">
+     Linux
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#mac">
+     Mac
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#indices-and-tables">
+   Indices and tables
+  </a>
+ </li>
+</ul>
+
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="pymatsolver">
+<h1>pymatsolver<a class="headerlink" href="#pymatsolver" title="Permalink to this headline">¶</a></h1>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/pymatsolver"><img alt="Latest PyPI version" src="https://img.shields.io/pypi/v/pymatsolver.svg" /></a>
+<a class="reference external image-reference" href="https://github.com/simpeg/pymatsolver/blob/master/LICENSE"><img alt="MIT license." src="https://img.shields.io/badge/license-MIT-blue.svg" /></a>
+<a class="reference external image-reference" href="https://travis-ci.org/simpeg/pymatsolver"><img alt="Travis CI build status" src="https://img.shields.io/travis/rowanc1/pymatsolver.svg" /></a>
+<a class="reference external image-reference" href="https://codecov.io/gh/simpeg/pymatsolver"><img alt="Coverage status" src="https://codecov.io/gh/simpeg/pymatsolver/branch/master/graph/badge.svg" /></a>
+<p>A (sparse) matrix solver for python.</p>
+<p>Solving Ax = b should be as easy as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Ainv</span> <span class="o">=</span> <span class="n">Solver</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">Ainv</span> <span class="o">*</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>In pymatsolver we provide a number of wrappers to existing numerical packages. Nothing fancy here.</p>
+<section id="solvers-available">
+<h2>Solvers Available<a class="headerlink" href="#solvers-available" title="Permalink to this headline">¶</a></h2>
+<p>All solvers work with <code class="code docutils literal notranslate"><span class="pre">scipy.sparse</span></code> matricies, and a single or multiple right hand sides using <code class="code docutils literal notranslate"><span class="pre">numpy</span></code>:</p>
+<ul class="simple">
+<li><p>L/U Triangular Solves</p></li>
+<li><p>Wrapping of SciPy matrix solvers (direct and indirect)</p></li>
+<li><p>Pardiso solvers now that MKL comes with conda!</p></li>
+<li><p>Mumps solver with nice error messages</p></li>
+</ul>
+</section>
+<section id="installing-mumps">
+<h2>Installing Mumps<a class="headerlink" href="#installing-mumps" title="Permalink to this headline">¶</a></h2>
+<p>We have not been able to get the pip install to work because of multiple dependencies on fortran libraries.
+However, the linux and mac installs are relatively easy. Note that you must have mumps pre-installed,
+currently we have only got this working for the sequential version, so when you are installing,
+you will need to point to that one. You can also look at the <cite>.travis.yml</cite> file for how to get it working on TravisCI.</p>
+<section id="linux">
+<h3>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
+<p>From a clean install on Ubuntu:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>apt-get update
+apt-get -y install gcc gfortran git libopenmpi-dev libmumps-seq-dev libblas-dev liblapack-dev
+
+<span class="c1"># Install all the python you need!</span>
+wget http://repo.continuum.io/miniconda/Miniconda-3.8.3-Linux-x86_64.sh -O miniconda.sh<span class="p">;</span>
+chmod +x miniconda.sh
+./miniconda.sh -b
+<span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/root/anaconda/bin:/root/miniconda/bin:<span class="nv">$PATH</span>
+conda update --yes conda
+conda install --yes numpy scipy matplotlib cython ipython nose
+
+git clone https://github.com/rowanc1/pymatsolver.git
+<span class="nb">cd</span> pymatsolver
+make mumps
+</pre></div>
+</div>
+</section>
+<section id="mac">
+<h3>Mac<a class="headerlink" href="#mac" title="Permalink to this headline">¶</a></h3>
+<p>This assumes that you have Brew and some python installed (numpy, scipy):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew install mumps --with-scotch5 --without-mpi
+
+git clone https://github.com/rowanc1/pymatsolver.git
+<span class="nb">cd</span> pymatsolver
+make mumps_mac
+</pre></div>
+</div>
+<p>If you have problems you may have to go into the Makefile and update the pointers to Lib and Include for the various libraries.</p>
+<p>This command is helpful for finding dependencies. You should also take note of have happens when brew installs mumps.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mpicc --showme
+</pre></div>
+</div>
+<p>Code:
+<a class="reference external" href="https://github.com/simpeg/pymatsolver">https://github.com/simpeg/pymatsolver</a></p>
+<p>Tests:
+<a class="reference external" href="https://travis-ci.org/simpeg/pymatsolver">https://travis-ci.org/simpeg/pymatsolver</a></p>
+<p>Bugs &amp; Issues:
+<a class="reference external" href="https://github.com/simpeg/pymatsolver/issues">https://github.com/simpeg/pymatsolver/issues</a></p>
+<p>License: MIT</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/pymatsolver.solvers.Base.html">pymatsolver.solvers.Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#basic-solvers">Basic Solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#iterative-solvers">Iterative Solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#direct-solvers">Direct Solvers</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+<section id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='right-next' id="next-link" href="api.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2017, Rowan Cockett.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

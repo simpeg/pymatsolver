@@ -1,0 +1,6 @@
+pymatsolver.BicgJacobi.accuracy\_tol
+====================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: BicgJacobi.accuracy_tol

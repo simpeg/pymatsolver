@@ -1,0 +1,6 @@
+pymatsolver.Backward.accuracy\_tol
+==================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Backward.accuracy_tol

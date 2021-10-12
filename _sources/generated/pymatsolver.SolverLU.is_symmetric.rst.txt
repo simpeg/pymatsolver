@@ -1,0 +1,6 @@
+pymatsolver.SolverLU.is\_symmetric
+==================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: SolverLU.is_symmetric

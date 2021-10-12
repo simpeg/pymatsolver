@@ -1,0 +1,6 @@
+pymatsolver.SolverCG.clean
+==========================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: SolverCG.clean

@@ -1,0 +1,6 @@
+pymatsolver.Solver.is\_real
+===========================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Solver.is_real

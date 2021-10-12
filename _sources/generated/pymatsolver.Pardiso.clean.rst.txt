@@ -1,0 +1,6 @@
+pymatsolver.Pardiso.clean
+=========================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Pardiso.clean

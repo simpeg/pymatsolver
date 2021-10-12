@@ -1,0 +1,6 @@
+pymatsolver.Diagonal.set\_kwargs
+================================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Diagonal.set_kwargs

@@ -1,0 +1,6 @@
+pymatsolver.Diagonal.clean
+==========================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Diagonal.clean

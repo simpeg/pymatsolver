@@ -1,0 +1,6 @@
+pymatsolver.Forward.is\_symmetric
+=================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Forward.is_symmetric

@@ -1,0 +1,6 @@
+pymatsolver.Pardiso.accuracy\_tol
+=================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Pardiso.accuracy_tol

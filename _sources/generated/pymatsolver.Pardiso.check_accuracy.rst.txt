@@ -1,0 +1,6 @@
+pymatsolver.Pardiso.check\_accuracy
+===================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Pardiso.check_accuracy

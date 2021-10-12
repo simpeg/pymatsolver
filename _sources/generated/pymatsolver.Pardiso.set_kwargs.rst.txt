@@ -1,0 +1,6 @@
+pymatsolver.Pardiso.set\_kwargs
+===============================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Pardiso.set_kwargs

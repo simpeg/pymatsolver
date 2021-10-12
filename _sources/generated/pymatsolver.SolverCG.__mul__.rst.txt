@@ -1,0 +1,6 @@
+pymatsolver.SolverCG.\_\_mul\_\_
+================================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: SolverCG.__mul__

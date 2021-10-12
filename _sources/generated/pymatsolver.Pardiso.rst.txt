@@ -1,0 +1,39 @@
+﻿pymatsolver.Pardiso
+===================
+
+.. currentmodule:: pymatsolver
+
+.. inheritance-diagram:: Pardiso
+    :parts: 1
+
+.. autoclass:: Pardiso
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Pardiso.__mul__
+         Pardiso.clean
+         Pardiso.factor
+         Pardiso.set_kwargs
+      
+         Pardiso.__mul__
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Pardiso.T
+         Pardiso.accuracy_tol
+         Pardiso.check_accuracy
+         Pardiso.is_hermitian
+         Pardiso.is_positive_definite
+         Pardiso.is_real
+         Pardiso.is_symmetric
+         Pardiso.n_threads
+  
+  

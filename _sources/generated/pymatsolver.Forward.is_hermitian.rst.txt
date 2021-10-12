@@ -1,0 +1,6 @@
+pymatsolver.Forward.is\_hermitian
+=================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Forward.is_hermitian

@@ -1,0 +1,6 @@
+pymatsolver.solvers.Base.is\_positive\_definite
+===============================================
+
+.. currentmodule:: pymatsolver.solvers
+
+.. autoproperty:: Base.is_positive_definite

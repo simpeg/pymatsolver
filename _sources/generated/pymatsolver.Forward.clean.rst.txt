@@ -1,0 +1,6 @@
+pymatsolver.Forward.clean
+=========================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Forward.clean

@@ -1,0 +1,6 @@
+pymatsolver.SolverCG.check\_accuracy
+====================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: SolverCG.check_accuracy

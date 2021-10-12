@@ -1,0 +1,6 @@
+pymatsolver.SolverCG.is\_real
+=============================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: SolverCG.is_real

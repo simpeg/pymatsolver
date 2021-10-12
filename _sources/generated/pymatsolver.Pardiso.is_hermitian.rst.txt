@@ -1,0 +1,6 @@
+pymatsolver.Pardiso.is\_hermitian
+=================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Pardiso.is_hermitian

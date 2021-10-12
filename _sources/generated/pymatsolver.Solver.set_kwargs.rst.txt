@@ -1,0 +1,6 @@
+pymatsolver.Solver.set\_kwargs
+==============================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Solver.set_kwargs

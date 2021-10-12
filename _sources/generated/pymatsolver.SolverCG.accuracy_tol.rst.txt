@@ -1,0 +1,6 @@
+pymatsolver.SolverCG.accuracy\_tol
+==================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: SolverCG.accuracy_tol

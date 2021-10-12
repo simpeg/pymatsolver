@@ -1,0 +1,6 @@
+pymatsolver.Pardiso.is\_real
+============================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Pardiso.is_real

@@ -1,0 +1,6 @@
+pymatsolver.BicgJacobi.factor
+=============================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: BicgJacobi.factor

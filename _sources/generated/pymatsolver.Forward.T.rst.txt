@@ -1,0 +1,6 @@
+pymatsolver.Forward.T
+=====================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Forward.T

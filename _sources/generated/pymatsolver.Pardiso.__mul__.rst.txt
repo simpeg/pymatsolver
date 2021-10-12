@@ -1,0 +1,6 @@
+pymatsolver.Pardiso.\_\_mul\_\_
+===============================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Pardiso.__mul__

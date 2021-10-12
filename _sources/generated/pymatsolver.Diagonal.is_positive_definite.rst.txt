@@ -1,0 +1,6 @@
+pymatsolver.Diagonal.is\_positive\_definite
+===========================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Diagonal.is_positive_definite

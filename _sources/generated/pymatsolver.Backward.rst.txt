@@ -1,0 +1,37 @@
+﻿pymatsolver.Backward
+====================
+
+.. currentmodule:: pymatsolver
+
+.. inheritance-diagram:: Backward
+    :parts: 1
+
+.. autoclass:: Backward
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Backward.__mul__
+         Backward.clean
+         Backward.set_kwargs
+      
+         Backward.__mul__
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Backward.T
+         Backward.accuracy_tol
+         Backward.check_accuracy
+         Backward.is_hermitian
+         Backward.is_positive_definite
+         Backward.is_real
+         Backward.is_symmetric
+  
+  

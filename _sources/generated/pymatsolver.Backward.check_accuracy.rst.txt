@@ -1,0 +1,6 @@
+pymatsolver.Backward.check\_accuracy
+====================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Backward.check_accuracy

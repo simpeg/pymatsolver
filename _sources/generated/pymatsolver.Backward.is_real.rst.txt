@@ -1,0 +1,6 @@
+pymatsolver.Backward.is\_real
+=============================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Backward.is_real

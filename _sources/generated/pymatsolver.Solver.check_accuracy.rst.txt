@@ -1,0 +1,6 @@
+pymatsolver.Solver.check\_accuracy
+==================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Solver.check_accuracy

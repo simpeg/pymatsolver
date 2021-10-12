@@ -1,0 +1,6 @@
+pymatsolver.SolverCG.is\_hermitian
+==================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: SolverCG.is_hermitian
