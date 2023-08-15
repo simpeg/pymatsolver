@@ -60,7 +60,7 @@ _mumpsErrors = {
 }
 
 
-class _Pointer(object):
+class _Pointer:
     """Gets an int and a destroy call that gets called on garbage collection.
 
         There can be multiple Solvers around the place that are pointing to the same factor in memory.
@@ -81,26 +81,27 @@ class Mumps(Base):
 
     documentation::
 
-        http://mumps.enseeiht.fr/doc/userguide_4.10.0.pdf
+        https://mumps-solver.org/doc/userguide_5.6.1.pdf
 
     """
 
     transpose = False
-    symmetric = False
 
     @property
     def T(self):
         newMS = self.__class__(
             self.A,
-            symmetric=self.symmetric,
+            symmetric=self.is_symmetric,
+            positive_definite=self.is_positive_definite,
             fromPointer=self.pointer
         )
         newMS.transpose = not self.transpose
         return newMS
 
-    def __init__(self, A, symmetric=False, fromPointer=None):
+    def __init__(self, A, is_symmetric=False, is_positive_definite=False, fromPointer=None):
         self.A = A.tocsc()
-        self.symmetric = symmetric
+        self.is_symmetric = symmetric
+        self.is_positive_definite = is_positive_definite
 
         if fromPointer is None:
             self.factor()
@@ -112,6 +113,14 @@ class Mumps(Base):
     @property
     def isfactored(self):
         return getattr(self, 'pointer', None) is not None
+
+    @property
+    def _matrix_type(self):
+        if self.is_symmetric:
+            if self.is_positive_definite:
+                return 1  # symmetric, positive definite
+            return 2  # general symmetric
+        return 0  # general symmetric
 
     def _funhandle(self, ftype):
         """
@@ -134,9 +143,8 @@ class Mumps(Base):
         if self.isfactored:
             return
 
-        sym = 1 if self.symmetric else 0
         ierr, p = self._funhandle('F')(
-            sym,
+            self._matrix_type,
             self.A.data,
             self.A.indices+1,
             self.A.indptr+1
