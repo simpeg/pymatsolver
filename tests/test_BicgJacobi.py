@@ -84,7 +84,3 @@ class TestPardisoComplex(unittest.TestCase):
                 self.A.T*solb[:, i] - rhs[:, i]) / np.linalg.norm(rhs[:, i])
             self.assertLess(err, TOL)
         Ainv.clean()
-
-
-if __name__ == '__main__':
-    unittest.main()

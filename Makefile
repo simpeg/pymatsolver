@@ -4,8 +4,9 @@ build:
 	python setup.py build_ext --inplace
 
 coverage:
-	nosetests --logging-level=INFO --with-coverage --cover-package=pymatsolver --cover-html
-	open cover/index.html
+	coverage run --source pymatsolver -m pytest
+	coverage report -m
+	coverage html
 
 lint:
 	pylint --output-format=html pymatsolver > pylint.html
@@ -14,7 +15,7 @@ graphs:
 	pyreverse -my -A -o pdf -p pymatsolver pymatsolver/**.py pymatsolver/**/**.py
 
 tests:
-	nosetests --logging-level=INFO
+	pytest
 
 docs:
 	cd docs;make html

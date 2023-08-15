@@ -29,6 +29,3 @@ class TestTriangle(unittest.TestCase):
         x = AUinv * self.rhsU[:, 0]
         self.assertLess(np.linalg.norm(self.sol-X, np.inf), TOL)
         self.assertLess(np.linalg.norm(self.sol[:, 0]-x, np.inf), TOL)
-
-if __name__ == '__main__':
-    unittest.main()

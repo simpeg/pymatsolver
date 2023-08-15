@@ -24,7 +24,3 @@ class TestBasic(unittest.TestCase):
 
         self.assertLess(np.linalg.norm(sol-X, np.inf), TOL)
         self.assertLess(np.linalg.norm(sol[:, 0]-x, np.inf), TOL)
-
-
-if __name__ == '__main__':
-    unittest.main()

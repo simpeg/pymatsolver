@@ -81,7 +81,3 @@ class TestSolver(unittest.TestCase):
 
     def test_iterative_cg_M(self):
         self.assertLess(dotest(SolverCG, True), TOLI)
-
-
-if __name__ == '__main__':
-    unittest.main()

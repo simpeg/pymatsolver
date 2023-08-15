@@ -79,6 +79,3 @@ class TestMumps(unittest.TestCase):
                 self.assertLess(
                     np.linalg.norm(Ainv * rhs - x)/np.linalg.norm(rhs), TOL
                 )
-
-if __name__ == '__main__':
-    unittest.main()

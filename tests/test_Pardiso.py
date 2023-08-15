@@ -175,6 +175,3 @@ class TestPardisoComplex(unittest.TestCase):
                     np.linalg.norm(x[:, i] - sol[:, i]), TOL
                 )
             self.assertLess(np.linalg.norm(x - sol, np.inf), TOL)
-
-if __name__ == '__main__':
-    unittest.main()
