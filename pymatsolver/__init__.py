@@ -81,7 +81,7 @@ try:
     from pymatsolver.mumps import Mumps
     AvailableSolvers['Mumps'] = True
     MumpsSolver = Mumps  # backwards compatibility
-except Exception:
+except ImportError:
     SolverHelp['Mumps'] = """Mumps is not working.
 
 Ensure that you have Mumps installed, and know where the path to it is.
