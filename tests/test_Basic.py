@@ -1,4 +1,4 @@
-import unittest
+import pytest
 import numpy as np
 import scipy.sparse as sp
 from pymatsolver import Diagonal
@@ -6,10 +6,9 @@ from pymatsolver import Diagonal
 TOL = 1e-12
 
 
-class TestBasic(unittest.TestCase):
+class TestBasic:
 
     def test_DiagonalSolver(self):
-
         A = sp.identity(5)*2.0
         rhs = np.c_[np.arange(1, 6), np.arange(2, 11, 2)]
         X = Diagonal(A) * rhs
@@ -17,10 +16,10 @@ class TestBasic(unittest.TestCase):
 
         sol = rhs/2.0
 
-        with self.assertRaises(TypeError):
+        with pytest.raises(TypeError):
             Diagonal(A, check_accuracy=np.array([1, 2, 3]))
-        with self.assertRaises(TypeError):
+        with pytest.raises(TypeError):
             Diagonal(A, accuracy_tol=0)
 
-        self.assertLess(np.linalg.norm(sol-X, np.inf), TOL)
-        self.assertLess(np.linalg.norm(sol[:, 0]-x, np.inf), TOL)
+        assert np.linalg.norm(sol-X, np.inf) < TOL
+        assert np.linalg.norm(sol[:, 0]-x, np.inf) < TOL

@@ -1,4 +1,3 @@
-import unittest
 from pymatsolver import Solver, Diagonal, SolverCG, SolverLU
 import scipy.sparse as sp
 import numpy as np
@@ -50,34 +49,28 @@ def dotest(MYSOLVER, multi=False, A=None, **solverOpts):
     return np.linalg.norm(e-x, np.inf)
 
 
-class TestSolver(unittest.TestCase):
+class TestSolver:
 
     def test_direct_spsolve_1(self):
-        self.assertLess(dotest(Solver, False), TOLD)
+        assert dotest(Solver, False) < TOLD
 
     def test_direct_spsolve_M(self):
-        self.assertLess(dotest(Solver, True), TOLD)
+        assert dotest(Solver, True) < TOLD
 
     def test_direct_splu_1(self):
-        self.assertLess(dotest(SolverLU, False), TOLD)
+        assert dotest(SolverLU, False) < TOLD
 
     def test_direct_splu_M(self):
-        self.assertLess(dotest(SolverLU, True), TOLD)
+        assert dotest(SolverLU, True) < TOLD
 
     def test_iterative_diag_1(self):
-        self.assertLess(dotest(
-            Diagonal, False,
-            A=sp.diags(np.random.rand(10)+1.0)
-        ), TOLI)
+        assert dotest(Diagonal, False, A=sp.diags(np.random.rand(10)+1.0)) < TOLI
 
     def test_iterative_diag_M(self):
-        self.assertLess(dotest(
-            Diagonal, True,
-            A=sp.diags(np.random.rand(10)+1.0)
-        ), TOLI)
+        assert dotest(Diagonal, True, A=sp.diags(np.random.rand(10)+1.0)) < TOLI
 
     def test_iterative_cg_1(self):
-        self.assertLess(dotest(SolverCG, False), TOLI)
+        assert dotest(SolverCG, False) < TOLI
 
     def test_iterative_cg_M(self):
-        self.assertLess(dotest(SolverCG, True), TOLI)
+        assert dotest(SolverCG, True) < TOLI

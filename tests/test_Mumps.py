@@ -1,7 +1,7 @@
-import unittest
 import warnings
 
 import numpy as np
+import pytest
 import scipy.sparse as sp
 
 try:
@@ -15,9 +15,10 @@ TOL = 1e-11
 
 if should_run:
 
-    class TestMumps(unittest.TestCase):
+    class TestMumps:
 
-        def setUp(self):
+        @classmethod
+        def setup_class(cls):
             n = 5
             irn = np.r_[0, 1, 3, 4, 1, 0, 4, 2, 1, 2, 0, 2]
             jcn = np.r_[1, 2, 2, 4, 0, 0, 1, 3, 4, 1, 2, 2]
@@ -30,19 +31,17 @@ if should_run:
             sol = np.r_[1., 2., 3., 4., 5.]
             sol = np.c_[sol, 10*sol, 100*sol]
             A = sp.coo_matrix((a, (irn, jcn)), shape=(n, n))
-            self.A = A
-            self.rhs = rhs
-            self.sol = sol
+            cls.A = A
+            cls.rhs = rhs
+            cls.sol = sol
 
         def test_1to5(self):
             rhs = self.rhs
             sol = self.sol
             Ainv = Mumps(self.A)
             for i in range(3):
-                self.assertLess(
-                    np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL
-                )
-            self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
+                assert np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]) < TOL
+            assert np.linalg.norm(Ainv * rhs - sol, np.inf) < TOL
 
         def test_1to5_cmplx(self):
             rhs = self.rhs.astype(complex)
@@ -50,10 +49,8 @@ if should_run:
             self.A = self.A.astype(complex)
             Ainv = Mumps(self.A)
             for i in range(3):
-                self.assertLess(
-                    np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL
-                )
-            self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
+                assert np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]) < TOL
+            assert np.linalg.norm(Ainv * rhs - sol, np.inf) < TOL
 
         def test_1to5_T(self):
             rhs = self.rhs
@@ -61,15 +58,14 @@ if should_run:
             Ainv = Mumps(self.A)
             AinvT = Ainv.T
             for i in range(3):
-                self.assertLess(
-                    np.linalg.norm(AinvT.T * rhs[:, i] - sol[:, i]), TOL
-                )
-            self.assertLess(np.linalg.norm(AinvT.T * rhs - sol, np.inf), TOL)
+                assert np.linalg.norm(AinvT.T * rhs[:, i] - sol[:, i]) < TOL
+            assert np.linalg.norm(AinvT.T * rhs - sol, np.inf) < TOL
 
-        # def test_singular(self):
-        #     A = sp.identity(5).tocsr()
-        #     A[-1, -1] = 0
-        #     self.assertRaises(Exception, Mumps, A)
+        def test_singular(self):
+            A = sp.identity(5).tocsr()
+            A[-1, -1] = 0
+            with pytest.raises(Exception):
+                Mumps(A)
 
         def test_multiFactorsInMem(self):
             n = 100
@@ -79,14 +75,11 @@ if should_run:
             solvers = [Mumps(A) for _ in range(20)]
 
             for Ainv in solvers:
-                self.assertLess(
-                    np.linalg.norm(Ainv * rhs - x)/np.linalg.norm(rhs), TOL)
+                assert np.linalg.norm(Ainv * rhs - x)/np.linalg.norm(rhs) < TOL
                 Ainv.clean()
 
             for Ainv in solvers:
-                self.assertLess(
-                    np.linalg.norm(Ainv * rhs - x)/np.linalg.norm(rhs), TOL
-                )
+                assert np.linalg.norm(Ainv * rhs - x)/np.linalg.norm(rhs) < TOL
 
 else:
 

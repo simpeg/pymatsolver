@@ -1,4 +1,3 @@
-import unittest
 from pymatsolver import BicgJacobi
 import numpy as np
 import scipy.sparse as sp
@@ -6,9 +5,10 @@ import scipy.sparse as sp
 TOL = 1e-6
 
 
-class TestBicgJacobi(unittest.TestCase):
+class TestBicgJacobi:
 
-    def setUp(self):
+    @classmethod
+    def setup_class(cls):
 
         nSize = 100
         A = sp.rand(nSize, nSize, 0.05, format='csr', random_state=100)
@@ -19,9 +19,9 @@ class TestBicgJacobi(unittest.TestCase):
         sol = np.random.rand(nSize, 4)
         rhs = A.dot(sol)
 
-        self.A = A
-        self.rhs = rhs
-        self.sol = sol
+        cls.A = A
+        cls.rhs = rhs
+        cls.sol = sol
 
     def test(self):
         rhs = self.rhs
@@ -30,7 +30,7 @@ class TestBicgJacobi(unittest.TestCase):
         for i in range(3):
             err = np.linalg.norm(
                 self.A*solb[:, i] - rhs[:, i]) / np.linalg.norm(rhs[:, i])
-            self.assertLess(err, TOL)
+            assert err < TOL
         Ainv.clean()
 
     def test_T(self):
@@ -42,13 +42,14 @@ class TestBicgJacobi(unittest.TestCase):
         for i in range(3):
             err = np.linalg.norm(
                 self.A.T*solb[:, i] - rhs[:, i]) / np.linalg.norm(rhs[:, i])
-            self.assertLess(err, TOL)
+            assert err < TOL
         Ainv.clean()
 
 
-class TestPardisoComplex(unittest.TestCase):
+class TestBicgJacobiComplex:
 
-    def setUp(self):
+    @classmethod
+    def setup_class(cls):
         nSize = 100
         A = sp.rand(nSize, nSize, 0.05, format='csr', random_state=100)
         A.data = A.data + 1j*np.random.rand(A.nnz)
@@ -59,9 +60,9 @@ class TestPardisoComplex(unittest.TestCase):
         sol = np.random.rand(nSize, 5) + 1j*np.random.rand(nSize, 5)
         rhs = A.dot(sol)
 
-        self.A = A
-        self.rhs = rhs
-        self.sol = sol
+        cls.A = A
+        cls.rhs = rhs
+        cls.sol = sol
 
     def test(self):
         rhs = self.rhs
@@ -70,7 +71,7 @@ class TestPardisoComplex(unittest.TestCase):
         for i in range(3):
             err = np.linalg.norm(
                 self.A*solb[:, i] - rhs[:, i]) / np.linalg.norm(rhs[:, i])
-            self.assertLess(err, TOL)
+            assert err < TOL
         Ainv.clean()
 
     def test_T(self):
@@ -82,5 +83,5 @@ class TestPardisoComplex(unittest.TestCase):
         for i in range(3):
             err = np.linalg.norm(
                 self.A.T*solb[:, i] - rhs[:, i]) / np.linalg.norm(rhs[:, i])
-            self.assertLess(err, TOL)
+            assert err < TOL
         Ainv.clean()

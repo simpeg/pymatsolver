@@ -1,8 +1,8 @@
 import os
-import unittest
 import warnings
 
 import numpy as np
+import pytest
 import scipy.sparse as sp
 
 try:
@@ -20,9 +20,10 @@ TOL = 1e-10
 
 if should_run:
 
-    class TestPardiso(unittest.TestCase):
+    class TestPardiso:
 
-        def setUp(self):
+        @classmethod
+        def setup_class(cls):
 
             nSize = 100
             A = sp.rand(nSize, nSize, 0.05, format='csr', random_state=100)
@@ -33,17 +34,17 @@ if should_run:
             sol = np.random.rand(nSize, 5)
             rhs = A.dot(sol)
 
-            self.A = A
-            self.rhs = rhs
-            self.sol = sol
+            cls.A = A
+            cls.rhs = rhs
+            cls.sol = sol
 
         def test(self):
             rhs = self.rhs
             sol = self.sol
             Ainv = Pardiso(self.A, is_symmetric=True)
             for i in range(3):
-                self.assertLess(np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL)
-            self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
+                assert np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]) < TOL
+            assert np.linalg.norm(Ainv * rhs - sol, np.inf) < TOL
 
         def test_refactor(self):
             rhs = self.rhs
@@ -51,8 +52,8 @@ if should_run:
             A = self.A
             Ainv = Pardiso(A, is_symmetric=True)
             for i in range(3):
-                self.assertLess(np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL)
-            self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
+                assert np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]) < TOL
+            assert np.linalg.norm(Ainv * rhs - sol, np.inf) < TOL
 
             # scale rows and collumns
             D = sp.diags(np.random.rand(A.shape[0]) + 1.0)
@@ -61,43 +62,44 @@ if should_run:
             rhs2 = A2 @ sol
             Ainv.factor(A2)
             for i in range(3):
-                self.assertLess(np.linalg.norm(Ainv * rhs2[:, i] - sol[:, i]), TOL)
-            self.assertLess(np.linalg.norm(Ainv * rhs2 - sol, np.inf), TOL)
+                assert np.linalg.norm(Ainv * rhs2[:, i] - sol[:, i]) < TOL
+            assert np.linalg.norm(Ainv * rhs2 - sol, np.inf) < TOL
 
         def test_T(self):
             rhs = self.rhs
             sol = self.sol
             Ainv = Pardiso(self.A, is_symmetric=True)
 
-            with self.assertWarns(PardisoTypeConversionWarning):
+            with pytest.warns(PardisoTypeConversionWarning):
                 AinvT = Ainv.T
                 x = AinvT * rhs
 
                 for i in range(3):
-                    self.assertLess(np.linalg.norm(x[:, i] - sol[:, i]), TOL)
-                self.assertLess(np.linalg.norm(x - sol, np.inf), TOL)
+                    assert np.linalg.norm(x[:, i] - sol[:, i]) < TOL
+                assert np.linalg.norm(x - sol, np.inf) < TOL
 
         def test_n_threads(self):
             max_threads = get_mkl_pardiso_max_threads()
             print(f'testing setting n_threads to 1 and {max_threads}')
             Ainv = Pardiso(self.A, is_symmetric=True, n_threads=1)
-            self.assertEqual(Ainv.n_threads, 1)
+            assert Ainv.n_threads == 1
 
             Ainv2 = Pardiso(self.A, is_symmetric=True, n_threads=max_threads)
-            self.assertEqual(Ainv2.n_threads, max_threads)
-            self.assertEqual(Ainv2.n_threads, Ainv.n_threads)
+            assert Ainv2.n_threads == max_threads
+            assert Ainv2.n_threads == Ainv.n_threads
 
             Ainv.n_threads = 1
-            self.assertEqual(Ainv.n_threads, 1)
-            self.assertEqual(Ainv2.n_threads, Ainv.n_threads)
+            assert Ainv.n_threads == 1
+            assert Ainv2.n_threads == Ainv.n_threads
 
-            with self.assertRaises(TypeError):
+            with pytest.raises(TypeError):
                 Ainv.n_threads = "2"
 
 
-    class TestPardisoNotSymmetric(unittest.TestCase):
+    class TestPardisoNotSymmetric:
 
-        def setUp(self):
+        @classmethod
+        def setup_class(cls):
 
             nSize = 100
             A = sp.rand(nSize, nSize, 0.05, format='csr', random_state=100)
@@ -107,27 +109,29 @@ if should_run:
             sol = np.random.rand(nSize, 5)
             rhs = A.dot(sol)
 
-            self.A = A
-            self.rhs = rhs
-            self.sol = sol
+            cls.A = A
+            cls.rhs = rhs
+            cls.sol = sol
 
         def test(self):
             rhs = self.rhs
             sol = self.sol
             Ainv = Pardiso(self.A, is_symmetric=True, check_accuracy=True)
-            self.assertRaises(Exception, lambda: Ainv * rhs)
+            with pytest.raises(Exception):
+                Ainv * rhs
             Ainv.clean()
 
             Ainv = Pardiso(self.A)
             for i in range(3):
-                self.assertLess(np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL)
-            self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
+                assert np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]) < TOL
+            assert np.linalg.norm(Ainv * rhs - sol, np.inf) < TOL
             Ainv.clean()
 
 
-    class TestPardisoFDEM(unittest.TestCase):
+    class TestPardisoFDEM:
 
-        def setUp(self):
+        @classmethod
+        def setup_class(cls):
 
             base_path = os.path.join(os.path.split(os.path.abspath(__file__))[0], 'fdem')
 
@@ -135,20 +139,21 @@ if should_run:
             indices = np.load(os.path.join(base_path, 'A_indices.npy'))
             indptr = np.load(os.path.join(base_path, 'A_indptr.npy'))
 
-            self.A = sp.csr_matrix((data, indices, indptr), shape=(13872, 13872))
-            self.rhs = np.load(os.path.join(base_path, 'RHS.npy'))
+            cls.A = sp.csr_matrix((data, indices, indptr), shape=(13872, 13872))
+            cls.rhs = np.load(os.path.join(base_path, 'RHS.npy'))
 
         def test(self):
             rhs = self.rhs
             Ainv = Pardiso(self.A, check_accuracy=True)
             sol = Ainv * rhs
-            with self.assertWarns(PardisoTypeConversionWarning):
+            with pytest.warns(PardisoTypeConversionWarning):
                 sol = Ainv * rhs.real
 
 
-    class TestPardisoComplex(unittest.TestCase):
+    class TestPardisoComplex:
 
-        def setUp(self):
+        @classmethod
+        def setup_class(cls):
             nSize = 100
             A = sp.rand(nSize, nSize, 0.05, format='csr', random_state=100)
             A.data = A.data + 1j*np.random.rand(A.nnz)
@@ -159,31 +164,29 @@ if should_run:
             sol = np.random.rand(nSize, 5) + 1j*np.random.rand(nSize, 5)
             rhs = A.dot(sol)
 
-            self.A = A
-            self.rhs = rhs
-            self.sol = sol
+            cls.A = A
+            cls.rhs = rhs
+            cls.sol = sol
 
         def test(self):
             rhs = self.rhs
             sol = self.sol
             Ainv = Pardiso(self.A, is_symmetric=True)
             for i in range(3):
-                self.assertLess(np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL)
-            self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
+                assert np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]) < TOL
+            assert np.linalg.norm(Ainv * rhs - sol, np.inf) < TOL
             Ainv.clean()
 
         def test_T(self):
             rhs = self.rhs
             sol = self.sol
             Ainv = Pardiso(self.A, is_symmetric=True)
-            with self.assertWarns(PardisoTypeConversionWarning):
+            with pytest.warns(PardisoTypeConversionWarning):
                 AinvT = Ainv.T
                 x = AinvT * rhs
                 for i in range(3):
-                    self.assertLess(
-                        np.linalg.norm(x[:, i] - sol[:, i]), TOL
-                    )
-                self.assertLess(np.linalg.norm(x - sol, np.inf), TOL)
+                    assert np.linalg.norm(x[:, i] - sol[:, i]) < TOL
+                assert np.linalg.norm(x - sol, np.inf) < TOL
 
 else:
 
