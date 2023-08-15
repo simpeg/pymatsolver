@@ -4,6 +4,7 @@ from __future__ import division
 from __future__ import absolute_import
 
 import gc
+import warnings
 from pymatsolver.solvers import Base
 from . import MumpsInterface as _MUMPSINT
 
@@ -91,27 +92,27 @@ class Mumps(Base):
     def T(self):
         newMS = self.__class__(
             self.A,
-            symmetric=self.is_symmetric,
-            positive_definite=self.is_positive_definite,
-            fromPointer=self.pointer
+            is_symmetric=self.is_symmetric,
+            is_positive_definite=self.is_positive_definite,
+            from_pointer=self.pointer
         )
         newMS.transpose = not self.transpose
         return newMS
 
-    def __init__(self, A, is_symmetric=False, is_positive_definite=False, fromPointer=None):
+    def __init__(self, A, is_symmetric=False, is_positive_definite=False, from_pointer=None):
         self.A = A.tocsc()
-        self.is_symmetric = symmetric
+        self.is_symmetric = is_symmetric
         self.is_positive_definite = is_positive_definite
 
-        if fromPointer is None:
+        if from_pointer is None:
             self.factor()
-        elif isinstance(fromPointer, _Pointer):
-            self.pointer = fromPointer
+        elif isinstance(from_pointer, _Pointer):
+            self.pointer = from_pointer
         else:
             raise Exception('Unknown pointer for construction.')
 
     @property
-    def isfactored(self):
+    def is_factored(self):
         return getattr(self, 'pointer', None) is not None
 
     @property
@@ -120,7 +121,7 @@ class Mumps(Base):
             if self.is_positive_definite:
                 return 1  # symmetric, positive definite
             return 2  # general symmetric
-        return 0  # general symmetric
+        return 0  # unsymmetric
 
     def _funhandle(self, ftype):
         """
@@ -140,7 +141,7 @@ class Mumps(Base):
                     'D': _MUMPSINT.destroy_mumps_cmplx}[ftype]
 
     def factor(self):
-        if self.isfactored:
+        if self.is_factored:
             return
 
         ierr, p = self._funhandle('F')(
@@ -152,7 +153,7 @@ class Mumps(Base):
         if ierr < 0:
             raise Exception("Mumps Exception [{}] - {}".format(ierr, _mumpsErrors[ierr]))
         elif ierr > 0:
-            print("Mumps Warning [{}] - {}".format(ierr, _mumpsErrors[ierr]))
+            warnings.warn("Mumps Warning [{}] - {}".format(ierr, _mumpsErrors[ierr]))
 
         self.pointer = _Pointer(p, self._funhandle('D'))
 
