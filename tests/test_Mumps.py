@@ -57,10 +57,8 @@ if should_run:
             sol = self.sol
             Ainv = Mumps(self.A)
             AinvT = Ainv.T
-            AinvTT = AinvT.T
             for i in range(3):
-                # WARNING: This test fails if AinvT.T is supplied instead of AinvTT
-                assert np.linalg.norm(AinvTT * rhs[:, i] - sol[:, i]) < TOL
+                assert np.linalg.norm(AinvT.T * rhs[:, i] - sol[:, i]) < TOL
             assert np.linalg.norm(AinvT.T * rhs - sol, np.inf) < TOL
 
         def test_singular(self):

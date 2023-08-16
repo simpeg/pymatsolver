@@ -112,20 +112,26 @@ def _mumps_message_from_exit_code(ierr):
 
 
 class _Pointer:
-    """Gets an int and a destroy call that gets called on garbage collection.
+    """Store a pointer with a destroy function that gets called on garbage collection.
 
-        There can be multiple Solvers around the place that are pointing to the same factor in memory.
+    Multiple Mumps solver instances can point to the same factor in memory.
+    This class ensures that the factor is garbage collected only when all references are removed.
 
-        This ensures that when all references are removed, there is automatic garbage collection.
-
-        You can always clean the Solver, and it will explicitly call the destroy method.
+    You can always clean the Solver, and it will explicitly call the destroy method.
     """
-    def __init__(self, pointerINT, destroyCall):
+    def __init__(self, pointerINT, dtype):
         self.INT = pointerINT
-        self.destroyCall = destroyCall
+        # The destroy function should only be called from this class upon deallocation.
+        if dtype == float:
+            self._destroy_func = _MUMPSINT.destroy_mumps
+        elif dtype == complex:
+            self._destroy_func = _MUMPSINT.destroy_mumps_cmplx
+        else:
+            raise ValueError(f"Attempted to use an invalid data type ({dtype})")
 
     def __del__(self):
-        self.destroyCall(self.INT)
+        self._destroy_func(self.INT)
+
 
 class Mumps(Base):
     """
@@ -177,18 +183,16 @@ class Mumps(Base):
         """
         switches the function handle between real and complex.
 
-        ftype in ['F','S','D']
+        ftype in ['F','S']
 
-        means factor, solve, destroy
+        means factor, solve
         """
         if self.A.dtype == float:
             return {'F': _MUMPSINT.factor_mumps,
-                    'S': _MUMPSINT.solve_mumps,
-                    'D': _MUMPSINT.destroy_mumps}[ftype]
+                    'S': _MUMPSINT.solve_mumps}[ftype]
         elif self.A.dtype == complex:
             return {'F': _MUMPSINT.factor_mumps_cmplx,
-                    'S': _MUMPSINT.solve_mumps_cmplx,
-                    'D': _MUMPSINT.destroy_mumps_cmplx}[ftype]
+                    'S': _MUMPSINT.solve_mumps_cmplx}[ftype]
 
     def factor(self):
         if self.is_factored:
@@ -205,7 +209,7 @@ class Mumps(Base):
         elif ierr > 0:
             warnings.warn(f"Mumps Warning [{ierr}] - {_mumps_message_from_exit_code(ierr)}")
 
-        self.pointer = _Pointer(p, self._funhandle('D'))
+        self.pointer = _Pointer(p, self.A.dtype)
 
     def _solveM(self, rhs):
         self.factor()
@@ -219,6 +223,5 @@ class Mumps(Base):
     _solve1 = _solveM
 
     def clean(self):
-        self._funhandle('D')(self.pointer.INT)
         del self.pointer
         gc.collect()
