@@ -168,7 +168,7 @@ class Mumps(Base):
             raise Exception('Unknown pointer for construction.')
 
     @property
-    def is_factored(self):
+    def _is_factored(self):
         return getattr(self, 'pointer', None) is not None
 
     @property
@@ -195,7 +195,7 @@ class Mumps(Base):
         raise ValueError(f"Attempted to use an invalid data type ({self.A.dtype})")
 
     def factor(self):
-        if self.is_factored:
+        if self._is_factored:
             return
 
         ierr, p = self._funhandle('factor')(
