@@ -179,26 +179,26 @@ class Mumps(Base):
             return 2  # general symmetric
         return 0  # unsymmetric
 
-    def _funhandle(self, ftype):
-        """
-        switches the function handle between real and complex.
-
-        ftype in ['F','S']
-
-        means factor, solve
-        """
+    def _funhandle(self, function):
+        """Switch the function handle between real and complex."""
         if self.A.dtype == float:
-            return {'F': _MUMPSINT.factor_mumps,
-                    'S': _MUMPSINT.solve_mumps}[ftype]
+            return {
+                'factor': _MUMPSINT.factor_mumps,
+                'solve': _MUMPSINT.solve_mumps
+            }[function]
         elif self.A.dtype == complex:
-            return {'F': _MUMPSINT.factor_mumps_cmplx,
-                    'S': _MUMPSINT.solve_mumps_cmplx}[ftype]
+            return {
+                'factor': _MUMPSINT.factor_mumps_cmplx,
+                'solve': _MUMPSINT.solve_mumps_cmplx
+            }[function]
+
+        raise ValueError(f"Attempted to use an invalid data type ({self.A.dtype})")
 
     def factor(self):
         if self.is_factored:
             return
 
-        ierr, p = self._funhandle('F')(
+        ierr, p = self._funhandle('factor')(
             self._matrix_type,
             self.A.data,
             self.A.indices+1,
@@ -217,7 +217,7 @@ class Mumps(Base):
         n = self.A.shape[0]
         nrhs = rhs.size // n
         T = 1 if self.transpose else 0
-        sol = self._funhandle('S')(self.pointer.INT, nrhs, rhs, T)
+        sol = self._funhandle('solve')(self.pointer.INT, nrhs, rhs, T)
         return sol
 
     _solve1 = _solveM
