@@ -87,13 +87,16 @@ class Base():
         else:
             x = self._solveM(rhs)
 
+        if nrhs == 1:
+            x = x.flatten()
+        elif nrhs > 1:
+            x = x.reshape((n, nrhs), order='F')
+
         if self.check_accuracy:
             self._compute_accuracy(rhs, x)
 
-        if nrhs == 1:
-            return x.flatten()
-        elif nrhs > 1:
-            return x.reshape((n, nrhs), order='F')
+        return x
+
 
     def clean(self):
         pass
