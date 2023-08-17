@@ -229,17 +229,11 @@ logical,intent(in):: transpose  ! if .true. take the transpose
       mumps_par%icntl(9) = 1  ! for solving Ax = b
    end if
 
-   if (transpose) then
-      mumps_par%RHS = conjg(mumps_par%RHS)
-   end if
 
    mumps_par%JOB = 3  ! Solve the system.
    CALL ZMUMPS(mumps_par)
    ! At this point mumps_par%RHS (rhs) contains the solution.
 
-   if (transpose) then
-      mumps_par%RHS = conjg(mumps_par%RHS)
-   end if
 
 return
 end subroutine solve

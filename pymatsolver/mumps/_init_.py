@@ -146,19 +146,23 @@ class Mumps(Base):
 
     @property
     def T(self):
+        properties_with_setters = []
+        for a in dir(self.__class__):
+            attr = getattr(self.__class__, a)
+            if hasattr(attr, "fset") and attr.fset is not None:
+                properties_with_setters.append(a)
+        kwargs = {attr: getattr(self, attr) for attr in properties_with_setters}
+
         newMS = self.__class__(
-            self.A,
-            is_symmetric=self.is_symmetric,
-            is_positive_definite=self.is_positive_definite,
-            from_pointer=self.pointer
+            self.A.T,
+            **kwargs,
         )
-        newMS.transpose = not self.transpose
         return newMS
 
-    def __init__(self, A, is_symmetric=False, is_positive_definite=False, from_pointer=None):
+    def __init__(self, A, from_pointer=None, **kwargs):
         self.A = A.tocsc()
-        self.is_symmetric = is_symmetric
-        self.is_positive_definite = is_positive_definite
+        # As of 5.6.1, MUMPS has no optimizations for Hermitian matrices
+        self.set_kwargs(**kwargs, ignore="is_hermitian")
 
         if from_pointer is None:
             self.factor()
