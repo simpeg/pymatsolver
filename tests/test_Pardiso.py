@@ -55,7 +55,7 @@ if should_run:
                 assert np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]) < TOL
             assert np.linalg.norm(Ainv * rhs - sol, np.inf) < TOL
 
-            # scale rows and collumns
+            # scale rows and columns
             D = sp.diags(np.random.rand(A.shape[0]) + 1.0)
             A2 = D.T @ A @ D
 
