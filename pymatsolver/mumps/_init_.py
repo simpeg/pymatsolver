@@ -146,6 +146,10 @@ class Mumps(Base):
 
     @property
     def T(self):
+        """Transpose operator.
+
+        Allows solving A^T * x = b without needing to factor again.
+        """
         properties_with_setters = []
         for a in dir(self.__class__):
             attr = getattr(self.__class__, a)
@@ -154,9 +158,11 @@ class Mumps(Base):
         kwargs = {attr: getattr(self, attr) for attr in properties_with_setters}
 
         newMS = self.__class__(
-            self.A.T,
+            self.A,
+            from_pointer=self.pointer,
             **kwargs,
         )
+        newMS.transpose = not self.transpose
         return newMS
 
     def __init__(self, A, from_pointer=None, **kwargs):
