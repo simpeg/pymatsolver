@@ -4,9 +4,7 @@ build:
 	python setup.py build_ext --inplace
 
 coverage:
-	coverage run --source pymatsolver -m pytest
-	coverage report -m
-	coverage html
+	pytest --cov-config=.coveragerc --cov-report=xml --cov=pymatsolver -s -v
 
 lint:
 	pylint --output-format=html pymatsolver > pylint.html

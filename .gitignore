@@ -1,5 +1,6 @@
 *.pyc
 .coverage
+coverage.xml
 *.so
 build/
 dist/
