@@ -65,6 +65,18 @@ class Base():
         newS = self._transposeClass(self.A.T)
         return newS
 
+    @property
+    def conjugate(self):
+        "The element-wise complex conjugate for this class"
+        if self._transposeClass is None:
+            raise Exception(
+                'The complex conjugate for the {} class is not possible.'.format(
+                    self.__name__
+                )
+            )
+        newS = self._transposeClass(self.A.conjugate())
+        return newS
+
     def _compute_accuracy(self, rhs, x):
         nrm = np.linalg.norm(np.ravel(self.A*x - rhs), np.inf)
         nrm_rhs = np.linalg.norm(np.ravel(rhs), np.inf)

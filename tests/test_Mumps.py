@@ -143,6 +143,45 @@ if should_run:
                 assert np.linalg.norm(x[:, i] - sol[:, i]) < TOL
             assert np.linalg.norm(x - sol, np.inf) < TOL
 
+        def test_T_congruent(self):
+            rhs = self.rhs
+            sol = self.sol
+
+            AinvT1 = Mumps(self.A, is_symmetric=True).T
+            AinvT2 = Mumps(self.A.T, is_symmetric=True)
+            x1 = AinvT2 * rhs
+            x2 = AinvT1 * rhs
+
+            for i in range(3):
+                assert np.linalg.norm(x1[:, i] - x2[:, i]) < TOL
+            assert np.linalg.norm(x1 - x2, np.inf) < TOL
+
+        def test_conjugate_congruent(self):
+            rhs = self.rhs
+            sol = self.sol
+
+            Ainv_conj1 = Mumps(self.A).conjugate()
+            Ainv_conj2 = Mumps(self.A.conjugate())
+            x1 = Ainv_conj1 * rhs
+            x2 = Ainv_conj2 * rhs
+
+            for i in range(3):
+                assert np.linalg.norm(x1[:, i] - x2[:, i]) < TOL
+            assert np.linalg.norm(x1 - x2, np.inf) < TOL
+
+        def test_complex_conjugate_congruent(self):
+            rhs = self.rhs
+            sol = self.sol
+
+            Ainv_conj1 = Mumps(self.A).T.conjugate()
+            Ainv_conj2 = Mumps(self.A.T.conjugate())
+            x1 = Ainv_conj1 * rhs
+            x2 = Ainv_conj2 * rhs
+
+            for i in range(3):
+                assert np.linalg.norm(x1[:, i] - x2[:, i]) < TOL
+            assert np.linalg.norm(x1 - x2, np.inf) < TOL
+
 
     class TestMumps1to5:
 

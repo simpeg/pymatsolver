@@ -5,6 +5,9 @@ from __future__ import absolute_import
 
 import gc
 import warnings
+
+import numpy as np
+
 from pymatsolver.solvers import Base
 from . import MumpsInterface as _MUMPSINT
 
@@ -142,7 +145,8 @@ class Mumps(Base):
 
     """
 
-    transpose = False
+    _transpose = False
+    _conjugate = False
 
     @property
     def T(self):
@@ -150,6 +154,16 @@ class Mumps(Base):
 
         Allows solving A^T * x = b without needing to factor again.
         """
+        return self._make_copy(transpose=True)
+
+    def conjugate(self):
+        """Conjugate operator.
+
+        Allows solving \\bar(A) * x = b without needing to factor again.
+        """
+        return self._make_copy(conjugate=True)
+
+    def _make_copy(self, *, transpose=False, conjugate=False):
         properties_with_setters = []
         for a in dir(self.__class__):
             attr = getattr(self.__class__, a)
@@ -157,13 +171,14 @@ class Mumps(Base):
                 properties_with_setters.append(a)
         kwargs = {attr: getattr(self, attr) for attr in properties_with_setters}
 
-        newMS = self.__class__(
+        copy = self.__class__(
             self.A,
             from_pointer=self.pointer,
             **kwargs,
         )
-        newMS.transpose = not self.transpose
-        return newMS
+        copy._transpose = (not self._transpose) if transpose else self._transpose
+        copy._conjugate = (not self._conjugate) if conjugate else self._conjugate
+        return copy
 
     def __init__(self, A, from_pointer=None, **kwargs):
         self.A = A.tocsc()
@@ -226,9 +241,14 @@ class Mumps(Base):
         rhs = rhs.flatten(order='F')
         n = self.A.shape[0]
         nrhs = rhs.size // n
-        T = 1 if self.transpose else 0
-        sol = self._funhandle('solve')(self.pointer.INT, nrhs, rhs, T)
-        return sol
+        T = 1 if self._transpose else 0
+        sol = self._funhandle('solve')(
+            self.pointer.INT,
+            nrhs,
+            np.conjugate(rhs) if self._conjugate else rhs,
+            T
+        )
+        return np.conjugate(sol) if self._conjugate else sol
 
     _solve1 = _solveM
 
