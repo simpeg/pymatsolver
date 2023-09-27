@@ -9,7 +9,7 @@ pymatsolver
     :target: https://github.com/simpeg/pymatsolver/blob/master/LICENSE
     :alt: MIT license.
 
-.. image:: https://img.shields.io/travis/rowanc1/pymatsolver.svg
+.. image:: https://img.shields.io/travis/simpeg/pymatsolver.svg
     :target: https://travis-ci.org/simpeg/pymatsolver
     :alt: Travis CI build status
 
@@ -64,9 +64,9 @@ From a clean install on Ubuntu:
     ./miniconda.sh -b
     export PATH=/root/anaconda/bin:/root/miniconda/bin:$PATH
     conda update --yes conda
-    conda install --yes numpy scipy matplotlib cython ipython nose
+    conda install --yes numpy scipy matplotlib cython ipython pytest coverage
 
-    git clone https://github.com/rowanc1/pymatsolver.git
+    git clone https://github.com/simpeg/pymatsolver.git
     cd pymatsolver
     make mumps
 
@@ -79,7 +79,7 @@ This assumes that you have Brew and some python installed (numpy, scipy):
 
     brew install mumps --with-scotch5 --without-mpi
 
-    git clone https://github.com/rowanc1/pymatsolver.git
+    git clone https://github.com/simpeg/pymatsolver.git
     cd pymatsolver
     make mumps_mac
 

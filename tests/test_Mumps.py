@@ -1,16 +1,192 @@
-import unittest
+import os
+import warnings
+
 import numpy as np
+import pytest
 import scipy.sparse as sp
-import pymatsolver
+
+try:
+    from pymatsolver import Mumps
+    should_run = True
+except ImportError:
+    should_run = False
 
 TOL = 1e-11
 
-"""
-class TestMumps(unittest.TestCase):
 
-    if pymatsolver.AvailableSolvers['Mumps']:
+if should_run:
 
-        def setUp(self):
+    class TestMumps:
+
+        @classmethod
+        def setup_class(cls):
+
+            nSize = 100
+            A = sp.rand(nSize, nSize, 0.05, format='csr', random_state=100)
+            A = A + sp.spdiags(np.ones(nSize), 0, nSize, nSize)
+            A = A.T*A
+            A = A.tocsr()
+            np.random.seed(1)
+            sol = np.random.rand(nSize, 5)
+            rhs = A.dot(sol)
+
+            cls.A = A
+            cls.rhs = rhs
+            cls.sol = sol
+
+        def test(self):
+            rhs = self.rhs
+            sol = self.sol
+            Ainv = Mumps(self.A, is_symmetric=True)
+            for i in range(3):
+                assert np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]) < TOL
+            assert np.linalg.norm(Ainv * rhs - sol, np.inf) < TOL
+
+        def test_T(self):
+            rhs = self.rhs
+            sol = self.sol
+            Ainv = Mumps(self.A, is_symmetric=True)
+            AinvT = Ainv.T
+            x = AinvT * rhs
+
+            for i in range(3):
+                assert np.linalg.norm(x[:, i] - sol[:, i]) < TOL
+            assert np.linalg.norm(x - sol, np.inf) < TOL
+
+    class TestMumpsNotSymmetric:
+
+        @classmethod
+        def setup_class(cls):
+
+            nSize = 100
+            A = sp.rand(nSize, nSize, 0.05, format='csr', random_state=100)
+            A = A + sp.spdiags(np.ones(nSize), 0, nSize, nSize)
+            A = A.tocsr()
+            np.random.seed(1)
+            sol = np.random.rand(nSize, 5)
+            rhs = A.dot(sol)
+
+            cls.A = A
+            cls.rhs = rhs
+            cls.sol = sol
+
+        def test(self):
+            rhs = self.rhs
+            sol = self.sol
+            Ainv = Mumps(self.A, is_symmetric=True, check_accuracy=True)
+            with pytest.raises(Exception):
+                Ainv * rhs
+            Ainv.clean()
+
+            Ainv = Mumps(self.A, check_accuracy=True)
+            for i in range(3):
+                assert np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]) < TOL
+            assert np.linalg.norm(Ainv * rhs - sol, np.inf) < TOL
+            Ainv.clean()
+
+
+    class TestMumpsFDEM:
+
+        @classmethod
+        def setup_class(cls):
+
+            base_path = os.path.join(os.path.split(os.path.abspath(__file__))[0], 'fdem')
+
+            data = np.load(os.path.join(base_path, 'A_data.npy'))
+            indices = np.load(os.path.join(base_path, 'A_indices.npy'))
+            indptr = np.load(os.path.join(base_path, 'A_indptr.npy'))
+
+            cls.A = sp.csr_matrix((data, indices, indptr), shape=(13872, 13872))
+            cls.rhs = np.load(os.path.join(base_path, 'RHS.npy'))
+
+        def test(self):
+            rhs = self.rhs
+            Ainv = Mumps(self.A, check_accuracy=True)
+            sol = Ainv * rhs
+            sol = Ainv * rhs.real
+
+
+    class TestMumpsComplex:
+
+        @classmethod
+        def setup_class(cls):
+            nSize = 100
+            A = sp.rand(nSize, nSize, 0.05, format='csr', random_state=100)
+            A.data = A.data + 1j*np.random.rand(A.nnz)
+            A = A.T.dot(A) + sp.spdiags(np.ones(nSize), 0, nSize, nSize)
+            A = A.tocsr()
+
+            np.random.seed(1)
+            sol = np.random.rand(nSize, 5) + 1j*np.random.rand(nSize, 5)
+            rhs = A.dot(sol)
+
+            cls.A = A
+            cls.rhs = rhs
+            cls.sol = sol
+
+        def test(self):
+            rhs = self.rhs
+            sol = self.sol
+            Ainv = Mumps(self.A, is_symmetric=True)
+            for i in range(3):
+                assert np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]) < TOL
+            assert np.linalg.norm(Ainv * rhs - sol, np.inf) < TOL
+            Ainv.clean()
+
+        def test_T(self):
+            rhs = self.rhs
+            sol = self.sol
+            Ainv = Mumps(self.A, is_symmetric=True)
+            AinvT = Ainv.T
+            x = AinvT * rhs
+            for i in range(3):
+                assert np.linalg.norm(x[:, i] - sol[:, i]) < TOL
+            assert np.linalg.norm(x - sol, np.inf) < TOL
+
+        def test_T_congruent(self):
+            rhs = self.rhs
+            sol = self.sol
+
+            AinvT1 = Mumps(self.A, is_symmetric=True).T
+            AinvT2 = Mumps(self.A.T, is_symmetric=True)
+            x1 = AinvT2 * rhs
+            x2 = AinvT1 * rhs
+
+            for i in range(3):
+                assert np.linalg.norm(x1[:, i] - x2[:, i]) < TOL
+            assert np.linalg.norm(x1 - x2, np.inf) < TOL
+
+        def test_conjugate_congruent(self):
+            rhs = self.rhs
+            sol = self.sol
+
+            Ainv_conj1 = Mumps(self.A).conjugate()
+            Ainv_conj2 = Mumps(self.A.conjugate())
+            x1 = Ainv_conj1 * rhs
+            x2 = Ainv_conj2 * rhs
+
+            for i in range(3):
+                assert np.linalg.norm(x1[:, i] - x2[:, i]) < TOL
+            assert np.linalg.norm(x1 - x2, np.inf) < TOL
+
+        def test_complex_conjugate_congruent(self):
+            rhs = self.rhs
+            sol = self.sol
+
+            Ainv_conj1 = Mumps(self.A).T.conjugate()
+            Ainv_conj2 = Mumps(self.A.T.conjugate())
+            x1 = Ainv_conj1 * rhs
+            x2 = Ainv_conj2 * rhs
+
+            for i in range(3):
+                assert np.linalg.norm(x1[:, i] - x2[:, i]) < TOL
+            assert np.linalg.norm(x1 - x2, np.inf) < TOL
+
+
+    class TestMumps1to5:
+
+        @classmethod
+        def setup_class(cls):
             n = 5
             irn = np.r_[0, 1, 3, 4, 1, 0, 4, 2, 1, 2, 0, 2]
             jcn = np.r_[1, 2, 2, 4, 0, 0, 1, 3, 4, 1, 2, 2]
@@ -23,64 +199,58 @@ class TestMumps(unittest.TestCase):
             sol = np.r_[1., 2., 3., 4., 5.]
             sol = np.c_[sol, 10*sol, 100*sol]
             A = sp.coo_matrix((a, (irn, jcn)), shape=(n, n))
-            self.A = A
-            self.rhs = rhs
-            self.sol = sol
+            cls.A = A
+            cls.rhs = rhs
+            cls.sol = sol
 
-        def test_1to5(self):
+        def test(self):
             rhs = self.rhs
             sol = self.sol
-            Ainv = pymatsolver.Mumps(self.A)
+            Ainv = Mumps(self.A)
             for i in range(3):
-                self.assertLess(
-                    np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL
-                )
-            self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
+                assert np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]) < TOL
+            assert np.linalg.norm(Ainv * rhs - sol, np.inf) < TOL
 
-        def test_1to5_cmplx(self):
+        def test_cmplx(self):
             rhs = self.rhs.astype(complex)
             sol = self.sol.astype(complex)
             self.A = self.A.astype(complex)
-            Ainv = pymatsolver.Mumps(self.A)
+            Ainv = Mumps(self.A)
             for i in range(3):
-                self.assertLess(
-                    np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL
-                )
-            self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
+                assert np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]) < TOL
+            assert np.linalg.norm(Ainv * rhs - sol, np.inf) < TOL
 
-        def test_1to5_T(self):
+        def test_T(self):
             rhs = self.rhs
             sol = self.sol
-            Ainv = pymatsolver.Mumps(self.A)
+            Ainv = Mumps(self.A)
             AinvT = Ainv.T
             for i in range(3):
-                self.assertLess(
-                    np.linalg.norm(AinvT.T * rhs[:, i] - sol[:, i]), TOL
-                )
-            self.assertLess(np.linalg.norm(AinvT.T * rhs - sol, np.inf), TOL)
+                assert np.linalg.norm(AinvT.T * rhs[:, i] - sol[:, i]) < TOL
+            assert np.linalg.norm(AinvT.T * rhs - sol, np.inf) < TOL
 
-        # def test_singular(self):
-        #     A = sp.identity(5).tocsr()
-        #     A[-1, -1] = 0
-        #     self.assertRaises(Exception, pymatsolver.Mumps, A)
+        def test_singular(self):
+            A = sp.identity(5).tocsr()
+            A[-1, -1] = 0
+            with pytest.raises(Exception):
+                Mumps(A)
 
-        def test_multiFactorsInMem(self):
+        def test_multi_factors_in_mem(self):
             n = 100
             A = sp.rand(n, n, 0.7)+sp.identity(n)
             x = np.ones((n, 10))
             rhs = A * x
-            solvers = [pymatsolver.Mumps(A) for _ in range(20)]
+            solvers = [Mumps(A) for _ in range(20)]
 
             for Ainv in solvers:
-                self.assertLess(
-                    np.linalg.norm(Ainv * rhs - x)/np.linalg.norm(rhs), TOL)
+                assert np.linalg.norm(Ainv * rhs - x)/np.linalg.norm(rhs) < TOL
                 Ainv.clean()
 
             for Ainv in solvers:
-                self.assertLess(
-                    np.linalg.norm(Ainv * rhs - x)/np.linalg.norm(rhs), TOL
-                )
+                assert np.linalg.norm(Ainv * rhs - x)/np.linalg.norm(rhs) < TOL
 
-if __name__ == '__main__':
-    unittest.main()
-"""
+else:
+
+    def test_mumps_not_available():
+        """Run only when Mumps is not available."""
+        warnings.warn("NOTE: Mumps is not available so we're skipping its tests.")

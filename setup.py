@@ -5,8 +5,7 @@ pymatsolver is a python package for easy to use matrix solvers.
 
 """
 
-from distutils.core import setup
-from setuptools import find_packages
+from setuptools import find_packages, setup
 
 CLASSIFIERS = [
     'Development Status :: 4 - Beta',
@@ -42,7 +41,7 @@ setup(
     license="MIT",
     keywords="matrix solver",
     url="http://simpeg.xyz/",
-    download_url="http://github.com/rowanc1/pymatsolver",
+    download_url="http://github.com/simpeg/pymatsolver",
     classifiers=CLASSIFIERS,
     platforms=["Windows", "Linux", "Solaris", "Mac OS-X", "Unix"],
     use_2to3=False
