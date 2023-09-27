@@ -197,7 +197,7 @@ try:
         "icon_links": [
             {
                 "name": "GitHub",
-                "url": "https://github.com/simpeg/pymatsolverr",
+                "url": "https://github.com/simpeg/pymatsolver",
                 "icon": "fab fa-github",
             },
             {
@@ -232,7 +232,7 @@ try:
 
     html_context = {
         "github_user": "simpeg",
-        "github_repo": "pymatsolverr",
+        "github_repo": "pymatsolver",
         "github_version": "main",
         "doc_path": "docs",
     }
