@@ -20,15 +20,14 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest]
-        python-version: [3.7, 3.8, 3.9, "3.10"]
+        python-version: [3.9, "3.10", "3.11", "3.12"]
 
     steps:
     - uses: actions/checkout@v2
     - name: Setup Conda
-      uses: conda-incubator/setup-miniconda@v2
+    - uses: conda-incubator/setup-miniconda@v3
       with:
         auto-update-conda: true
-        activate-environment: dev
         python-version: ${{ matrix.python-version }}
     - name: Install Env
       run: |
@@ -47,7 +46,7 @@ jobs:
         pytest --cov-config=.coveragerc --cov-report=xml --cov=pymatsolver -s -v
 
     - name: Test Documentation
-      if: ${{ matrix.os == 'ubuntu-latest' }} and {{ matrix.python-version == '3.8' }}
+      if: ${{ matrix.os == 'ubuntu-latest' }} and {{ matrix.python-version == '3.11' }}
       run: |
         pip install -r requirements_docs.txt
         cd docs
@@ -55,7 +54,7 @@ jobs:
         cd ..
 
     - name: Upload coverage
-      if: ${{ matrix.os == 'ubuntu-latest' }} and {{ matrix.python-version == '3.8' }}
+      if: ${{ matrix.os == 'ubuntu-latest' }} and {{ matrix.python-version == '3.11' }}
       uses: codecov/codecov-action@v2
       with:
         verbose: true # optional (default = false)
