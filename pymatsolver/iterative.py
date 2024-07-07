@@ -1,10 +1,14 @@
 import numpy as np
 import scipy.sparse as sp
-from scipy.sparse.linalg import bicgstab
-from pymatsolver.solvers import Base
+from scipy.sparse.linalg import bicgstab, cg
+from .solvers import Base
+from .wrappers import WrapIterative
 
 
-class BicgJacobi(Base):
+SolverCG = WrapIterative(cg, name="SolverCG")
+SolverBiCG = WrapIterative(bicgstab, name="SolverBiCG")
+
+class BiCGJacobi(Base):
     """Bicg Solver with Jacobi preconditioner"""
 
     _factored = False
@@ -50,3 +54,4 @@ class BicgJacobi(Base):
         self.M = None
         self.A = None
         self._factored = False
+

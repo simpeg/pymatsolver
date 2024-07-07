@@ -34,7 +34,7 @@ Iterative Solvers
   :toctree: generated/
 
   SolverCG
-  BicgJacobi
+  BiCGJacobi
 
 Direct Solvers
 ==============
@@ -45,15 +45,8 @@ Direct Solvers
   Solver
   SolverLU
   Pardiso
+  Mumps
 """
-from pymatsolver.solvers import Diagonal, Forward, Backward
-from pymatsolver.wrappers import WrapDirect
-from pymatsolver.wrappers import WrapIterative
-from pymatsolver.wrappers import Solver
-from pymatsolver.wrappers import SolverLU
-from pymatsolver.wrappers import SolverCG
-from pymatsolver.wrappers import SolverBiCG
-from pymatsolver.iterative import BicgJacobi
 
 SolverHelp = {}
 AvailableSolvers = {
@@ -66,8 +59,24 @@ AvailableSolvers = {
     "Mumps": False
 }
 
+# Simple solvers
+from .solvers import Diagonal, Forward, Backward
+from .wrappers import WrapDirect
+from .wrappers import WrapIterative
+
+# Scipy Iterative solvers
+from .iterative import SolverCG
+from .iterative import SolverBiCG
+from .iterative import BiCGJacobi
+
+# Scipy direct solvers
+from .direct import Solver
+from .direct import SolverLU
+
+BicgJacobi = BiCGJacobi  # backwards compatibility
+
 try:
-    from pymatsolver.direct import Pardiso
+    from .direct import Pardiso
     AvailableSolvers['Pardiso'] = True
     PardisoSolver = Pardiso  # backwards compatibility
 except ImportError:
@@ -77,27 +86,17 @@ Ensure that you have pydiso installed, which may also require Python
 to be installed through conda.
 """
 
-# try:
-#     from pymatsolver.mumps import Mumps
-#     AvailableSolvers['Mumps'] = True
-#     MumpsSolver = Mumps  # backwards compatibility
-# except Exception:
-#     SolverHelp['Mumps'] = """Mumps is not working.
-#
-# Ensure that you have Mumps installed, and know where the path to it is.
-# Try something like:
-#     cd pymatsolver/mumps
-#     make
-#
-# When that doesn't work, you may need to edit the make file, to modify the
-# path to the mumps installation, or any other compiler flags.
-# If you find a good way of doing it, please share.
-#
-# brew install mumps --with-scotch5 --without-mpi
-# mpicc --showme
-# """
+try:
+    from .direct import Mumps
+    AvailableSolvers['Mumps'] = True
+except ImportError:
+    SolverHelp['Mumps'] = """Mumps is not working.
+
+Ensure that you have python-mumps installed, which may also require Python
+to be installed through conda.
+"""
 
 __version__ = '0.2.0'
-__author__ = 'Rowan Cockett'
+__author__ = 'SimPEG Team'
 __license__ = 'MIT'
-__copyright__ = 'Copyright 2017 Rowan Cockett'
+__copyright__ = '2013 - 2024, SimPEG Team, https://simpeg.xyz'

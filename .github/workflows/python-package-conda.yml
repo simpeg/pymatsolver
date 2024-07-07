@@ -35,7 +35,7 @@ jobs:
         conda info
         conda list
         conda config --show
-        conda install --quiet --yes -c conda-forge pip numpy scipy pytest pytest-cov pydiso
+        conda install --quiet --yes -c conda-forge pip numpy scipy pytest pytest-cov pydiso python-mumps
 
     - name: Install Our Package
       run: |
