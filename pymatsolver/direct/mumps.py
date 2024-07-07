@@ -5,19 +5,13 @@ class Mumps(Base):
     """
     Mumps solver
     """
-
-    _factored = False
     _transposed = False
     ordering = ''
 
-    def __init__(self, A, context=None, **kwargs):
+    def __init__(self, A, **kwargs):
         self.set_kwargs(**kwargs)
-        if context is None:
-            self.solver = Context()
-            self._analyzed = False
-            self._set_A(A)
-        else:
-            self.solver = context
+        self.solver = Context()
+        self._set_A(A)
         self.A = A
 
     def _set_A(self, A):
@@ -41,16 +35,14 @@ class Mumps(Base):
 
     @property
     def transpose(self):
-        trans_obect = Mumps(
-            self.A,
-            self.solver,
-            is_symmetric=self.is_symmetric,
-            is_positive_definite=self.is_positive_definite,
-            ordering=self.ordering,
-        )
-        trans_obect._transposed = not self._transposed
-
-        return trans_obect
+        trans_obj = Mumps.__new__(Mumps)
+        trans_obj.A = self.A
+        trans_obj.solver = self.solver
+        trans_obj.is_symmetric = self.is_symmetric
+        trans_obj.is_positive_definite = self.is_positive_definite
+        trans_obj.ordering = self.ordering
+        trans_obj._transposed = not self._transposed
+        return trans_obj
 
     T = transpose
 
