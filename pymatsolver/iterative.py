@@ -34,7 +34,7 @@ class BiCGJacobi(Base):
         self.factor()
         sol, info = self.solver(
             self.A, rhs,
-            tol=self.tol,
+            atol=self.tol,
             maxiter=self.maxiter,
             M=self.M
         )
@@ -45,7 +45,7 @@ class BiCGJacobi(Base):
         sol = []
         for icol in range(rhs.shape[1]):
             sol.append(self.solver(self.A, rhs[:, icol].flatten(),
-                       tol=self.tol, maxiter=self.maxiter, M=self.M)[0])
+                       atol=self.tol, maxiter=self.maxiter, M=self.M)[0])
         out = np.hstack(sol)
         out.shape
         return out
