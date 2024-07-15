@@ -9,10 +9,6 @@ pymatsolver
     :target: https://github.com/simpeg/pymatsolver/blob/master/LICENSE
     :alt: MIT license.
 
-.. image:: https://img.shields.io/travis/rowanc1/pymatsolver.svg
-    :target: https://travis-ci.org/simpeg/pymatsolver
-    :alt: Travis CI build status
-
 .. image:: https://codecov.io/gh/simpeg/pymatsolver/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/simpeg/pymatsolver
     :alt: Coverage status
