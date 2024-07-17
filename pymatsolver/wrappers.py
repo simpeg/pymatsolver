@@ -112,7 +112,3 @@ def WrapIterative(fun, check_accuracy=True, accuracyTol=1e-5, name=None):
         }
     )
 
-Solver = WrapDirect(linalg.spsolve, factorize=False, name="Solver")
-SolverLU = WrapDirect(linalg.splu, factorize=True, name="SolverLU")
-SolverCG = WrapIterative(linalg.cg, name="SolverCG")
-SolverBiCG = WrapIterative(linalg.bicgstab, name="SolverBiCG")
