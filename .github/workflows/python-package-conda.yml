@@ -19,7 +19,9 @@ jobs:
         shell: bash -l {0}
     strategy:
       matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+        # NOTE: macOS-13 is the last Intel runner.
+        # When we move past that version we'll need to deal with Apple Silicon, likely using MUMPS.
+        os: [ubuntu-latest, macOS-13, windows-latest]
         python-version: [3.7, 3.8, 3.9, "3.10"]
 
     steps:
