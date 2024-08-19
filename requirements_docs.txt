@@ -3,5 +3,5 @@ numpydoc
 
 # Restrict pydata-sphinx-theme on older versions of Python on Windows.
 # Otherwise we get doc build failures.
-pydata-sphinx-theme~=0.14.4 ; python_version <= '3.9' and os_name == "Windows"
+pydata-sphinx-theme~=0.14.4,<0.15 ; python_version <= '3.9' and os_name == "Windows"
 pydata-sphinx-theme
