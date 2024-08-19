@@ -21,7 +21,7 @@ jobs:
       matrix:
         # NOTE: macOS-13 is the last Intel runner.
         # When we move past that version we'll need to deal with Apple Silicon, likely using MUMPS.
-        os: [macOS-13]
+        os: [ubuntu-latest]
         python-version: ["3.8", "3.9", "3.10", "3.11"]
 
     steps:
