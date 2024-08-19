@@ -1,4 +1,5 @@
 import numpy as np
+import scipy
 import scipy.sparse as sp
 from scipy.sparse.linalg import aslinearoperator, bicgstab
 from packaging.version import Version
