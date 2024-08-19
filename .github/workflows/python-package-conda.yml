@@ -25,7 +25,7 @@ jobs:
         python-version: [3.7, 3.8, 3.9, "3.10"]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Setup Conda
       uses: conda-incubator/setup-miniconda@v3
       with:
@@ -58,7 +58,7 @@ jobs:
 
     - name: Upload coverage
       if: ${{ matrix.os == 'ubuntu-latest' }} and {{ matrix.python-version == '3.8' }}
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v4
       with:
         verbose: true # optional (default = false)
 
@@ -72,7 +72,7 @@ jobs:
         shell: bash -l {0}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Setup Conda
       uses: conda-incubator/setup-miniconda@v3
       with:
