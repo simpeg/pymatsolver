@@ -22,7 +22,7 @@ jobs:
         # NOTE: macOS-13 is the last Intel runner.
         # When we move past that version we'll need to deal with Apple Silicon, likely using MUMPS.
         os: [windows-latest]
-        python-version: ["3.8", "3.10", "3.11"] # 3.9 failed - do the others pass??
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
 
     steps:
     - uses: actions/checkout@v4
