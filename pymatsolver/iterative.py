@@ -1,7 +1,12 @@
 import numpy as np
 import scipy.sparse as sp
 from scipy.sparse.linalg import aslinearoperator, bicgstab
+from packaging import Version
 from pymatsolver.solvers import Base
+
+# The tol kwarg was removed from bicgstab in scipy 1.14.0.
+# See https://docs.scipy.org/doc/scipy-1.12.0/reference/generated/scipy.sparse.linalg.bicgstab.html
+TOL_ARG_NAME = "rtol" if Version(scipy.__version__) >= Version("1.14.0") else "tol"
 
 
 class BicgJacobi(Base):
@@ -29,10 +34,13 @@ class BicgJacobi(Base):
     def _solve1(self, rhs):
         self.factor()
         sol, info = self.solver(
-            self.A, rhs,
-            tol=self.tol,
-            maxiter=self.maxiter,
-            M=self.M
+            self.A,
+            rhs,
+            **{
+                TOL_ARG_NAME: self.tol,
+                "maxiter": self.maxiter,
+                "M": self.M,
+            }
         )
         return sol
 
@@ -40,8 +48,17 @@ class BicgJacobi(Base):
         self.factor()
         sol = []
         for icol in range(rhs.shape[1]):
-            sol.append(self.solver(self.A, rhs[:, icol].flatten(),
-                       tol=self.tol, maxiter=self.maxiter, M=self.M)[0])
+            sol.append(
+                self.solver(
+                    self.A,
+                    rhs[:, icol].flatten(),
+                    **{
+                        TOL_ARG_NAME: self.tol,
+                        "maxiter": self.maxiter,
+                        "M": self.M,
+                    }
+                )[0]
+            )
         out = np.hstack(sol)
         out.shape
         return out
