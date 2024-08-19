@@ -1,6 +1,6 @@
 import numpy as np
 import scipy.sparse as sp
-from scipy.sparse.linalg import bicgstab
+from scipy.sparse.linalg import aslinearoperator, bicgstab
 from pymatsolver.solvers import Base
 
 
@@ -23,7 +23,7 @@ class BicgJacobi(Base):
             return
         nSize = self.A.shape[0]
         Ainv = sp.spdiags(1./self.A.diagonal(), 0, nSize, nSize)
-        self.M = sp.linalg.interface.aslinearoperator(Ainv)
+        self.M = aslinearoperator(Ainv)
         self._factored = True
 
     def _solve1(self, rhs):
