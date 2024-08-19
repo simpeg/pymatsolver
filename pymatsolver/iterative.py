@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.sparse as sp
 from scipy.sparse.linalg import aslinearoperator, bicgstab
-from packaging import Version
+from packaging.version import Version
 from pymatsolver.solvers import Base
 
 # The tol kwarg was removed from bicgstab in scipy 1.14.0.
