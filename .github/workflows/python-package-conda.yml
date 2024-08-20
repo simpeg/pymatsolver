@@ -12,7 +12,7 @@ on:
 
 jobs:
   build-and-test:
-    name: Testing (${{ matrix.python-version }}, ${{ matrix.os }})
+    name: Testing (${{ matrix.python-major-version }}.${{matrix.python-minor-version}}, ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -21,9 +21,13 @@ jobs:
       fail-fast: false
       matrix:
         # NOTE: macOS-13 is the last Intel runner.
-        # When we move past that version we'll need to deal with Apple Silicon, likely using MUMPS.
-        os: [ubuntu-latest, windows-latest, macOS-13]
-        python-version: [3.8, 3.9, "3.10", "3.11", "3.12"]
+        os: [ubuntu-latest, windows-latest, macOS-13, macOS-latest]
+        python-major-version : [3,]
+        python-minor-version: [8, 9, 10, 11, 12]
+        exclude:
+          - os: macOS-latest
+            python-major-version: 3
+            python-minor-version: 8
 
     steps:
     - uses: actions/checkout@v4
@@ -31,13 +35,24 @@ jobs:
       uses: conda-incubator/setup-miniconda@v3
       with:
         auto-update-conda: true
-        python-version: ${{ matrix.python-version }}
-    - name: Install Env
+        python-version: ${{matrix.python-major-version }}.{{matrix.python-minor-version}
+    - name: Install Base Env
       run: |
         conda info
         conda list
         conda config --show
         conda install --quiet --yes -c conda-forge pip numpy scipy pytest pytest-cov pydiso python-mumps
+
+    - name: Install MKL solver interface
+      # Don't run this on the osx-arm images.
+      if: ${{ runner.os == 'macOS'}} and ${{ 'ARM' in runner.arch}}
+      run:
+        conda install --quiet --yes -c conda-forge pydiso
+
+    - name: Install MUMPS solver interface
+      if: ${{matrix.python-major-version >= 3}} and ${{ matrix.python-minor-version >= 9}}
+      run:
+        conda install --quiet --yes -c conda-forge python-mumps
 
     - name: Install Our Package
       run: |
@@ -49,7 +64,7 @@ jobs:
         pytest --cov-config=.coveragerc --cov-report=xml --cov=pymatsolver -s -v
 
     - name: Test Documentation
-      if: ${{ matrix.os == 'ubuntu-latest' }} and {{ matrix.python-version == '3.11' }}
+      if: ${{ matrix.os == 'ubuntu-latest' }} and ${{matrix.python-major-version == 3}} and ${{ matrix.python-minor-version == 11}}
       run: |
         pip install -r requirements_docs.txt
         cd docs
@@ -57,7 +72,7 @@ jobs:
         cd ..
 
     - name: Upload coverage
-      if: ${{ matrix.os == 'ubuntu-latest' }} and {{ matrix.python-version == '3.11' }}
+      if: ${{ matrix.os == 'ubuntu-latest' }} and  and ${{matrix.python-major-version == 3}} and ${{ matrix.python-minor-version == 11}}
       uses: codecov/codecov-action@v4
       with:
         verbose: true # optional (default = false)
