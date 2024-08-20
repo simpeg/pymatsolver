@@ -37,7 +37,7 @@ jobs:
       uses: conda-incubator/setup-miniconda@v3
       with:
         auto-update-conda: true
-        python-version: env.PYTHON_VERSION
+        python-version: ${{ env.PYTHON_VERSION }}
     - name: Install Base Env
       run: |
         conda info
@@ -66,7 +66,7 @@ jobs:
         pytest --cov-config=.coveragerc --cov-report=xml --cov=pymatsolver -s -v
 
     - name: Test Documentation
-      if: ${{ matrix.os == 'ubuntu-latest' }} and ${{matrix.python-major-version == 3}} and ${{ matrix.python-minor-version == 11}}
+      if: ${{ matrix.os == 'ubuntu-latest' }} and ${{ env.PYTHON_VERSION  == "3.11"}}
       run: |
         pip install -r requirements_docs.txt
         cd docs
@@ -74,7 +74,7 @@ jobs:
         cd ..
 
     - name: Upload coverage
-      if: ${{ matrix.os == 'ubuntu-latest' }} and  and ${{matrix.python-major-version == 3}} and ${{ matrix.python-minor-version == 11}}
+      if: ${{ matrix.os == 'ubuntu-latest' }} and ${{ env.PYTHON_VERSION  == "3.11"}}
       uses: codecov/codecov-action@v4
       with:
         verbose: true # optional (default = false)
