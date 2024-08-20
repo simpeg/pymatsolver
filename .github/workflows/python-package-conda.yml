@@ -28,6 +28,8 @@ jobs:
           - os: macOS-latest
             python-major-version: 3
             python-minor-version: 8
+    env:
+      PYTHON_VERSION: ${{ matrix.python-major-version }}.${{matrix.python-minor-version}}
 
     steps:
     - uses: actions/checkout@v4
@@ -35,7 +37,7 @@ jobs:
       uses: conda-incubator/setup-miniconda@v3
       with:
         auto-update-conda: true
-        python-version: ${{matrix.python-major-version }}.{{matrix.python-minor-version}
+        python-version: env.PYTHON_VERSION
     - name: Install Base Env
       run: |
         conda info
@@ -45,7 +47,7 @@ jobs:
 
     - name: Install MKL solver interface
       # Don't run this on the osx-arm images.
-      if: ${{ runner.os == 'macOS'}} and ${{ 'ARM' in runner.arch}}
+      if: not(${{ runner.os == 'macOS'}} and contains('ARM', runner.arch, 'ARM'))
       run:
         conda install --quiet --yes -c conda-forge pydiso
 
