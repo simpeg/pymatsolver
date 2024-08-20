@@ -4,6 +4,7 @@ import scipy.sparse as sp
 from scipy.sparse.linalg import bicgstab, cg, aslinearoperator
 from packaging.version import Version
 from .wrappers import WrapIterative
+from .solvers import Base
 
 # The tol kwarg was removed from bicgstab in scipy 1.14.0.
 # See https://docs.scipy.org/doc/scipy-1.12.0/reference/generated/scipy.sparse.linalg.bicgstab.html
