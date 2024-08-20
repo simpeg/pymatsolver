@@ -47,7 +47,7 @@ jobs:
 
     - name: Install MKL solver interface
       # Don't run this on the osx-arm images.
-      if: $${ !(runner.os == 'macOS' and contains(runner.arch, 'ARM')) }}
+      if: ${{ !((runner.os == 'macOS') and contains(runner.arch, 'ARM')) }}
       run:
         conda install --quiet --yes -c conda-forge pydiso
 
