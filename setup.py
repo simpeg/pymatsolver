@@ -33,7 +33,7 @@ setup(
     packages=find_packages(exclude=["*mumps", "tests"]),
     install_requires=[
         'numpy>=1.7',
-        'scipy>=0.13',
+        'scipy>=1.8',
     ],
     author="Rowan Cockett",
     author_email="rowanc1@gmail.com",
