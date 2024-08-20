@@ -43,4 +43,4 @@ clean:
 	rm -rf *.dSYM
 
 test:
-	cd ..;nosetests
+	cd ../..;pytest

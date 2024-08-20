@@ -60,7 +60,7 @@ From a clean install on Ubuntu:
     ./miniconda.sh -b
     export PATH=/root/anaconda/bin:/root/miniconda/bin:$PATH
     conda update --yes conda
-    conda install --yes numpy scipy matplotlib cython ipython nose
+    conda install --yes numpy scipy matplotlib cython ipython pytest coverage
 
     git clone https://github.com/rowanc1/pymatsolver.git
     cd pymatsolver

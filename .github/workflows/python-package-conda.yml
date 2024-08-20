@@ -46,7 +46,7 @@ jobs:
 
     - name: Run Tests
       run: |
-        pytest --cov-config=.coveragerc --cov-report=xml --cov=pymatsolver -s -v
+        make coverage
 
     - name: Test Documentation
       if: ${{ matrix.os == 'ubuntu-latest' }} and {{ matrix.python-version == '3.8' }}

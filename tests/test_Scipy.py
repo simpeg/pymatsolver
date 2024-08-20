@@ -1,7 +1,8 @@
-import unittest
 from pymatsolver import Solver, Diagonal, SolverCG, SolverLU
 import scipy.sparse as sp
 import numpy as np
+import pytest
+
 
 TOLD = 1e-10
 TOLI = 1e-3
@@ -50,38 +51,27 @@ def dotest(MYSOLVER, multi=False, A=None, **solverOpts):
     return np.linalg.norm(e-x, np.inf)
 
 
-class TestSolver(unittest.TestCase):
-
-    def test_direct_spsolve_1(self):
-        self.assertLess(dotest(Solver, False), TOLD)
-
-    def test_direct_spsolve_M(self):
-        self.assertLess(dotest(Solver, True), TOLD)
-
-    def test_direct_splu_1(self):
-        self.assertLess(dotest(SolverLU, False), TOLD)
-
-    def test_direct_splu_M(self):
-        self.assertLess(dotest(SolverLU, True), TOLD)
-
-    def test_iterative_diag_1(self):
-        self.assertLess(dotest(
-            Diagonal, False,
-            A=sp.diags(np.random.rand(10)+1.0)
-        ), TOLI)
-
-    def test_iterative_diag_M(self):
-        self.assertLess(dotest(
-            Diagonal, True,
-            A=sp.diags(np.random.rand(10)+1.0)
-        ), TOLI)
-
-    def test_iterative_cg_1(self):
-        self.assertLess(dotest(SolverCG, False), TOLI)
-
-    def test_iterative_cg_M(self):
-        self.assertLess(dotest(SolverCG, True), TOLI)
+@pytest.mark.parametrize(
+    ["solver", "multi"],
+    [
+        pytest.param(Solver, False),
+        pytest.param(Solver, True),
+        pytest.param(SolverLU, False),
+        pytest.param(SolverLU, True),
+    ]
+)
+def test_direct(solver, multi):
+    assert dotest(solver, multi) < TOLD
 
 
-if __name__ == '__main__':
-    unittest.main()
+@pytest.mark.parametrize(
+    ["solver", "multi", "A"],
+    [
+        pytest.param(Diagonal, False, sp.diags(np.random.rand(10)+1.0)),
+        pytest.param(Diagonal, True, sp.diags(np.random.rand(10)+1.0)),
+        pytest.param(SolverCG, False, None),
+        pytest.param(SolverCG, True, None),
+    ]
+)
+def test_iterative(solver, multi, A):
+    assert dotest(solver, multi, A) < TOLI
