@@ -43,11 +43,11 @@ jobs:
         conda info
         conda list
         conda config --show
-        conda install --quiet --yes -c conda-forge pip numpy scipy pytest pytest-cov pydiso python-mumps
+        conda install --quiet --yes -c conda-forge pip numpy scipy pytest pytest-cov
 
     - name: Install MKL solver interface
       # Don't run this on the osx-arm images.
-      if: not(${{ runner.os == 'macOS'}} and contains('ARM', runner.arch, 'ARM'))
+      if: not(${{ runner.os == 'macOS'}} and contains(runner.arch, 'ARM'))
       run:
         conda install --quiet --yes -c conda-forge pydiso
 
