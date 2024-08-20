@@ -2,6 +2,7 @@ import numpy as np
 import scipy
 import scipy.sparse as sp
 from scipy.sparse.linalg import bicgstab, cg, aslinearoperator
+from packaging.version import Version
 from .wrappers import WrapIterative
 
 # The tol kwarg was removed from bicgstab in scipy 1.14.0.
