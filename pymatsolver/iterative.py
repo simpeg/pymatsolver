@@ -1,18 +1,15 @@
 import numpy as np
+import scipy
 import scipy.sparse as sp
-from scipy.sparse.linalg import bicgstab, cg
-from .solvers import Base
+from scipy.sparse.linalg import bicgstab, cg, aslinearoperator
 from .wrappers import WrapIterative
 
+# The tol kwarg was removed from bicgstab in scipy 1.14.0.
+# See https://docs.scipy.org/doc/scipy-1.12.0/reference/generated/scipy.sparse.linalg.bicgstab.html
+RTOL_ARG_NAME = "rtol" if Version(scipy.__version__) >= Version("1.14.0") else "tol"
 
 SolverCG = WrapIterative(cg, name="SolverCG")
 SolverBiCG = WrapIterative(bicgstab, name="SolverBiCG")
-
-import scipy
-_rtol_call = False
-scipy_major, scipy_minor, scipy_patch = scipy.__version__.split(".")
-if int(scipy_major) >= 1 and int(scipy_minor) >= 12:
-    _rtol_call = True
 
 class BiCGJacobi(Base):
     """Bicg Solver with Jacobi preconditioner"""
@@ -34,15 +31,12 @@ class BiCGJacobi(Base):
             return
         nSize = self.A.shape[0]
         Ainv = sp.spdiags(1./self.A.diagonal(), 0, nSize, nSize)
-        self.M = sp.linalg.interface.aslinearoperator(Ainv)
+        self.M = aslinearoperator(Ainv)
         self._factored = True
 
     @property
     def _tols(self):
-        if _rtol_call:
-            return {'rtol': self.rtol, 'atol': self.atol}
-        else:
-            return {'tol': self.rtol, 'atol': self.atol}
+        return {RTOL_ARG_NAME: self.rtol, 'atol': self.atol}
 
 
     def _solve1(self, rhs):
@@ -60,8 +54,7 @@ class BiCGJacobi(Base):
         sol = []
         for icol in range(rhs.shape[1]):
             sol.append(self.solver(self.A, rhs[:, icol].flatten(),
-                       maxiter=self.maxiter, M=self.M,
-            **self._tols,)[0])
+                       maxiter=self.maxiter, M=self.M, **self._tols,)[0])
         out = np.hstack(sol)
         out.shape
         return out
