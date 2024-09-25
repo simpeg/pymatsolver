@@ -23,7 +23,7 @@ jobs:
         # NOTE: macOS-13 is the last Intel runner.
         os: [ubuntu-latest, windows-latest, macOS-13, macOS-latest]
         python-major-version : [3,]
-        python-minor-version: [8, 9, 10, 11, 12]
+        python-minor-version: [10, 11, 12]
         exclude:
           - os: macOS-latest
             python-major-version: 3
@@ -49,7 +49,7 @@ jobs:
       # Don't run this on the osx-arm images.
       if: ${{ !((runner.os == 'macOS') && contains(runner.arch, 'ARM')) }}
       run:
-        conda install --quiet --yes -c conda-forge pydiso
+        conda install --quiet --yes -c conda-forge pydiso ${{ runner.os == 'windows' && '"libblas=*=*mkl"' || ''}}
 
     - name: Install MUMPS solver interface
       if: ${{ (matrix.python-major-version >= 3) && (matrix.python-minor-version >= 9) }}
