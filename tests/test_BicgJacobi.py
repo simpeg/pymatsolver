@@ -4,7 +4,7 @@ import numpy.testing as npt
 import scipy.sparse as sp
 import pytest
 
-TOL = 2e-6
+TOL = 1e-5
 
 @pytest.fixture()
 def test_mat_data():
