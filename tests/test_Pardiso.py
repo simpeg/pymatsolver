@@ -1,5 +1,6 @@
 import pymatsolver
 import numpy as np
+import numpy.testing as npt
 import pytest
 import scipy.sparse as sp
 import os
@@ -36,21 +37,21 @@ def test_solve(test_mat_data, dtype, transpose):
     else:
         Ainv = pymatsolver.Pardiso(A)
     for i in range(rhs.shape[1]):
-        np.testing.assert_allclose(Ainv * rhs[:, i], sol[:, i], atol=TOL)
-    np.testing.assert_allclose(Ainv * rhs, sol, atol=TOL)
+        npt.assert_allclose(Ainv * rhs[:, i], sol[:, i], atol=TOL)
+    npt.assert_allclose(Ainv * rhs, sol, atol=TOL)
 
 def test_symmetric_solve(test_mat_data):
     A, rhs, sol = test_mat_data
     Ainv = pymatsolver.Pardiso(A, is_symmetric=True)
     for i in range(rhs.shape[1]):
-        np.testing.assert_allclose(Ainv * rhs[:, i], sol[:, i], atol=TOL)
-    np.testing.assert_allclose(Ainv * rhs, sol, atol=TOL)
+        npt.assert_allclose(Ainv * rhs[:, i], sol[:, i], atol=TOL)
+    npt.assert_allclose(Ainv * rhs, sol, atol=TOL)
 
 
 def test_refactor(test_mat_data):
     A, rhs, sol = test_mat_data
     Ainv = pymatsolver.Pardiso(A, is_symmetric=True)
-    np.testing.assert_allclose(Ainv * rhs, sol, atol=TOL)
+    npt.assert_allclose(Ainv * rhs, sol, atol=TOL)
 
     # scale rows and columns
     D = sp.diags(np.random.rand(A.shape[0]) + 1.0)
@@ -58,7 +59,7 @@ def test_refactor(test_mat_data):
 
     rhs2 = A2 @ sol
     Ainv.factor(A2)
-    np.testing.assert_allclose(Ainv * rhs2, sol, atol=TOL)
+    npt.assert_allclose(Ainv * rhs2, sol, atol=TOL)
 
 def test_n_threads(test_mat_data):
     A, rhs, sol = test_mat_data
@@ -120,4 +121,4 @@ def test_pardiso_fdem():
 
     sol = Ainv * rhs
 
-    np.testing.assert_allclose(A @ sol, rhs, atol=TOL)
+    npt.assert_allclose(A @ sol, rhs, atol=TOL)

@@ -1,4 +1,5 @@
 import numpy as np
+import numpy.testing as npt
 import pytest
 import scipy.sparse as sp
 from pymatsolver import Diagonal
@@ -20,5 +21,5 @@ def test_DiagonalSolver():
     with pytest.raises(TypeError):
         Diagonal(A, accuracy_tol=0)
 
-    assert np.linalg.norm(sol-X, np.inf) < TOL
-    assert np.linalg.norm(sol[:, 0]-x, np.inf) < TOL
+    npt.assert_allclose(sol, X, atol=TOL)
+    npt.assert_allclose(sol[:, 0], x, atol=TOL)

@@ -1,31 +1,23 @@
 import numpy as np
+import numpy.testing as npt
 import scipy.sparse as sp
 import pymatsolver
+import pytest
 
 TOL = 1e-12
 
+@pytest.mark.parametrize("solver", [pymatsolver.Forward, pymatsolver.Backward])
+def test_solve(solver):
+    n = 50
+    nrhs = 20
+    A = sp.rand(n, n, 0.4) + sp.identity(n)
+    sol = np.ones((n, nrhs))
+    if solver is pymatsolver.Backward:
+        A = sp.triu(A)
+    else:
+        A = sp.tril(A)
+    rhs = A @ sol
 
-class TestTriangle:
-
-    @classmethod
-    def setup_class(cls):
-        n = 50
-        nrhs = 20
-        cls.A = sp.rand(n, n, 0.4) + sp.identity(n)
-        cls.sol = np.ones((n, nrhs))
-        cls.rhsU = sp.triu(cls.A) * cls.sol
-        cls.rhsL = sp.tril(cls.A) * cls.sol
-
-    def test_directLower(self):
-        ALinv = pymatsolver.Forward(sp.tril(self.A))
-        X = ALinv * self.rhsL
-        x = ALinv * self.rhsL[:, 0]
-        assert np.linalg.norm(self.sol-X, np.inf) < TOL
-        assert np.linalg.norm(self.sol[:, 0]-x, np.inf) < TOL
-
-    def test_directLower_1(self):
-        AUinv = pymatsolver.Backward(sp.triu(self.A))
-        X = AUinv * self.rhsU
-        x = AUinv * self.rhsU[:, 0]
-        assert np.linalg.norm(self.sol-X, np.inf) < TOL
-        assert np.linalg.norm(self.sol[:, 0]-x, np.inf) < TOL
+    Ainv = solver(A)
+    npt.assert_allclose(Ainv * rhs, sol, atol=TOL)
+    npt.assert_allclose(Ainv * rhs[:, 0], sol[:, 0], atol=TOL)
