@@ -12,7 +12,7 @@ on:
 
 jobs:
   build-and-test:
-    name: Testing (${{ matrix.python-major-version }}.${{matrix.python-minor-version}}, ${{ matrix.os }})
+    name: Testing (${{ matrix.python-version }} on ${{ matrix.os }}) with ${{ matrix.solver }}.
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -22,20 +22,11 @@ jobs:
       matrix:
         # NOTE: macOS-13 is the last Intel runner.
         os: [ubuntu-latest, windows-latest, macOS-13, macOS-latest]
-        solver: [all]
+        solver: [mumps, pardiso]
         python-version : ['3.10', '3.11', '3.12']
-        include:
-          - os: windows-latest
-            solver: mumps
-          - os: windows-latest
-            solver: pardiso
-          - os: macOS-latest
-            solver: mumps
         exclude:
-          - os: windows-latest
-            solver: all
           - os: macOS-latest
-            solver: all
+            solver: pardiso
 
     steps:
     - uses: actions/checkout@v4
@@ -53,12 +44,12 @@ jobs:
         conda install --quiet --yes pip numpy scipy pytest pytest-cov
 
     - name: Install MKL solver interface
-      if: ${{ contains(fromJSON('["all", "pardiso"]'), matrix.solver) }}
+      if: ${{ matrix.solver == 'pardiso' }}
       run:
         conda install --quiet --yes pydiso ${{ runner.os == 'windows' && '"libblas=*=*mkl"' || ''}}
 
     - name: Install MUMPS solver interface
-      if: ${{ contains(fromJSON('["all", "mumps"]'), matrix.solver) }}
+      if: ${{ matrix.solver == 'mumps' }}
       run:
         conda install --quiet --yes -python-mumps
 
