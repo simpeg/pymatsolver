@@ -1,4 +1,3 @@
-import pydiso.mkl_solver
 import pymatsolver
 import numpy as np
 import pytest
