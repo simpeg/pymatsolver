@@ -46,7 +46,7 @@ class TestBicgJacobi(unittest.TestCase):
         Ainv.clean()
 
 
-class TestPardisoComplex(unittest.TestCase):
+class TestBicgJacobiComplex(unittest.TestCase):
 
     def setUp(self):
         nSize = 100

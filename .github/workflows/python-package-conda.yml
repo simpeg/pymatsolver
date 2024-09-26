@@ -12,17 +12,21 @@ on:
 
 jobs:
   build-and-test:
-    name: Testing (${{ matrix.python-version }}, ${{ matrix.os }})
+    name: Testing (${{ matrix.python-version }} on ${{ matrix.os }}) with ${{ matrix.solver }}.
     runs-on: ${{ matrix.os }}
     defaults:
       run:
         shell: bash -l {0}
     strategy:
+      fail-fast: false
       matrix:
         # NOTE: macOS-13 is the last Intel runner.
-        # When we move past that version we'll need to deal with Apple Silicon, likely using MUMPS.
-        os: [ubuntu-latest, windows-latest, macOS-13]
-        python-version: ["3.8", "3.9", "3.10", "3.11"]
+        os: [ubuntu-latest, windows-latest, macOS-13, macOS-latest]
+        solver: [mumps, pardiso]
+        python-version : ['3.10', '3.11', '3.12']
+        exclude:
+          - os: macOS-latest
+            solver: pardiso
 
     steps:
     - uses: actions/checkout@v4
@@ -30,14 +34,24 @@ jobs:
       uses: conda-incubator/setup-miniconda@v3
       with:
         auto-update-conda: true
-        activate-environment: dev
+        channels: conda-forge
         python-version: ${{ matrix.python-version }}
-    - name: Install Env
+    - name: Install Base Env
       run: |
         conda info
         conda list
         conda config --show
-        conda install --quiet --yes -c conda-forge pip numpy scipy pytest pytest-cov pydiso
+        conda install --quiet --yes pip numpy scipy pytest pytest-cov
+
+    - name: Install MKL solver interface
+      if: ${{ matrix.solver == 'pardiso' }}
+      run:
+        conda install --quiet --yes "pydiso>=0.1"
+
+    - name: Install MUMPS solver interface
+      if: ${{ matrix.solver == 'mumps' }}
+      run:
+        conda install --quiet --yes python-mumps
 
     - name: Install Our Package
       run: |
@@ -49,7 +63,7 @@ jobs:
         pytest --cov-config=.coveragerc --cov-report=xml --cov=pymatsolver -s -v
 
     - name: Test Documentation
-      if: ${{ matrix.os == 'ubuntu-latest' }} and {{ matrix.python-version == '3.8' }}
+      if: ${{ (matrix.os == 'ubuntu-latest') && (matrix.python-version == '3.11') }}
       run: |
         pip install -r requirements_docs.txt
         cd docs
@@ -57,7 +71,7 @@ jobs:
         cd ..
 
     - name: Upload coverage
-      if: ${{ matrix.os == 'ubuntu-latest' }} and {{ matrix.python-version == '3.8' }}
+      if: ${{ (matrix.os == 'ubuntu-latest') && (matrix.python-version  == '3.11') }}
       uses: codecov/codecov-action@v4
       with:
         verbose: true # optional (default = false)
