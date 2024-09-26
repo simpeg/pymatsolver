@@ -22,7 +22,7 @@ jobs:
       matrix:
         # NOTE: macOS-13 is the last Intel runner.
         os: [ubuntu-latest, windows-latest, macOS-13, macOS-latest]
-        solver: all
+        solver: [all]
         python-major-version : [3,]
         python-minor-version: [10, 11, 12]
         include:
