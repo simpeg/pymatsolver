@@ -10,3 +10,5 @@ pymatsolver.egg-info/
 *.dSYM
 docs/_build/*
 docs/generated
+
+.idea/
