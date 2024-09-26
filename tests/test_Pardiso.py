@@ -84,27 +84,15 @@ def test_n_threads(test_mat_data):
     with pytest.raises(TypeError):
         Ainv.n_threads = "2"
 
-# class TestPardisoNotSymmetric:
-#
-#     @classmethod
-#     def setup_class(cls):
-#         cls.A = A
-#         cls.rhs = rhs
-#         cls.sol = sol
-#
-#     def test(self):
-#         rhs = self.rhs
-#         sol = self.sol
-#         Ainv = pymatsolver.Pardiso(self.A, is_symmetric=True, check_accuracy=True)
-#         with pytest.raises(Exception):
-#             Ainv * rhs
-#         Ainv.clean()
-#
-#         Ainv = pymatsolver.Pardiso(self.A)
-#         for i in range(3):
-#             assert np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]) < TOL
-#         assert np.linalg.norm(Ainv * rhs - sol, np.inf) < TOL
-#         Ainv.clean()
+def test_inacurrate_symmetry(test_mat_data):
+    A, rhs, sol = test_mat_data
+    # make A not symmetric
+    D = sp.diags(np.linspace(2, 3, A.shape[0]))
+    A = A @ D
+    Ainv = pymatsolver.Pardiso(A, is_symmetric=True, check_accuracy=True)
+    with pytest.raises(pymatsolver.PymatsolverAccuracyError):
+        Ainv * rhs
+
 
 
 def test_pardiso_fdem():
