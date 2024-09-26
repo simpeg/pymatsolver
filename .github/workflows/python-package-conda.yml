@@ -46,7 +46,7 @@ jobs:
     - name: Install MKL solver interface
       if: ${{ matrix.solver == 'pardiso' }}
       run:
-        conda install --quiet --yes pydiso ${{ runner.os == 'windows' && '"libblas=*=*mkl"' || ''}}
+        conda install --quiet --yes "pydiso>=0.1"
 
     - name: Install MUMPS solver interface
       if: ${{ matrix.solver == 'mumps' }}
