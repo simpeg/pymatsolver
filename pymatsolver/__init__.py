@@ -73,6 +73,8 @@ from .iterative import BiCGJacobi
 from .direct import Solver
 from .direct import SolverLU
 
+from .solvers import PymatsolverAccuracyError
+
 BicgJacobi = BiCGJacobi  # backwards compatibility
 
 try:

@@ -1,34 +1,23 @@
-import unittest
 import numpy as np
+import numpy.testing as npt
 import scipy.sparse as sp
 import pymatsolver
+import pytest
 
 TOL = 1e-12
 
+@pytest.mark.parametrize("solver", [pymatsolver.Forward, pymatsolver.Backward])
+def test_solve(solver):
+    n = 50
+    nrhs = 20
+    A = sp.rand(n, n, 0.4) + sp.identity(n)
+    sol = np.ones((n, nrhs))
+    if solver is pymatsolver.Backward:
+        A = sp.triu(A)
+    else:
+        A = sp.tril(A)
+    rhs = A @ sol
 
-class TestTriangle(unittest.TestCase):
-
-    def setUp(self):
-        n = 50
-        nrhs = 20
-        self.A = sp.rand(n, n, 0.4) + sp.identity(n)
-        self.sol = np.ones((n, nrhs))
-        self.rhsU = sp.triu(self.A) * self.sol
-        self.rhsL = sp.tril(self.A) * self.sol
-
-    def test_directLower(self):
-        ALinv = pymatsolver.Forward(sp.tril(self.A))
-        X = ALinv * self.rhsL
-        x = ALinv * self.rhsL[:, 0]
-        self.assertLess(np.linalg.norm(self.sol-X, np.inf), TOL)
-        self.assertLess(np.linalg.norm(self.sol[:, 0]-x, np.inf), TOL)
-
-    def test_directLower_1(self):
-        AUinv = pymatsolver.Backward(sp.triu(self.A))
-        X = AUinv * self.rhsU
-        x = AUinv * self.rhsU[:, 0]
-        self.assertLess(np.linalg.norm(self.sol-X, np.inf), TOL)
-        self.assertLess(np.linalg.norm(self.sol[:, 0]-x, np.inf), TOL)
-
-if __name__ == '__main__':
-    unittest.main()
+    Ainv = solver(A)
+    npt.assert_allclose(Ainv * rhs, sol, atol=TOL)
+    npt.assert_allclose(Ainv * rhs[:, 0], sol[:, 0], atol=TOL)

@@ -1,183 +1,112 @@
-import unittest
-try:
-    from pymatsolver import Pardiso
-    from pydiso.mkl_solver import (
-        get_mkl_pardiso_max_threads,
-        PardisoTypeConversionWarning
-    )
-except ImportError:
-    Pardiso = None
+import pymatsolver
 import numpy as np
+import numpy.testing as npt
+import pytest
 import scipy.sparse as sp
 import os
 
+if not pymatsolver.AvailableSolvers['Pardiso']:
+    pytest.skip(reason="Pardiso solver is not installed", allow_module_level=True)
+else:
+    from pydiso.mkl_solver import PardisoTypeConversionWarning, get_mkl_pardiso_max_threads
+
 TOL = 1e-10
 
-if Pardiso:
-    class TestPardiso(unittest.TestCase):
+@pytest.fixture()
+def test_mat_data():
+    nSize = 100
+    A = sp.rand(nSize, nSize, 0.05, format='csr', random_state=100)
+    A = A + sp.spdiags(np.ones(nSize), 0, nSize, nSize)
+    A = A.T*A
+    A = A.tocsr()
+    np.random.seed(1)
+    sol = np.random.rand(nSize, 5)
+    rhs = A.dot(sol)
+    return A, rhs, sol
 
-        def setUp(self):
+@pytest.mark.parametrize('transpose', [True, False])
+@pytest.mark.parametrize('dtype', [np.float64, np.complex128])
+def test_solve(test_mat_data, dtype, transpose):
+    A, rhs, sol = test_mat_data
+    sol = sol.astype(dtype)
+    rhs = rhs.astype(dtype)
+    A = A.astype(dtype)
+    if transpose:
+        with pytest.warns(PardisoTypeConversionWarning):
+            Ainv = pymatsolver.Pardiso(A.T).T
+    else:
+        Ainv = pymatsolver.Pardiso(A)
+    for i in range(rhs.shape[1]):
+        npt.assert_allclose(Ainv * rhs[:, i], sol[:, i], atol=TOL)
+    npt.assert_allclose(Ainv * rhs, sol, atol=TOL)
 
-            nSize = 100
-            A = sp.rand(nSize, nSize, 0.05, format='csr', random_state=100)
-            A = A + sp.spdiags(np.ones(nSize), 0, nSize, nSize)
-            A = A.T*A
-            A = A.tocsr()
-            np.random.seed(1)
-            sol = np.random.rand(nSize, 5)
-            rhs = A.dot(sol)
-
-            self.A = A
-            self.rhs = rhs
-            self.sol = sol
-
-        def test(self):
-            rhs = self.rhs
-            sol = self.sol
-            Ainv = Pardiso(self.A, is_symmetric=True)
-            for i in range(3):
-                self.assertLess(np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL)
-            self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
-
-        def test_refactor(self):
-            rhs = self.rhs
-            sol = self.sol
-            A = self.A
-            Ainv = Pardiso(A, is_symmetric=True)
-            for i in range(3):
-                self.assertLess(np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL)
-            self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
-
-            # scale rows and collumns
-            D = sp.diags(np.random.rand(A.shape[0]) + 1.0)
-            A2 = D.T @ A @ D
-
-            rhs2 = A2 @ sol
-            Ainv.factor(A2)
-            for i in range(3):
-                self.assertLess(np.linalg.norm(Ainv * rhs2[:, i] - sol[:, i]), TOL)
-            self.assertLess(np.linalg.norm(Ainv * rhs2 - sol, np.inf), TOL)
-
-        def test_T(self):
-            rhs = self.rhs
-            sol = self.sol
-            Ainv = Pardiso(self.A, is_symmetric=True)
-
-            with self.assertWarns(PardisoTypeConversionWarning):
-                AinvT = Ainv.T
-                x = AinvT * rhs
-
-                for i in range(3):
-                    self.assertLess(np.linalg.norm(x[:, i] - sol[:, i]), TOL)
-                self.assertLess(np.linalg.norm(x - sol, np.inf), TOL)
-
-        def test_n_threads(self):
-            max_threads = get_mkl_pardiso_max_threads()
-            print(f'testing setting n_threads to 1 and {max_threads}')
-            Ainv = Pardiso(self.A, is_symmetric=True, n_threads=1)
-            self.assertEqual(Ainv.n_threads, 1)
-
-            Ainv2 = Pardiso(self.A, is_symmetric=True, n_threads=max_threads)
-            self.assertEqual(Ainv2.n_threads, max_threads)
-            self.assertEqual(Ainv2.n_threads, Ainv.n_threads)
-
-            Ainv.n_threads = 1
-            self.assertEqual(Ainv.n_threads, 1)
-            self.assertEqual(Ainv2.n_threads, Ainv.n_threads)
-
-            with self.assertRaises(TypeError):
-                Ainv.n_threads = "2"
+def test_symmetric_solve(test_mat_data):
+    A, rhs, sol = test_mat_data
+    Ainv = pymatsolver.Pardiso(A, is_symmetric=True)
+    for i in range(rhs.shape[1]):
+        npt.assert_allclose(Ainv * rhs[:, i], sol[:, i], atol=TOL)
+    npt.assert_allclose(Ainv * rhs, sol, atol=TOL)
 
 
-    class TestPardisoNotSymmetric(unittest.TestCase):
+def test_refactor(test_mat_data):
+    A, rhs, sol = test_mat_data
+    Ainv = pymatsolver.Pardiso(A, is_symmetric=True)
+    npt.assert_allclose(Ainv * rhs, sol, atol=TOL)
 
-        def setUp(self):
+    # scale rows and columns
+    D = sp.diags(np.random.rand(A.shape[0]) + 1.0)
+    A2 = D.T @ A @ D
 
-            nSize = 100
-            A = sp.rand(nSize, nSize, 0.05, format='csr', random_state=100)
-            A = A + sp.spdiags(np.ones(nSize), 0, nSize, nSize)
-            A = A.tocsr()
-            np.random.seed(1)
-            sol = np.random.rand(nSize, 5)
-            rhs = A.dot(sol)
+    rhs2 = A2 @ sol
+    Ainv.factor(A2)
+    npt.assert_allclose(Ainv * rhs2, sol, atol=TOL)
 
-            self.A = A
-            self.rhs = rhs
-            self.sol = sol
+def test_n_threads(test_mat_data):
+    A, rhs, sol = test_mat_data
 
-        def test(self):
-            rhs = self.rhs
-            sol = self.sol
-            Ainv = Pardiso(self.A, is_symmetric=True, check_accuracy=True)
-            self.assertRaises(Exception, lambda: Ainv * rhs)
-            Ainv.clean()
+    max_threads = get_mkl_pardiso_max_threads()
+    print(f'testing setting n_threads to 1 and {max_threads}')
+    Ainv = pymatsolver.Pardiso(A, is_symmetric=True, n_threads=1)
+    assert Ainv.n_threads == 1
 
-            Ainv = Pardiso(self.A)
-            for i in range(3):
-                self.assertLess(np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL)
-            self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
-            Ainv.clean()
+    Ainv2 = pymatsolver.Pardiso(A, is_symmetric=True, n_threads=max_threads)
+    assert Ainv2.n_threads == max_threads
 
+    # the n_threads setting is global so setting Ainv2's n_threads will
+    # change Ainv's n_threads.
+    assert Ainv2.n_threads == Ainv.n_threads
 
-    class TestPardisoFDEM(unittest.TestCase):
+    # setting one object's n_threads should change all
+    Ainv.n_threads = 1
+    assert Ainv.n_threads == 1
+    assert Ainv2.n_threads == Ainv.n_threads
 
-        def setUp(self):
+    with pytest.raises(TypeError):
+        Ainv.n_threads = "2"
 
-            base_path = os.path.join(os.path.split(os.path.abspath(__file__))[0], 'fdem')
-
-            data = np.load(os.path.join(base_path, 'A_data.npy'))
-            indices = np.load(os.path.join(base_path, 'A_indices.npy'))
-            indptr = np.load(os.path.join(base_path, 'A_indptr.npy'))
-
-            self.A = sp.csr_matrix((data, indices, indptr), shape=(13872, 13872))
-            self.rhs = np.load(os.path.join(base_path, 'RHS.npy'))
-
-        def test(self):
-            rhs = self.rhs
-            Ainv = Pardiso(self.A, check_accuracy=True)
-            sol = Ainv * rhs
-            with self.assertWarns(PardisoTypeConversionWarning):
-                sol = Ainv * rhs.real
+def test_inacurrate_symmetry(test_mat_data):
+    A, rhs, sol = test_mat_data
+    # make A not symmetric
+    D = sp.diags(np.linspace(2, 3, A.shape[0]))
+    A = A @ D
+    Ainv = pymatsolver.Pardiso(A, is_symmetric=True, check_accuracy=True)
+    with pytest.raises(pymatsolver.PymatsolverAccuracyError):
+        Ainv * rhs
 
 
-    class TestPardisoComplex(unittest.TestCase):
 
-        def setUp(self):
-            nSize = 100
-            A = sp.rand(nSize, nSize, 0.05, format='csr', random_state=100)
-            A.data = A.data + 1j*np.random.rand(A.nnz)
-            A = A.T.dot(A) + sp.spdiags(np.ones(nSize), 0, nSize, nSize)
-            A = A.tocsr()
+def test_pardiso_fdem():
+    base_path = os.path.join(os.path.split(os.path.abspath(__file__))[0], 'fdem')
 
-            np.random.seed(1)
-            sol = np.random.rand(nSize, 5) + 1j*np.random.rand(nSize, 5)
-            rhs = A.dot(sol)
+    data = np.load(os.path.join(base_path, 'A_data.npy'))
+    indices = np.load(os.path.join(base_path, 'A_indices.npy'))
+    indptr = np.load(os.path.join(base_path, 'A_indptr.npy'))
 
-            self.A = A
-            self.rhs = rhs
-            self.sol = sol
+    A = sp.csr_matrix((data, indices, indptr), shape=(13872, 13872))
+    rhs = np.load(os.path.join(base_path, 'RHS.npy'))
 
-        def test(self):
-            rhs = self.rhs
-            sol = self.sol
-            Ainv = Pardiso(self.A, is_symmetric=True)
-            for i in range(3):
-                self.assertLess(np.linalg.norm(Ainv * rhs[:, i] - sol[:, i]), TOL)
-            self.assertLess(np.linalg.norm(Ainv * rhs - sol, np.inf), TOL)
-            Ainv.clean()
+    Ainv = pymatsolver.Pardiso(A, check_accuracy=True)
 
-        def test_T(self):
-            rhs = self.rhs
-            sol = self.sol
-            Ainv = Pardiso(self.A, is_symmetric=True)
-            with self.assertWarns(PardisoTypeConversionWarning):
-                AinvT = Ainv.T
-                x = AinvT * rhs
-                for i in range(3):
-                    self.assertLess(
-                        np.linalg.norm(x[:, i] - sol[:, i]), TOL
-                    )
-                self.assertLess(np.linalg.norm(x - sol, np.inf), TOL)
+    sol = Ainv * rhs
 
-if __name__ == '__main__':
-    unittest.main()
+    npt.assert_allclose(A @ sol, rhs, atol=TOL)

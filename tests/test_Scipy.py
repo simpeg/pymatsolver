@@ -1,87 +1,72 @@
-import unittest
 from pymatsolver import Solver, Diagonal, SolverCG, SolverLU
 import scipy.sparse as sp
 import numpy as np
+import numpy.testing as npt
+import pytest
+
 
 TOLD = 1e-10
 TOLI = 1e-3
-numRHS = 5
 
-np.random.seed(77)
+@pytest.fixture()
+def a_matrix():
+    nx, ny, nz = 10, 10, 10
+    n = nx * ny * nz
+    Gz = sp.kron(
+        sp.eye(nx),
+        sp.kron(
+            sp.eye(ny),
+            sp.diags([-1, 1], [-1, 0], shape=(nz+1, nz))
+        )
+    )
+    Gy = sp.kron(
+        sp.eye(nx),
+        sp.kron(
+            sp.diags([-1, 1], [-1, 0], shape=(ny+1, ny)),
+            sp.eye(nz),
+        )
+    )
+    Gx = sp.kron(
+        sp.diags([-1, 1], [-1, 0], shape=(nx+1, nx)),
+        sp.kron(
+            sp.eye(ny),
+            sp.eye(nz),
+        )
+    )
+    A = Gx.T @ Gx + Gy.T @ Gy + Gz.T @ Gz
+    return A
 
 
-def dotest(MYSOLVER, multi=False, A=None, **solverOpts):
-    if A is None:
-        nx, ny, nz = 10, 10, 10
-        n = nx * ny * nz
-        Gz = sp.kron(
-            sp.eye(nx),
-            sp.kron(
-                sp.eye(ny),
-                sp.diags([-1, 1], [-1, 0], shape=(nz+1, nz))
-            )
-        )
-        Gy = sp.kron(
-            sp.eye(nx),
-            sp.kron(
-                sp.diags([-1, 1], [-1, 0], shape=(ny+1, ny)),
-                sp.eye(nz),
-            )
-        )
-        Gx = sp.kron(
-            sp.diags([-1, 1], [-1, 0], shape=(nx+1, nx)),
-            sp.kron(
-                sp.eye(ny),
-                sp.eye(nz),
-            )
-        )
-        A = Gx.T @ Gx + Gy.T @ Gy + Gz.T @ Gz
+@pytest.mark.parametrize('n_rhs', [1, 5])
+@pytest.mark.parametrize('solver', [Solver, SolverLU, SolverCG])
+def test_solver(a_matrix, n_rhs, solver):
+    if solver is SolverCG:
+        tol = TOLI
     else:
-        n = A.shape[0]
+        tol = TOLD
 
-    Ainv = MYSOLVER(A, **solverOpts)
-    if multi:
-        e = np.ones(n)
-    else:
-        e = np.ones((n, numRHS))
-    rhs = A * e
+    n = a_matrix.shape[0]
+    b = np.linspace(0.9, 1.1, n)
+    if n_rhs > 1:
+        b = np.repeat(b[:, None], n_rhs, axis=-1)
+    rhs = a_matrix @ b
+
+    Ainv = solver(a_matrix)
     x = Ainv * rhs
     Ainv.clean()
-    return np.linalg.norm(e-x, np.inf)
 
+    npt.assert_allclose(x, b, atol=tol)
 
-class TestSolver(unittest.TestCase):
+@pytest.mark.parametrize('n_rhs', [1, 5])
+def test_diag_solver(n_rhs):
+    n = 10
+    A = sp.diags(np.linspace(2, 3, n))
+    b = np.linspace(0.9, 1.1, n)
+    if n_rhs > 1:
+        b = np.repeat(b[:, None], n_rhs, axis=-1)
+    rhs = A @ b
 
-    def test_direct_spsolve_1(self):
-        self.assertLess(dotest(Solver, False), TOLD)
+    Ainv = Diagonal(A)
+    x = Ainv * rhs
 
-    def test_direct_spsolve_M(self):
-        self.assertLess(dotest(Solver, True), TOLD)
-
-    def test_direct_splu_1(self):
-        self.assertLess(dotest(SolverLU, False), TOLD)
-
-    def test_direct_splu_M(self):
-        self.assertLess(dotest(SolverLU, True), TOLD)
-
-    def test_iterative_diag_1(self):
-        self.assertLess(dotest(
-            Diagonal, False,
-            A=sp.diags(np.random.rand(10)+1.0)
-        ), TOLI)
-
-    def test_iterative_diag_M(self):
-        self.assertLess(dotest(
-            Diagonal, True,
-            A=sp.diags(np.random.rand(10)+1.0)
-        ), TOLI)
-
-    def test_iterative_cg_1(self):
-        self.assertLess(dotest(SolverCG, False), TOLI)
-
-    def test_iterative_cg_M(self):
-        self.assertLess(dotest(SolverCG, True), TOLI)
-
-
-if __name__ == '__main__':
-    unittest.main()
+    npt.assert_allclose(x, b, atol=TOLD)

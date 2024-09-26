@@ -2,6 +2,10 @@ import numpy as np
 import warnings
 
 
+class PymatsolverAccuracyError(Exception):
+    pass
+
+
 class Base():
     _accuracy_tol = 1e-6
     _check_accuracy = False
@@ -57,7 +61,7 @@ class Base():
     def T(self):
         "The transpose operator for this class"
         if self._transposeClass is None:
-            raise Exception(
+            raise NotImplementedError(
                 'The transpose for the {} class is not possible.'.format(
                     self.__name__
                 )
@@ -74,7 +78,7 @@ class Base():
             msg = 'Accuracy on solve is above tolerance: {0:e} > {1:e}'.format(
                 nrm, self.accuracy_tol
             )
-            raise Exception(msg)
+            raise PymatsolverAccuracyError(msg)
 
     def _solve(self, rhs):
 
