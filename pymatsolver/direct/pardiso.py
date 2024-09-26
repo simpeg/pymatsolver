@@ -71,6 +71,7 @@ class Pardiso(Base):
         if not self._factored:
             self.solver.refactor(self.A)
             self._factored = True
+
     def _solveM(self, rhs):
         self.factor()
         sol = self.solver.solve(rhs)
