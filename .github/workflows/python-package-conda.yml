@@ -51,7 +51,7 @@ jobs:
     - name: Install MUMPS solver interface
       if: ${{ matrix.solver == 'mumps' }}
       run:
-        conda install --quiet --yes -python-mumps
+        conda install --quiet --yes python-mumps
 
     - name: Install Our Package
       run: |
