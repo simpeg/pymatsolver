@@ -31,6 +31,6 @@ def test_solve(test_mat_data, dtype, transpose):
         Ainv = BicgJacobi(A, symmetric=True).T
     else:
         Ainv = BicgJacobi(A, symmetric=True)
-    Ainv.maxIter = 2000
+    Ainv.maxiter = 2000
     solb = Ainv * rhs
     npt.assert_allclose(rhs, A @ solb, atol=TOL)
