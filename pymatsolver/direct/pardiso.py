@@ -16,13 +16,15 @@ class Pardiso(Base):
 
     _transposed = False
 
-    def __init__(self, A, **kwargs):
+    def __init__(self, A, n_threads=None, **kwargs):
         super().__init__(A, **kwargs)
         self.solver = MKLPardisoSolver(
             self.A,
             matrix_type=self._matrixType(),
             factor=False
         )
+        if n_threads is not None:
+            self.n_threads = n_threads
 
     def _matrixType(self):
         """
