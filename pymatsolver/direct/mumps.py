@@ -39,7 +39,6 @@ class Mumps(Base):
         attrs['ordering'] = self.ordering
         return attrs
 
-    @property
     def transpose(self):
         trans_obj = Mumps.__new__(Mumps)
         trans_obj._A = self.A
