@@ -28,9 +28,9 @@ def test_solve(test_mat_data, dtype, transpose):
     sol = sol.astype(dtype)
     if transpose:
         A = A.T
-        Ainv = BicgJacobi(A, symmetric=True).T
+        Ainv = BicgJacobi(A).T
     else:
-        Ainv = BicgJacobi(A, symmetric=True)
+        Ainv = BicgJacobi(A)
     Ainv.maxiter = 2000
     solb = Ainv * rhs
     npt.assert_allclose(rhs, A @ solb, atol=TOL)

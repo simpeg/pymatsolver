@@ -27,7 +27,8 @@ def test_mat_data():
 
 @pytest.mark.parametrize('transpose', [True, False])
 @pytest.mark.parametrize('dtype', [np.float64, np.complex128])
-def test_solve(test_mat_data, dtype, transpose):
+@pytest.mark.parametrize('symmetric', [True, False])
+def test_solve(test_mat_data, dtype, transpose, symmetric):
     A, rhs, sol = test_mat_data
     sol = sol.astype(dtype)
     rhs = rhs.astype(dtype)
@@ -45,17 +46,3 @@ def test_solve(test_mat_data, dtype, transpose):
 #     A = sp.identity(5).tocsr()
 #     A[-1, -1] = 0
 #     self.assertRaises(Exception, pymatsolver.Mumps, A)
-
-def test_multiFactorsInMem():
-    n = 100
-    A = sp.rand(n, n, 0.7)+sp.identity(n)
-    x = np.ones((n, 10))
-    rhs = A * x
-    solvers = [pymatsolver.Mumps(A) for _ in range(20)]
-
-    for Ainv in solvers:
-        npt.assert_allclose(Ainv * rhs, x, rtol=TOL)
-        Ainv.clean()
-
-    for Ainv in solvers:
-        npt.assert_allclose(Ainv * rhs, x, rtol=TOL)

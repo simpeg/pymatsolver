@@ -18,7 +18,7 @@ def test_DiagonalSolver():
 
     with pytest.raises(TypeError):
         Diagonal(A, check_accuracy=np.array([1, 2, 3]))
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         Diagonal(A, accuracy_tol=0)
 
     npt.assert_allclose(sol, X, atol=TOL)

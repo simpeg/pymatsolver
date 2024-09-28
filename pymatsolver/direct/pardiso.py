@@ -14,11 +14,10 @@ class Pardiso(Base):
         http://www.pardiso-project.org/
     """
 
-    _factored = False
+    _transposed = False
 
     def __init__(self, A, **kwargs):
-        self.A = A
-        self.set_kwargs(**kwargs)
+        super().__init__(A, **kwargs)
         self.solver = MKLPardisoSolver(
             self.A,
             matrix_type=self._matrixType(),
@@ -65,17 +64,22 @@ class Pardiso(Base):
                 return 13
 
     def factor(self, A=None):
-        if A is not None:
-            self._factored = False
-            self.A = A
-        if not self._factored:
+        if A is not None and self.A is not A:
+            self._A = A
             self.solver.refactor(self.A)
-            self._factored = True
 
-    def _solveM(self, rhs):
-        self.factor()
-        sol = self.solver.solve(rhs)
+    def _solve_multiple(self, rhs):
+        sol = self.solver.solve(rhs, transpose=self._transposed)
         return sol
+
+    def transpose(self):
+        trans_obj = Pardiso.__new__(Pardiso)
+        trans_obj._A = self.A
+        for attr, value in self.get_attributes().items():
+            setattr(trans_obj, attr, value)
+        trans_obj.solver = self.solver
+        trans_obj._transposed = not self._transposed
+        return trans_obj
 
     @property
     def n_threads(self):
@@ -89,4 +93,4 @@ class Pardiso(Base):
     def n_threads(self, n_threads):
         set_mkl_pardiso_threads(n_threads)
 
-    _solve1 = _solveM
+    _solve_single = _solve_multiple

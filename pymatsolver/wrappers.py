@@ -72,11 +72,16 @@ def WrapDirect(fun, factorize=True, name=None):
     """
 
     def __init__(self, A, **kwargs):
-        self.A = A.tocsc()
+        pymatsolver_options = {}
+        if (check_accuracy := kwargs.pop('check_accuracy', None)) is not None:
+            pymatsolver_options['check_accuracy'] = check_accuracy
+        if (accuracy_tol := kwargs.pop('accuracy_tol', None)) is not None:
+            pymatsolver_options['accuracy_tol'] = accuracy_tol
+        Base.__init__(self, A, **pymatsolver_options)
         self.kwargs = kwargs
         if factorize:
             self.solver = fun(self.A, **self.kwargs)
-            if getattr(self.solver, "solve", None) is not None:
+            if not hasattr(self.solver, "solve"):
                 raise TypeError(f"instance returned by {fun.__name__} must have a solve() method.")
 
     @property
@@ -87,11 +92,8 @@ def WrapDirect(fun, factorize=True, name=None):
     def kwargs(self, keyword_arguments):
         self._kwargs = _valid_kwargs_for_func(fun, **keyword_arguments)
 
-    def _solve1(self, rhs):
-        rhs = rhs.flatten()
-
-        if rhs.dtype is np.dtype('O'):
-            rhs = rhs.astype(type(rhs[0]))
+    def _solve_single(self, rhs):
+        rhs = rhs.astype(self.dtype)
 
         if factorize:
             X = self.solver.solve(rhs)
@@ -100,37 +102,32 @@ def WrapDirect(fun, factorize=True, name=None):
 
         return X
 
-    def _solveM(self, rhs):
-        if rhs.dtype is np.dtype('O'):
-            rhs = rhs.astype(type(rhs[0, 0]))
+    def _solve_multiple(self, rhs):
+        rhs = rhs.astype(self.dtype)
 
         X = np.empty_like(rhs)
-
         for i in range(rhs.shape[1]):
-            if factorize:
-                X[:, i] = self.solver.solve(rhs[:, i])
-            else:
-                X[:, i] = fun(self.A, rhs[:, i], **self.kwargs)
+            X[:, i] = self._solve_single(rhs[:, i])
 
         return X
 
     def clean(self):
         if factorize and hasattr(self.solver, 'clean'):
-            return self.solver.clean()
+            self.solver.clean()
 
     return type(
         str(name if name is not None else fun.__name__),
         (Base,),
         {
             "__init__": __init__,
-            "_solve1": _solve1,
-            "_solveM": _solveM,
+            "_solve_single": _solve_single,
+            "_solve_multiple": _solve_multiple,
             "clean": clean,
         }
     )
 
 
-def WrapIterative(fun, check_accuracy=True, accuracyTol=1e-5, name=None):
+def WrapIterative(fun, check_accuracy=False, accuracy_tol=1e-6, name=None):
     """
     Wraps an iterative Solver.
 
@@ -153,7 +150,9 @@ def WrapIterative(fun, check_accuracy=True, accuracyTol=1e-5, name=None):
     """
 
     def __init__(self, A, **kwargs):
-        self.A = A
+        check_acc = kwargs.pop('check_accuracy', check_accuracy)
+        acc_tol = kwargs.pop('accuracy_tol', accuracy_tol)
+        Base.__init__(self, A, check_accuracy=check_acc, accuracy_tol=acc_tol)
         self.kwargs = kwargs
 
     @property
@@ -164,9 +163,8 @@ def WrapIterative(fun, check_accuracy=True, accuracyTol=1e-5, name=None):
     def kwargs(self, keyword_arguments):
         self._kwargs = _valid_kwargs_for_func(fun, **keyword_arguments)
 
-    def _solve1(self, rhs):
+    def _solve_single(self, rhs):
 
-        rhs = rhs.flatten()
         out = fun(self.A, rhs, **self.kwargs)
         if type(out) is tuple and len(out) == 2:
             # We are dealing with scipy output with an info!
@@ -176,18 +174,11 @@ def WrapIterative(fun, check_accuracy=True, accuracyTol=1e-5, name=None):
             X = out
         return X
 
-    def _solveM(self, rhs):
+    def _solve_multiple(self, rhs):
 
         X = np.empty_like(rhs)
         for i in range(rhs.shape[1]):
-            out = fun(self.A, rhs[:, i], **self.kwargs)
-            if type(out) is tuple and len(out) == 2:
-                # We are dealing with scipy output with an info!
-                X[:, i] = out[0]
-                self.info = out[1]
-            else:
-                X[:, i] = out
-
+            X[:, i] = self._solve_single(rhs[:, i])
         return X
 
     return type(
@@ -195,8 +186,8 @@ def WrapIterative(fun, check_accuracy=True, accuracyTol=1e-5, name=None):
         (Base,),
         {
             "__init__": __init__,
-            "_solve1": _solve1,
-            "_solveM": _solveM,
+            "_solve_single": _solve_single,
+            "_solve_multiple": _solve_multiple,
         }
     )
 

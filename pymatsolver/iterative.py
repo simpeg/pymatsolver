@@ -1,3 +1,4 @@
+import warnings
 import numpy as np
 import scipy
 import scipy.sparse as sp
@@ -16,17 +17,56 @@ SolverBiCG = WrapIterative(bicgstab, name="SolverBiCG")
 class BiCGJacobi(Base):
     """Bicg Solver with Jacobi preconditioner"""
 
-    _factored = False
-    solver = None
-    maxiter = 1000
-    rtol = 1E-6
-    atol = 0.0
+    def __init__(self, A, symmetric=None, maxiter=1000, rtol=1E-6, atol=0.0, **kwargs):
+        if symmetric is not None:
+            warnings.warn(
+                "The symmetric keyword argument is being deprecated and will be removed in pymatsolver 0.7.0",
+                DeprecationWarning, stacklevel=2
+            )
+        super().__init__(A, **kwargs)
+        self._factored = False
+        self.maxiter = maxiter
+        self.rtol = rtol
+        self.atol = atol
 
-    def __init__(self, A, symmetric=True):
-        self.A = A
-        self.symmetric = symmetric
-        self.dtype = A.dtype
-        self.solver = bicgstab
+    @property
+    def maxiter(self):
+        return self._maxiter
+
+    @maxiter.setter
+    def maxiter(self, value):
+        self._maxiter = int(value)
+
+    @property
+    def rtol(self):
+        return self._rtol
+
+    @rtol.setter
+    def rtol(self, value):
+        value = float(value)
+        if value > 0:
+            self._rtol = value
+        else:
+            raise ValueError("rtol must be greater than 0.")
+
+    @property
+    def atol(self):
+        return self._atol
+
+    @atol.setter
+    def atol(self, value):
+        value = float(value)
+        if value >= 0:
+            self._atol = value
+        else:
+            raise ValueError("atol must be greater than or equal to 0.")
+
+    def get_attributes(self):
+        attrs = super().get_attributes()
+        attrs["maxiter"] = self.maxiter
+        attrs["rtol"] = self.rtol
+        attrs["atol"] = self.atol
+        return attrs
 
     def factor(self):
         if self._factored:
@@ -41,9 +81,9 @@ class BiCGJacobi(Base):
         return {RTOL_ARG_NAME: self.rtol, 'atol': self.atol}
 
 
-    def _solve1(self, rhs):
+    def _solve_single(self, rhs):
         self.factor()
-        sol, info = self.solver(
+        sol, info = bicgstab(
             self.A, rhs,
             maxiter=self.maxiter,
             M=self.M,
@@ -51,18 +91,10 @@ class BiCGJacobi(Base):
         )
         return sol
 
-    def _solveM(self, rhs):
+    def _solve_multiple(self, rhs):
         self.factor()
-        sol = []
+        sol = np.empty_like(rhs)
         for icol in range(rhs.shape[1]):
-            sol.append(self.solver(self.A, rhs[:, icol].flatten(),
-                       maxiter=self.maxiter, M=self.M, **self._tols,)[0])
-        out = np.hstack(sol)
-        out.shape
-        return out
-
-    def clean(self):
-        self.M = None
-        self.A = None
-        self._factored = False
+            sol[:, icol] = self._solve_single(rhs[:, icol])
+        return sol
 
