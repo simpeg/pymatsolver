@@ -42,8 +42,8 @@ def WrapDirect(fun, factorize=True, name=None):
     fun : callable
         The solver function to be wrapped.
     factorize : bool
-        If `fun` returns a factorized object that has a ``solve()`` method. This allows
-        it to be re-used for repeated solve calls.
+        Set to ``True`` if `fun` will return a factorized object that has a ``solve()``
+        method. This allows it to be re-used for repeated solve calls.
     name : str, optional
         The name of the wrapped class to return.
 
@@ -74,7 +74,6 @@ def WrapDirect(fun, factorize=True, name=None):
     def __init__(self, A, check_accuracy=False, check_rtol=1E-6, check_atol=0, accuracy_tol=None, **kwargs):
         Base.__init__(
             self, A, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol,
-            is_symmetric=False, is_hermitian=False
         )
         self.kwargs = kwargs
         if factorize:
@@ -154,7 +153,6 @@ def WrapIterative(fun, check_accuracy=None, accuracy_tol=None, name=None):
     def __init__(self, A, check_accuracy=False, check_rtol=1E-6, check_atol=0, accuracy_tol=None, **kwargs):
         Base.__init__(
             self, A, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol,
-            is_symmetric=False, is_hermitian=False
         )
         self.kwargs = kwargs
 
