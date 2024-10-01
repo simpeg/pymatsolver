@@ -71,13 +71,11 @@ def WrapDirect(fun, factorize=True, name=None):
     >>> SolverLU = pymatsolver.WrapDirect(splu, factorize=True)
     """
 
-    def __init__(self, A, **kwargs):
-        pymatsolver_options = {}
-        if (check_accuracy := kwargs.pop('check_accuracy', None)) is not None:
-            pymatsolver_options['check_accuracy'] = check_accuracy
-        if (accuracy_tol := kwargs.pop('accuracy_tol', None)) is not None:
-            pymatsolver_options['accuracy_tol'] = accuracy_tol
-        Base.__init__(self, A, **pymatsolver_options)
+    def __init__(self, A, check_accuracy=False, check_rtol=1E-6, check_atol=0, accuracy_tol=None, **kwargs):
+        Base.__init__(
+            self, A, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol,
+            is_symmetric=False, is_hermitian=False
+        )
         self.kwargs = kwargs
         if factorize:
             self.solver = fun(self.A, **self.kwargs)
@@ -127,7 +125,7 @@ def WrapDirect(fun, factorize=True, name=None):
     )
 
 
-def WrapIterative(fun, check_accuracy=False, accuracy_tol=1e-6, name=None):
+def WrapIterative(fun, check_accuracy=None, accuracy_tol=None, name=None):
     """
     Wraps an iterative Solver.
 
@@ -148,11 +146,16 @@ def WrapIterative(fun, check_accuracy=False, accuracy_tol=1e-6, name=None):
     >>> SolverCG = pymatsolver.WrapIterative(cg)
 
     """
+    if check_accuracy is not None or accuracy_tol is not None:
+        warnings.warn('check_accuracy and accuracy_tol were unused and are now deprecated. They '
+                      'will be removed in pymatsolver v0.4.0. Please pass the keyword arguments `check_rtol` '
+                      'and check_atol directly to the wrapped solver class.', FutureWarning)
 
-    def __init__(self, A, **kwargs):
-        check_acc = kwargs.pop('check_accuracy', check_accuracy)
-        acc_tol = kwargs.pop('accuracy_tol', accuracy_tol)
-        Base.__init__(self, A, check_accuracy=check_acc, accuracy_tol=acc_tol)
+    def __init__(self, A, check_accuracy=False, check_rtol=1E-6, check_atol=0, accuracy_tol=None, **kwargs):
+        Base.__init__(
+            self, A, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol,
+            is_symmetric=False, is_hermitian=False
+        )
         self.kwargs = kwargs
 
     @property

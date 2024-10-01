@@ -187,7 +187,7 @@ class Base(ABC):
         else:
             if ndim == 2 and rhs.shape[-1] == 1:
                 warnings.warn(
-                    "In the pymatsolver v0.7.0 passing a vector of shape (n, 1) to the solve method "
+                    "In Future pymatsolver v0.4.0, passing a vector of shape (n, 1) to the solve method "
                     "will return an array with shape (n, 1), instead of always returning a flattened array. "
                     "This is to be consistent with numpy.linalg.solve broadcasting.",
                     FutureWarning
@@ -199,7 +199,7 @@ class Base(ABC):
                 # switch last two dimensions
                 rhs = np.transpose(rhs, (*range(rhs.ndim-2), -1, -2))
                 in_shape = rhs.shape
-                # Then collapse all other vectors into the last dimension
+                # Then collapse all other vectors into the first dimension
                 rhs = np.reshape(rhs, (-1, in_shape[-1]))
                 # Then reverse the two axes to get the array to end up in fortran order
                 # (which is more common for direct solvers).
@@ -226,7 +226,7 @@ class Base(ABC):
     def _solve_single(self, rhs):
         ...
 
-
+    @abstractmethod
     def _solve_multiple(self, rhs):
         ...
 
@@ -263,7 +263,7 @@ class Base(ABC):
 
 class Diagonal(Base):
 
-    def __init__(self, A, **kwargs):
+    def __init__(self, A, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
         try:
             self._diagonal = np.asarray(A.diagonal())
             if not np.all(self._diagonal):
@@ -275,7 +275,7 @@ class Diagonal(Base):
         kwargs.pop("is_hermitian", None)
         is_positive_definite = kwargs.pop("is_positive_definite", None)
         super().__init__(
-            A, is_symmetric=True, is_hermitian=True, **kwargs
+            A, is_symmetric=True, is_hermitian=True, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs
         )
         if is_positive_definite is None:
             if self.is_real:
@@ -294,13 +294,13 @@ class Diagonal(Base):
 
 
 class TriangularSolver(Base):
-    def __init__(self, A, lower=True, **kwargs):
+    def __init__(self, A, lower=True, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
         kwargs.pop("is_hermitian", False)
         kwargs.pop("is_symmetric", False)
         if not (sp.issparse(A) and A.format in ['csr','csc']):
             A = sp.csc_matrix(A)
         A.sum_duplicates()
-        super().__init__(A, is_hermitian=False, is_symmetric=False, **kwargs)
+        super().__init__(A, is_hermitian=False, is_symmetric=False, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs)
         self.lower = lower
 
     @property
@@ -320,23 +320,23 @@ class TriangularSolver(Base):
     _solve_single = _solve_multiple
 
     def transpose(self):
-        transed = super().transpose()
-        transed.lower = not self.lower
-        return transed
+        trans = super().transpose()
+        trans.lower = not self.lower
+        return trans
 
 class Forward(TriangularSolver):
 
-    def __init__(self, A, **kwargs):
+    def __init__(self, A, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
         kwargs.pop("lower", None)
-        super().__init__(A, lower=True, **kwargs)
+        super().__init__(A, lower=True, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs)
 
 class Backward(TriangularSolver):
 
     _transpose_class = Forward
 
-    def __init__(self, A, **kwargs):
+    def __init__(self, A, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
         kwargs.pop("lower", None)
-        super().__init__(A, lower=False, **kwargs)
+        super().__init__(A, lower=False, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs)
 
 
 Forward._transpose_class = Backward

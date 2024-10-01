@@ -7,8 +7,8 @@ class Mumps(Base):
     """
     _transposed = False
 
-    def __init__(self, A, ordering=None, **kwargs):
-        super().__init__(A, **kwargs)
+    def __init__(self, A, ordering=None, is_symmetric=None, is_positive_definite=False, is_hermitian=None, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
+        super().__init__(A, is_symmetric=is_symmetric, is_positive_definite=is_positive_definite, is_hermitian=is_hermitian, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs)
         if ordering is None:
             ordering = "metis"
         self.ordering = ordering
@@ -19,7 +19,6 @@ class Mumps(Base):
         self.solver.set_matrix(
             A,
             symmetric=self.is_symmetric,
-            # positive_definite=self.is_positive_definite  # doesn't (yet) support setting positive definiteness
         )
 
     @property
