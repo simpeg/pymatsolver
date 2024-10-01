@@ -218,6 +218,7 @@ class Base(ABC):
         if self.check_accuracy:
             self._compute_accuracy(rhs, x)
 
+        #TODO remove this in v0.4.0.
         if x.size == n:
             x = x.reshape(-1)
         return x
