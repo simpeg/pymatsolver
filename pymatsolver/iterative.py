@@ -20,8 +20,8 @@ class BiCGJacobi(Base):
     def __init__(self, A, symmetric=None, maxiter=1000, rtol=1E-6, atol=0.0, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
         if symmetric is not None:
             warnings.warn(
-                "The symmetric keyword argument is unused and is deprecated. It will be removed in pymatsolver 0.7.0.",
-                DeprecationWarning, stacklevel=2
+                "The symmetric keyword argument is unused and is deprecated. It will be removed in pymatsolver 0.4.0.",
+                FutureWarning, stacklevel=2
             )
         super().__init__(A, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs)
         self._factored = False

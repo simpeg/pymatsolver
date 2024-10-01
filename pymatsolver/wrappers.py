@@ -148,7 +148,7 @@ def WrapIterative(fun, check_accuracy=None, accuracy_tol=None, name=None):
     if check_accuracy is not None or accuracy_tol is not None:
         warnings.warn('check_accuracy and accuracy_tol were unused and are now deprecated. They '
                       'will be removed in pymatsolver v0.4.0. Please pass the keyword arguments `check_rtol` '
-                      'and check_atol directly to the wrapped solver class.', FutureWarning)
+                      'and check_atol directly to the wrapped solver class.', FutureWarning, stacklevel=2)
 
     def __init__(self, A, check_accuracy=False, check_rtol=1E-6, check_atol=0, accuracy_tol=None, **kwargs):
         Base.__init__(

@@ -26,7 +26,7 @@ class Base(ABC):
         self._dtype = np.dtype(A.dtype)
 
         if accuracy_tol is not None:
-            warnings.warn("accuracy_tol is deprecated, use check_rtol and check_atol.", FutureWarning)
+            warnings.warn("accuracy_tol is deprecated and will be removed in v0.4.0, use check_rtol and check_atol.", FutureWarning, stacklevel=2)
             check_rtol = accuracy_tol
 
         self.check_accuracy = check_accuracy
@@ -324,11 +324,13 @@ class TriangularSolver(Base):
         trans.lower = not self.lower
         return trans
 
+
 class Forward(TriangularSolver):
 
     def __init__(self, A, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
         kwargs.pop("lower", None)
         super().__init__(A, lower=True, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs)
+
 
 class Backward(TriangularSolver):
 
