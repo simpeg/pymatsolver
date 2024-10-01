@@ -8,7 +8,7 @@ import os
 if not pymatsolver.AvailableSolvers['Pardiso']:
     pytest.skip(reason="Pardiso solver is not installed", allow_module_level=True)
 else:
-    from pydiso.mkl_solver import PardisoTypeConversionWarning, get_mkl_pardiso_max_threads
+    from pydiso.mkl_solver import get_mkl_pardiso_max_threads
 
 TOL = 1e-10
 
