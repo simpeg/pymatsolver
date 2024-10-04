@@ -3,15 +3,37 @@ from pydiso.mkl_solver import MKLPardisoSolver
 from pydiso.mkl_solver import set_mkl_pardiso_threads, get_mkl_pardiso_max_threads
 
 class Pardiso(Base):
-    """
-    Pardiso Solver
+    """The Pardiso direct solver.
 
-        https://github.com/simpeg/pydiso
+    This solver uses the `pydiso` Intel MKL wrapper to factorize a sparse matrix, and use that
+    factorization for solving.
 
-
-    documentation::
-
-        http://www.pardiso-project.org/
+    Parameters
+    ----------
+    A : scipy.sparse.spmatrix
+        Matrix to solve with.
+    n_threads : int, optional
+        Number of threads to use for the `Pardiso` routine in Intel's MKL.
+    is_symmetric : bool, optional
+        Whether the matrix is symmetric. By default, it will perform some simple tests to check for symmetry, and
+        default to ``False`` if those fail.
+    is_positive_definite : bool, optional
+        Whether the matrix is positive definite.
+    is_hermitian : bool, optional
+        Whether the matrix is hermitian. By default, it will perform some simple tests to check, and default to
+        ``False`` if those fail.
+    check_accuracy : bool, optional
+        Whether to check the accuracy of the solution.
+    check_rtol : float, optional
+        The relative tolerance to check against for accuracy.
+    check_atol : float, optional
+        The absolute tolerance to check against for accuracy.
+    accuracy_tol : float, optional
+        Relative accuracy tolerance.
+        .. deprecated:: 0.3.0
+            `accuracy_tol` will be removed in pymatsolver 0.4.0. Use `check_rtol` and `check_atol` instead.
+    **kwargs
+        Extra keyword arguments. If there are any left here a warning will be raised.
     """
 
     _transposed = False
@@ -66,6 +88,14 @@ class Pardiso(Base):
                 return 13
 
     def factor(self, A=None):
+        """(Re)factor the A matrix.
+
+        Parameters
+        ----------
+        A : scipy.sparse.spmatrix
+            The matrix to be factorized. If a previous factorization has been performed, this will
+            reuse the previous factorization's analysis.
+        """
         if A is not None and self.A is not A:
             self._A = A
             self.solver.refactor(self.A)
@@ -85,9 +115,13 @@ class Pardiso(Base):
 
     @property
     def n_threads(self):
-        """
-        Number of threads to use for the Pardiso solver routine. This property
-        is global to all Pardiso solver objects for a single python process.
+        """Number of threads to use for the Pardiso solver routine.
+
+        This property is global to all Pardiso solver objects for a single python process.
+
+        Returns
+        -------
+        int
         """
         return get_mkl_pardiso_max_threads()
 
