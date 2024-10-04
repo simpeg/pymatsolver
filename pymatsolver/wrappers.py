@@ -50,6 +50,7 @@ def WrapDirect(fun, factorize=True, name=None):
     Returns
     -------
     wrapped : pymatsolver.solvers.Base
+        The wrapped function as a `pymatsolver` class.
 
     Notes
     -----
@@ -112,8 +113,9 @@ def WrapDirect(fun, factorize=True, name=None):
         if factorize and hasattr(self.solver, 'clean'):
             self.solver.clean()
 
-    return type(
-        str(name if name is not None else fun.__name__),
+    class_name = str(name if name is not None else fun.__name__)
+    WrappedClass = type(
+        class_name,
         (Base,),
         {
             "__init__": __init__,
@@ -122,11 +124,48 @@ def WrapDirect(fun, factorize=True, name=None):
             "clean": clean,
         }
     )
+    WrappedClass.__doc__ = f"""Wrapped {class_name} solver.
+
+    Parameters
+    ----------
+    A
+        The matrix to use for the solver.
+    check_accuracy : bool, optional
+        Whether to check the accuracy of the solution.
+    check_rtol : float, optional
+        The relative tolerance to check against for accuracy.
+    check_atol : float, optional
+        The absolute tolerance to check against for accuracy.
+    accuracy_tol : float, optional
+        Relative accuracy tolerance.
+        .. deprecated:: 0.3.0
+            `accuracy_tol` will be removed in pymatsolver 0.4.0. Use `check_rtol` and `check_atol` instead.
+    **kwargs
+        Extra keyword arguments which will attempted to be passed to the wrapped function.
+    """
+    return WrappedClass
 
 
 def WrapIterative(fun, check_accuracy=None, accuracy_tol=None, name=None):
     """
     Wraps an iterative Solver.
+
+    Parameters
+    ----------
+    fun : callable
+        The iterative Solver function.
+    check_accuracy : bool, optional
+        .. deprecated:: 0.3.0
+            The `check_accuracy` argument was previously unused. This will be
+            removed in a `pymatsolver` 0.4.0. Pass the relevant accuracy check parameters
+            to the wrapped class.
+    accuracy_tol : bool, optional
+        .. deprecated:: 0.3.0
+            The `check_accuracy` argument was previously unused. This will be
+            removed in a `pymatsolver` 0.4.0. Pass the relevant accuracy check parameters
+            to the wrapped class.
+    name : string, optional
+        The name of the wrapper class to construct. Defaults to the name of `fun`.
 
     Returns
     -------
@@ -182,8 +221,9 @@ def WrapIterative(fun, check_accuracy=None, accuracy_tol=None, name=None):
             X[:, i] = self._solve_single(rhs[:, i])
         return X
 
-    return type(
-        str(name if name is not None else fun.__name__),
+    class_name = str(name if name is not None else fun.__name__)
+    WrappedClass =  type(
+        class_name,
         (Base,),
         {
             "__init__": __init__,
@@ -191,4 +231,25 @@ def WrapIterative(fun, check_accuracy=None, accuracy_tol=None, name=None):
             "_solve_multiple": _solve_multiple,
         }
     )
+    WrappedClass.__doc__ = f"""Wrapped {class_name} solver.
+
+    Parameters
+    ----------
+    A
+        The matrix to use for the solver.
+    check_accuracy : bool, optional
+        Whether to check the accuracy of the solution.
+    check_rtol : float, optional
+        The relative tolerance to check against for accuracy.
+    check_atol : float, optional
+        The absolute tolerance to check against for accuracy.
+    accuracy_tol : float, optional
+        Relative accuracy tolerance.
+        .. deprecated:: 0.3.0
+            `accuracy_tol` will be removed in pymatsolver 0.4.0. Use `check_rtol` and `check_atol` instead.
+    **kwargs
+        Extra keyword arguments which will attempted to be passed to the wrapped function.
+    """
+
+    return WrappedClass
 

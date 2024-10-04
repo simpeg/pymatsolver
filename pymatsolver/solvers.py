@@ -12,6 +12,33 @@ class PymatsolverAccuracyError(Exception):
 
 
 class Base(ABC):
+    """Base class for all solvers used in the pymatsolver package.
+
+    Parameters
+    ----------
+    A
+        Matrix to solve with.
+    is_symmetric : bool, optional
+        Whether the matrix is symmetric. By default, it will perform some simple tests to check for symmetry, and
+        default to ``False`` if those fail.
+    is_positive_definite : bool, optional
+        Whether the matrix is positive definite.
+    is_hermitian : bool, optional
+        Whether the matrix is hermitian. By default, it will perform some simple tests to check, and default to
+        ``False`` if those fail.
+    check_accuracy : bool, optional
+        Whether to check the accuracy of the solution.
+    check_rtol : float, optional
+        The relative tolerance to check against for accuracy.
+    check_atol : float, optional
+        The absolute tolerance to check against for accuracy.
+    accuracy_tol : float, optional
+        Relative accuracy tolerance.
+        .. deprecated:: 0.3.0
+            `accuracy_tol` will be removed in pymatsolver 0.4.0. Use `check_rtol` and `check_atol` instead.
+    **kwargs
+        Extra keyword arguments. If there are any left here a warning will be raised.
+    """
 
     def __init__(
             self, A, is_symmetric=None, is_positive_definite=False, is_hermitian=None, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs
@@ -61,18 +88,47 @@ class Base(ABC):
 
     @property
     def A(self):
+        """The matrix to solve with."""
         return self._A
 
     @property
     def dtype(self):
+        """The data type of the matrix.
+
+        Returns
+        -------
+        numpy.dtype
+        """
         return self._dtype
 
     @property
+    def shape(self):
+        """The input matrix dimensions.
+
+        Returns
+        -------
+        (2, ) tuple
+        """
+        return self.A.shape
+
+    @property
     def is_real(self):
+        """Whether the matrix is real.
+
+        Returns
+        -------
+        bool
+        """
         return np.issubdtype(self.A.dtype, np.floating)
 
     @property
     def is_symmetric(self):
+        """Whether the matrix is symmetric.
+
+        Returns
+        -------
+        bool
+        """
         return self._is_symmetric
 
     @is_symmetric.setter
@@ -84,6 +140,12 @@ class Base(ABC):
 
     @property
     def is_hermitian(self):
+        """Whether the matrix is hermitian.
+
+        Returns
+        -------
+        bool
+        """
         if self.is_real and self.is_symmetric:
             return True
         else:
@@ -98,6 +160,12 @@ class Base(ABC):
 
     @property
     def is_positive_definite(self):
+        """Whether the matrix is positive definite.
+
+        Returns
+        -------
+        bool
+        """
         return self._is_positive_definite
 
     @is_positive_definite.setter
@@ -109,7 +177,15 @@ class Base(ABC):
 
     @property
     def check_accuracy(self):
-        """check the accuracy of the solve?"""
+        """Whether the check the accuracy after a solve.
+
+        Performs a test of:
+        >>> all(A @ x_solve - rhs <= max(check_rtol * norm(rhs), check_atol))
+
+        Returns
+        -------
+        bool
+        """
         return self._check_accuracy
 
     @check_accuracy.setter
@@ -121,7 +197,12 @@ class Base(ABC):
 
     @property
     def check_rtol(self):
-        "tolerance on the accuracy of the solver"
+        """The relative tolerance used to check the solve operation.
+
+        Returns
+        -------
+        bool
+        """
         return self._check_rtol
 
     @check_rtol.setter
@@ -134,7 +215,12 @@ class Base(ABC):
 
     @property
     def check_atol(self):
-        "tolerance on the accuracy of the solver"
+        """The absolute tolerance used to check the solve operation.
+
+        Returns
+        -------
+        bool
+        """
         return self._check_atol
 
     @check_atol.setter
@@ -150,7 +236,7 @@ class Base(ABC):
         return self.__class__
 
     def transpose(self):
-        "The transpose operator for this class."
+        """Return the transposed solve operator."""
         if self.is_symmetric:
             return self
         if self._transpose_class is None:
@@ -164,6 +250,13 @@ class Base(ABC):
 
     @property
     def T(self):
+        """The transposed solve operator
+
+        See Also
+        --------
+        transpose
+            `T` is an alias for `transpose()`.
+        """
         return self.transpose()
 
     def _compute_accuracy(self, rhs, x):
@@ -176,6 +269,23 @@ class Base(ABC):
             )
 
     def solve(self, rhs):
+        """Solves the system of equations for the given right hand side.
+
+        Parameters
+        ----------
+        rhs : (..., M, N) or (M, ) array_like
+            The right handside of A @ x = b.
+
+        Returns
+        -------
+        x : (..., M, N) or (M, ) array_like
+            The solution to the system of equations.
+
+        See Also
+        --------
+        numpy.linalg.solve
+            Examples of how broadcasting works for this operation.
+        """
         # Make this broadcast just like numpy.linalg.solve!
 
         n = self.A.shape[0]
@@ -196,24 +306,24 @@ class Base(ABC):
                 raise ValueError(f'Second to last dimension should be {n}, got {rhs.shape}')
             do_broadcast = rhs.ndim > 2
             if do_broadcast:
-                # switch last two dimensions
-                rhs = np.transpose(rhs, (*range(rhs.ndim-2), -1, -2))
+                # swap last two dimensions
+                rhs = rhs.swapaxes(-1, -2)
                 in_shape = rhs.shape
                 # Then collapse all other vectors into the first dimension
-                rhs = np.reshape(rhs, (-1, in_shape[-1]))
+                rhs = rhs.reshape((-1, in_shape[-1]))
                 # Then reverse the two axes to get the array to end up in fortran order
                 # (which is more common for direct solvers).
-                rhs = np.transpose(rhs)
+                rhs = rhs.transpose()
                 # should end up with shape (n, -1)
             x = self._solve_multiple(rhs)
             if do_broadcast:
                 # undo the reshaping above
                 # so first, reverse the axes again.
-                x = np.transpose(x)
+                x = x.transpose()
                 # then expand out the first dimension into multiple dimensions.
-                x = np.reshape(x, in_shape)
+                x = x.reshape(in_shape)
                 # then switch last two dimensions again.
-                x = np.transpose(x, (*range(rhs.ndim-2), -1, -2))
+                x = x.swapaxes(x,  -1, -2)
 
         if self.check_accuracy:
             self._compute_accuracy(rhs, x)
@@ -231,7 +341,6 @@ class Base(ABC):
     def _solve_multiple(self, rhs):
         ...
 
-
     def clean(self):
         pass
 
@@ -245,10 +354,23 @@ class Base(ABC):
             pass
 
     def __mul__(self, val):
-        return self.solve(val)
+        return self.__matmul__(val)
+
+    def __rmul__(self, val):
+        return self.__rmatmul__(val)
 
     def __matmul__(self, val):
         return self.solve(val)
+
+    def __rmatmul__(self, val):
+        tran_solver = self.transpose()
+        # transpose last two axes of val
+        if val.ndim > 1:
+            val = val.swapaxes(-1, -2)
+        out = tran_solver.solve(val)
+        if val.ndim > 1:
+            out = out.swapaxes(-1, -2)
+        return out
 
     def get_attributes(self):
         attrs = {
@@ -263,6 +385,25 @@ class Base(ABC):
 
 
 class Diagonal(Base):
+    """A solver for a diagonal matrix.
+
+    Parameters
+    ----------
+    A
+        The diagonal matrix, must have a ``diagonal()`` method.
+    check_accuracy : bool, optional
+        Whether to check the accuracy of the solution.
+    check_rtol : float, optional
+        The relative tolerance to check against for accuracy.
+    check_atol : float, optional
+        The absolute tolerance to check against for accuracy.
+    accuracy_tol : float, optional
+        Relative accuracy tolerance.
+        .. deprecated:: 0.3.0
+            `accuracy_tol` will be removed in pymatsolver 0.4.0. Use `check_rtol` and `check_atol` instead.
+    **kwargs
+        Extra keyword arguments passed to the base class.
+    """
 
     def __init__(self, A, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
         try:
@@ -295,6 +436,28 @@ class Diagonal(Base):
 
 
 class TriangularSolver(Base):
+    """A solver for a diagonal matrix.
+
+    Parameters
+    ----------
+    A : scipy.sparse.sparray or scipy.sparse.spmatrix
+        The matrix to solve.
+    lower : bool, optional
+        Whether A is lower triangular (``True``), or upper triangular (``False``).
+    check_accuracy : bool, optional
+        Whether to check the accuracy of the solution.
+    check_rtol : float, optional
+        The relative tolerance to check against for accuracy.
+    check_atol : float, optional
+        The absolute tolerance to check against for accuracy.
+    accuracy_tol : float, optional
+        Relative accuracy tolerance.
+        .. deprecated:: 0.3.0
+            `accuracy_tol` will be removed in pymatsolver 0.4.0. Use `check_rtol` and `check_atol` instead.
+    **kwargs
+        Extra keyword arguments passed to the base class.
+    """
+
     def __init__(self, A, lower=True, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
         kwargs.pop("is_hermitian", False)
         kwargs.pop("is_symmetric", False)
@@ -327,6 +490,25 @@ class TriangularSolver(Base):
 
 
 class Forward(TriangularSolver):
+    """A solver for a lower triangular matrix.
+
+    Parameters
+    ----------
+    A : scipy.sparse.sparray or scipy.sparse.spmatrix
+        The lower triangular matrix to solve.
+    check_accuracy : bool, optional
+        Whether to check the accuracy of the solution.
+    check_rtol : float, optional
+        The relative tolerance to check against for accuracy.
+    check_atol : float, optional
+        The absolute tolerance to check against for accuracy.
+    accuracy_tol : float, optional
+        Relative accuracy tolerance.
+        .. deprecated:: 0.3.0
+            `accuracy_tol` will be removed in pymatsolver 0.4.0. Use `check_rtol` and `check_atol` instead.
+    **kwargs
+        Extra keyword arguments passed to the base class.
+    """
 
     def __init__(self, A, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
         kwargs.pop("lower", None)
@@ -334,6 +516,25 @@ class Forward(TriangularSolver):
 
 
 class Backward(TriangularSolver):
+    """A solver for ann upper triangular matrix.
+
+    Parameters
+    ----------
+    A : scipy.sparse.sparray or scipy.sparse.spmatrix
+        The upper triangular matrix to solve.
+    check_accuracy : bool, optional
+        Whether to check the accuracy of the solution.
+    check_rtol : float, optional
+        The relative tolerance to check against for accuracy.
+    check_atol : float, optional
+        The absolute tolerance to check against for accuracy.
+    accuracy_tol : float, optional
+        Relative accuracy tolerance.
+        .. deprecated:: 0.3.0
+            `accuracy_tol` will be removed in pymatsolver 0.4.0. Use `check_rtol` and `check_atol` instead.
+    **kwargs
+        Extra keyword arguments passed to the base class.
+    """
 
     _transpose_class = Forward
 
