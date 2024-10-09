@@ -84,7 +84,11 @@ class Base(ABC):
         self.is_positive_definite = is_positive_definite
 
         if kwargs:
-            warnings.warn(f"Unused keyword arguments for {self.__class__.__name__}: {kwargs.keys()}")
+            warnings.warn(
+                f"Unused keyword arguments for {self.__class__.__name__}: {kwargs.keys()}",
+                UserWarning,
+                stacklevel=3
+            )
 
     @property
     def A(self):
@@ -323,7 +327,7 @@ class Base(ABC):
                 # then expand out the first dimension into multiple dimensions.
                 x = x.reshape(in_shape)
                 # then switch last two dimensions again.
-                x = x.swapaxes(x,  -1, -2)
+                x = x.swapaxes(-1, -2)
 
         if self.check_accuracy:
             self._compute_accuracy(rhs, x)
