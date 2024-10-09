@@ -2,12 +2,38 @@ from pymatsolver.solvers import Base
 from mumps import Context
 
 class Mumps(Base):
-    """
-    Mumps solver
+    """The MUMPS direct solver.
+
+    This solver uses the python-mumps wrappers to factorize a sparse matrix, and use that factorization for solving.
+
+    Parameters
+    ----------
+    A
+        Matrix to solve with.
+    ordering : str, default 'metis'
+        Which ordering algorithm to use. See the `python-mumps` documentation for more details.
+    is_symmetric : bool, optional
+        Whether the matrix is symmetric. By default, it will perform some simple tests to check for symmetry, and
+        default to ``False`` if those fail.
+    is_positive_definite : bool, optional
+        Whether the matrix is positive definite.
+    check_accuracy : bool, optional
+        Whether to check the accuracy of the solution.
+    check_rtol : float, optional
+        The relative tolerance to check against for accuracy.
+    check_atol : float, optional
+        The absolute tolerance to check against for accuracy.
+    accuracy_tol : float, optional
+        Relative accuracy tolerance.
+        .. deprecated:: 0.3.0
+            `accuracy_tol` will be removed in pymatsolver 0.4.0. Use `check_rtol` and `check_atol` instead.
+    **kwargs
+        Extra keyword arguments. If there are any left here a warning will be raised.
     """
     _transposed = False
 
-    def __init__(self, A, ordering=None, is_symmetric=None, is_positive_definite=False, is_hermitian=None, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
+    def __init__(self, A, ordering=None, is_symmetric=None, is_positive_definite=False, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
+        is_hermitian = kwargs.pop('is_hermitian', False)
         super().__init__(A, is_symmetric=is_symmetric, is_positive_definite=is_positive_definite, is_hermitian=is_hermitian, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs)
         if ordering is None:
             ordering = "metis"
@@ -23,6 +49,12 @@ class Mumps(Base):
 
     @property
     def ordering(self):
+        """The ordering algorithm to use.
+
+        Returns
+        -------
+        str
+        """
         return self._ordering
 
     @ordering.setter
@@ -48,6 +80,14 @@ class Mumps(Base):
         return trans_obj
 
     def factor(self, A=None):
+        """(Re)factor the A matrix.
+
+        Parameters
+        ----------
+        A : scipy.sparse.spmatrix
+            The matrix to be factorized. If a previous factorization has been performed, this will
+            reuse the previous factorization's analysis.
+        """
         reuse_analysis = self._factored
         do_factor = not self._factored
         if A is not None and A is not self.A:

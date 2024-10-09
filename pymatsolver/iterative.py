@@ -15,7 +15,34 @@ SolverCG = WrapIterative(cg, name="SolverCG")
 SolverBiCG = WrapIterative(bicgstab, name="SolverBiCG")
 
 class BiCGJacobi(Base):
-    """Bicg Solver with Jacobi preconditioner"""
+    """Diagonal pre-conditioned BiCG solver.
+
+    Parameters
+    ----------
+    A : matrix
+        The matrix to solve, must have a ``diagonal()`` method.
+    symmetric: boolean, optional
+        .. deprecated:: 0.3.0
+            `symmetric` is deprecated. It is unused, and will be removed in pymatsolver 0.4.0.
+    maxiter : int, optional
+        The maximum number of BiCG iterations to perform.
+    rtol : float, optional
+        The relative tolerance for the BiCG solver to terminate.
+    atol : float, optional
+        The absolute tolerance for the BiCG solver to terminate.
+    check_accuracy : bool, optional
+        Whether to check the accuracy of the solution.
+    check_rtol : float, optional
+        The relative tolerance to check against for accuracy.
+    check_atol : float, optional
+        The absolute tolerance to check against for accuracy.
+    accuracy_tol : float, optional
+        Relative accuracy tolerance.
+        .. deprecated:: 0.3.0
+            `accuracy_tol` will be removed in pymatsolver 0.4.0. Use `check_rtol` and `check_atol` instead.
+    **kwargs
+        Extra keyword arguments passed to the base class.
+    """
 
     def __init__(self, A, symmetric=None, maxiter=1000, rtol=1E-6, atol=0.0, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
         if symmetric is not None:
