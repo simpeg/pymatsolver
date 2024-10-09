@@ -48,13 +48,14 @@ class Mumps(Base):
         return trans_obj
 
     def factor(self, A=None):
-        reuse_analysis = False
-        if A is not None:
+        reuse_analysis = self._factored
+        do_factor = not self._factored
+        if A is not None and A is not self.A:
+            # if it was previously factored then re-use the analysis.
             self._set_A(A)
             self._A = A
-            # if it was previously factored then re-use the analysis.
-            reuse_analysis = self._factored
-        if not self._factored:
+            do_factor = True
+        if do_factor:
             pivot_tol = 0.0 if self.is_positive_definite else 0.01
             self.solver.factor(
                 ordering=self.ordering, reuse_analysis=reuse_analysis, pivot_tol=pivot_tol
