@@ -34,3 +34,23 @@ def test_solve(test_mat_data, dtype, transpose):
     Ainv.maxiter = 2000
     solb = Ainv * rhs
     npt.assert_allclose(rhs, A @ solb, atol=TOL)
+
+def test_errors_and_warnings(test_mat_data):
+    A, rhs, sol = test_mat_data
+    with pytest.warns(FutureWarning):
+        Ainv = BicgJacobi(A, symmetric=True)
+
+    with pytest.raises(ValueError):
+        Ainv = BicgJacobi(A, rtol=0.0)
+
+    with pytest.raises(ValueError):
+        Ainv = BicgJacobi(A, atol=-1.0)
+
+def test_shallow_copy(test_mat_data):
+    A, rhs, sol = test_mat_data
+    Ainv = BicgJacobi(A, maxiter=100, rtol=1.0E-3, atol=1.0E-16)
+
+    attrs = Ainv.get_attributes()
+
+    new_Ainv = BicgJacobi(A, **attrs)
+    assert attrs == new_Ainv.get_attributes()
