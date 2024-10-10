@@ -40,6 +40,9 @@ class Base(ABC):
         Extra keyword arguments. If there are any left here a warning will be raised.
     """
 
+    __numpy_ufunc__ = True
+    __array_ufunc__ = None
+
     def __init__(
             self, A, is_symmetric=None, is_positive_definite=False, is_hermitian=None, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs
     ):

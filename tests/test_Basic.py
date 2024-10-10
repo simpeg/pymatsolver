@@ -55,6 +55,9 @@ def test_basic_solve():
     npt.assert_equal(Ainv @ rhs2d, rhs2d)
     npt.assert_equal(Ainv @ rhs3d, rhs3d)
 
+    npt.assert_equal(rhs @ Ainv, rhs)
+    npt.assert_equal(rhs.T * Ainv, rhs)
+
 
 # use Diagonal solver as a concrete instance of the Base to test for some errors
 
@@ -87,3 +90,15 @@ def test_errors_and_warnings():
 
     with pytest.raises(ValueError, match="check_atol must.*"):
         IdentitySolver(np.full((4, 4), 1), check_atol=-1.0)
+
+    with pytest.raises(ValueError, match="Expected a vector of length.*"):
+        Ainv = IdentitySolver(np.eye(4, 4))
+        Ainv @ np.ones(3)
+
+    with pytest.raises(ValueError, match="Second to last dimension should be.*"):
+        Ainv = IdentitySolver(np.eye(4, 4))
+        Ainv @ np.ones((3, 2))
+
+    with pytest.warns(FutureWarning, match="In Future pymatsolver v0.4.0, passing a vector.*"):
+        Ainv = IdentitySolver(np.eye(4, 4))
+        Ainv @ np.ones((4, 1))
