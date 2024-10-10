@@ -2,6 +2,8 @@ from pymatsolver import SolverCG, SolverLU, wrap_direct, wrap_iterative
 import pytest
 import scipy.sparse as sp
 import warnings
+import numpy.testing as npt
+import numpy as np
 
 
 @pytest.mark.parametrize("solver_class", [SolverCG, SolverLU])
@@ -69,3 +71,12 @@ def test_iterative_deprecations():
 
     with pytest.warns(FutureWarning, match="check_accuracy and accuracy_tol were unused.*"):
         wrap_iterative(iterative_solver, accuracy_tol=1E-3)
+
+def test_non_scipy_iterative():
+    def iterative_solver(A, x):
+        return x
+
+    Wrapped = wrap_iterative(iterative_solver)
+
+    Ainv = Wrapped(sp.eye(4))
+    npt.assert_equal(Ainv @ np.arange(4), np.arange(4))
