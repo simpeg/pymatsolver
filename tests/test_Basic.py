@@ -7,23 +7,6 @@ from pymatsolver import Diagonal
 
 TOL = 1e-12
 
-def test_DiagonalSolver():
-
-    A = sp.identity(5)*2.0
-    rhs = np.c_[np.arange(1, 6), np.arange(2, 11, 2)]
-    X = Diagonal(A) * rhs
-    x = Diagonal(A) * rhs[:, 0]
-
-    sol = rhs/2.0
-
-    with pytest.raises(TypeError):
-        Diagonal(A, check_accuracy=np.array([1, 2, 3]))
-    with pytest.raises(ValueError):
-        Diagonal(A, accuracy_tol=0)
-
-    npt.assert_allclose(sol, X, atol=TOL)
-    npt.assert_allclose(sol[:, 0], x, atol=TOL)
-
 class IdentitySolver(pymatsolver.solvers.Base):
     """"A concrete implementation of Base, for testing purposes"""
     def _solve_single(self, rhs):
@@ -32,34 +15,58 @@ class IdentitySolver(pymatsolver.solvers.Base):
     def _solve_multiple(self, rhs):
         return rhs
 
+class NotTransposableIdentitySolver(IdentitySolver):
+    """ A class that can't be transposed."""
+
+    @property
+    def _transpose_class(self):
+        return None
+
 
 def test_basics():
 
     Ainv = IdentitySolver(np.eye(4))
-    assert Ainv.is_symmetric == True
-    assert Ainv.is_hermitian == True
+    assert Ainv.is_symmetric
+    assert Ainv.is_hermitian
     assert Ainv.shape == (4, 4)
+    assert Ainv.is_real
 
     Ainv = IdentitySolver(np.eye(4) + 0j)
-    assert Ainv.is_symmetric == True
-    assert Ainv.is_hermitian == True
+    assert Ainv.is_symmetric
+    assert Ainv.is_hermitian
+    assert not Ainv.is_real
+
+    Ainv = IdentitySolver(sp.eye(4))
+    assert Ainv.is_symmetric
+    assert Ainv.is_hermitian
+    assert Ainv.shape == (4, 4)
+
+    Ainv = IdentitySolver(sp.eye(4).astype(np.complex128))
+    assert Ainv.is_symmetric
+    assert Ainv.is_hermitian
+    assert Ainv.shape == (4, 4)
+    assert not Ainv.is_real
 
 def test_basic_solve():
     Ainv = IdentitySolver(np.eye(4))
 
     rhs = np.arange(4)
     rhs2d = np.arange(8).reshape(4, 2)
-    rhs3d = np.arange(16).reshape(2, 4, 2)
+    rhs3d = np.arange(24).reshape(3, 4, 2)
 
     npt.assert_equal(Ainv @ rhs, rhs)
     npt.assert_equal(Ainv @ rhs2d, rhs2d)
     npt.assert_equal(Ainv @ rhs3d, rhs3d)
 
     npt.assert_equal(rhs @ Ainv, rhs)
-    npt.assert_equal(rhs.T * Ainv, rhs)
+    npt.assert_equal(rhs * Ainv, rhs)
 
+    npt.assert_equal(rhs2d.T @ Ainv, rhs2d.T)
+    npt.assert_equal(rhs2d.T * Ainv, rhs2d.T)
 
-# use Diagonal solver as a concrete instance of the Base to test for some errors
+    npt.assert_equal(rhs3d.swapaxes(-1, -2) @ Ainv, rhs3d.swapaxes(-1, -2))
+    npt.assert_equal(rhs3d.swapaxes(-1, -2) * Ainv, rhs3d.swapaxes(-1, -2))
+
 
 def test_errors_and_warnings():
 
@@ -102,3 +109,115 @@ def test_errors_and_warnings():
     with pytest.warns(FutureWarning, match="In Future pymatsolver v0.4.0, passing a vector.*"):
         Ainv = IdentitySolver(np.eye(4, 4))
         Ainv @ np.ones((4, 1))
+
+    with pytest.raises(NotImplementedError, match="The transpose for the.*"):
+        Ainv = NotTransposableIdentitySolver(np.eye(4, 4), is_symmetric=False)
+        Ainv.T
+
+
+
+def test_DiagonalSolver():
+
+    A = sp.identity(5)*2.0
+    rhs = np.c_[np.arange(1, 6), np.arange(2, 11, 2)]
+    X = Diagonal(A) * rhs
+    x = Diagonal(A) * rhs[:, 0]
+
+    sol = rhs/2.0
+
+    with pytest.raises(TypeError):
+        Diagonal(A, check_accuracy=np.array([1, 2, 3]))
+    with pytest.raises(ValueError):
+        Diagonal(A, check_rtol=0)
+
+    npt.assert_allclose(sol, X, atol=TOL)
+    npt.assert_allclose(sol[:, 0], x, atol=TOL)
+
+def test_diagonal_errors():
+
+    with pytest.raises(TypeError, match="A must have a diagonal.*"):
+        Diagonal(
+            [
+                [2, 0],
+                [0, 1]
+            ]
+        )
+
+    with pytest.raises(ValueError, match="Diagonal matrix has a zero along the diagonal."):
+        Diagonal(
+            np.array(
+                [
+                    [0, 0],
+                    [0, 1]
+                ]
+            )
+        )
+
+def test_diagonal_inferance():
+
+    Ainv = Diagonal(
+        np.array(
+            [
+                [2., 0.],
+                [0., 1.],
+            ]
+        ),
+    )
+
+    assert Ainv.is_symmetric
+    assert Ainv.is_positive_definite
+    assert Ainv.is_hermitian
+    assert Ainv.is_real
+
+    Ainv = Diagonal(
+        np.array(
+            [
+                [2.0, 0],
+                [0, -1.0],
+            ]
+        ),
+    )
+
+    assert Ainv.is_symmetric
+    assert not Ainv.is_positive_definite
+    assert Ainv.is_hermitian
+    assert Ainv.is_real
+
+    Ainv = Diagonal(
+        np.array(
+            [
+                [2 + 0j, 0],
+                [0, 2 + 0j],
+            ]
+        )
+    )
+    assert not Ainv.is_real
+    assert Ainv.is_symmetric
+    assert Ainv.is_hermitian
+    assert Ainv.is_positive_definite
+
+    Ainv = Diagonal(
+        np.array(
+            [
+                [2 + 0j, 0],
+                [0, -2 + 0j],
+            ]
+        )
+    )
+    assert not Ainv.is_real
+    assert Ainv.is_symmetric
+    assert Ainv.is_hermitian
+    assert not Ainv.is_positive_definite
+
+    Ainv = Diagonal(
+        np.array(
+            [
+                [2 + 1j, 0],
+                [0, 2 + 0j],
+            ]
+        )
+    )
+    assert not Ainv.is_real
+    assert Ainv.is_symmetric
+    assert not Ainv.is_hermitian
+    assert not Ainv.is_positive_definite

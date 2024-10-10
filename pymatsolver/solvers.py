@@ -56,7 +56,11 @@ class Base(ABC):
         self._dtype = np.dtype(A.dtype)
 
         if accuracy_tol is not None:
-            warnings.warn("accuracy_tol is deprecated and will be removed in v0.4.0, use check_rtol and check_atol.", FutureWarning, stacklevel=2)
+            warnings.warn(
+                "accuracy_tol is deprecated and will be removed in v0.4.0, use check_rtol and check_atol.",
+                FutureWarning,
+                stacklevel=3
+            )
             check_rtol = accuracy_tol
 
         self.check_accuracy = check_accuracy
@@ -249,7 +253,7 @@ class Base(ABC):
         if self._transpose_class is None:
             raise NotImplementedError(
                 'The transpose for the {} class is not possible.'.format(
-                    self.__name__
+                    self.__class__.__name__
                 )
             )
         newS = self._transpose_class(self.A.T, **self.get_attributes())
@@ -307,7 +311,8 @@ class Base(ABC):
                     "In Future pymatsolver v0.4.0, passing a vector of shape (n, 1) to the solve method "
                     "will return an array with shape (n, 1), instead of always returning a flattened array. "
                     "This is to be consistent with numpy.linalg.solve broadcasting.",
-                    FutureWarning
+                    FutureWarning,
+                    stacklevel=2
                 )
             if rhs.shape[-2] != n:
                 raise ValueError(f'Second to last dimension should be {n}, got {rhs.shape}')
@@ -416,15 +421,15 @@ class Diagonal(Base):
         try:
             self._diagonal = np.asarray(A.diagonal())
             if not np.all(self._diagonal):
-                # this works because 0 evaluates as False!
+                # this works because 0.0 evaluates as False!
                 raise ValueError("Diagonal matrix has a zero along the diagonal.")
         except AttributeError:
             raise TypeError("A must have a diagonal() method.")
         kwargs.pop("is_symmetric", None)
-        kwargs.pop("is_hermitian", None)
+        is_hermitian = kwargs.pop("is_hermitian", None)
         is_positive_definite = kwargs.pop("is_positive_definite", None)
         super().__init__(
-            A, is_symmetric=True, is_hermitian=True, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs
+            A, is_symmetric=True, is_hermitian=False, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs
         )
         if is_positive_definite is None:
             if self.is_real:
@@ -433,6 +438,14 @@ class Diagonal(Base):
                 is_positive_definite = (not np.any(self._diagonal.imag)) and self._diagonal.real.min() > 0
             is_positive_definite = bool(is_positive_definite)
         self.is_positive_definite = is_positive_definite
+
+        if is_hermitian is None:
+            if self.is_real:
+                is_hermitian = True
+            else:
+                # can only be hermitian if all imaginary components on diagonal are zero.
+                is_hermitian = not np.any(self._diagonal.imag)
+        self.is_hermitian = is_hermitian
 
     def _solve_single(self, rhs):
         return rhs / self._diagonal
@@ -466,12 +479,15 @@ class TriangularSolver(Base):
     """
 
     def __init__(self, A, lower=True, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
-        kwargs.pop("is_hermitian", False)
-        kwargs.pop("is_symmetric", False)
-        if not (sp.issparse(A) and A.format in ['csr','csc']):
+        # pop off unneeded keyword arguments.
+        is_hermitian = kwargs.pop("is_hermitian", False)
+        is_symmetric = kwargs.pop("is_symmetric", False)
+        is_positive_definite = kwargs.pop("is_positive_definite", False)
+        if not (sp.issparse(A) and A.format in ['csr', 'csc']):
             A = sp.csc_matrix(A)
         A.sum_duplicates()
-        super().__init__(A, is_hermitian=False, is_symmetric=False, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs)
+        super().__init__(A, is_hermitian=is_hermitian, is_symmetric=is_symmetric, is_positive_definite=is_positive_definite, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs)
+
         self.lower = lower
 
     @property

@@ -21,3 +21,19 @@ def test_solve(solver):
     Ainv = solver(A)
     npt.assert_allclose(Ainv * rhs, sol, atol=TOL)
     npt.assert_allclose(Ainv * rhs[:, 0], sol[:, 0], atol=TOL)
+
+
+def test_triangle_errors():
+    A = sp.eye(5, format='csc')
+
+    with pytest.raises(TypeError, match="lower must be a bool."):
+        Ainv = pymatsolver.Forward(A)
+        Ainv.lower = 1
+
+
+def test_mat_convert():
+    Ainv = pymatsolver.Forward(sp.eye(5, format='coo'))
+    x = np.arange(5)
+    npt.assert_allclose(Ainv @ x, x)
+
+
