@@ -11,51 +11,46 @@ TOL = 1e-11
 
 @pytest.fixture()
 def test_mat_data():
-    n = 5
-    irn = np.r_[0, 1, 3, 4, 1, 0, 4, 2, 1, 2, 0, 2]
-    jcn = np.r_[1, 2, 2, 4, 0, 0, 1, 3, 4, 1, 2, 2]
-    a = np.r_[
-        3.0, -3.0, 2.0, 1.0, 3.0, 2.0,
-        4.0, 2.0, 6.0, -1.0, 4.0, 1.0
-    ]
-    rhs = np.r_[20.0, 24.0, 9.0, 6.0, 13.0]
-    rhs = np.c_[rhs, 10 * rhs, 100 * rhs]
-    sol = np.r_[1., 2., 3., 4., 5.]
-    sol = np.c_[sol, 10 * sol, 100 * sol]
-    A = sp.coo_matrix((a, (irn, jcn)), shape=(n, n))
-    return A, rhs, sol
+    nSize = 100
+    A = sp.rand(nSize, nSize, 0.05, format='csr', random_state=100)
+    A = A + sp.spdiags(np.ones(nSize), 0, nSize, nSize)
+    A = A.T*A
+    A = A.tocsr()
+    sol = np.linspace(0.9, 1.1, nSize)
+    sol = np.repeat(sol[:, None], 5, axis=-1)
+    return A, sol
+
 
 @pytest.mark.parametrize('transpose', [True, False])
 @pytest.mark.parametrize('dtype', [np.float64, np.complex128])
-def test_solve(test_mat_data, dtype, transpose):
-    A, rhs, sol = test_mat_data
+@pytest.mark.parametrize('symmetric', [True, False])
+def test_solve(test_mat_data, dtype, transpose, symmetric):
+    A, sol = test_mat_data
     sol = sol.astype(dtype)
-    rhs = rhs.astype(dtype)
     A = A.astype(dtype)
+    if not symmetric:
+        D = sp.diags(np.linspace(2, 3, A.shape[0]))
+        A = D @ A
+    rhs = A @ sol
     if transpose:
-        Ainv = pymatsolver.Mumps(A.T).T
+        Ainv = pymatsolver.Mumps(A.T, is_symmetric=symmetric).T
     else:
-        Ainv = pymatsolver.Mumps(A)
-    for i in range(3):
+        Ainv = pymatsolver.Mumps(A, is_symmetric=symmetric)
+    for i in range(rhs.shape[1]):
         npt.assert_allclose(Ainv * rhs[:, i], sol[:, i], atol=TOL)
     npt.assert_allclose(Ainv * rhs, sol, atol=TOL)
 
 
-# def test_singular(self):
-#     A = sp.identity(5).tocsr()
-#     A[-1, -1] = 0
-#     self.assertRaises(Exception, pymatsolver.Mumps, A)
+def test_refactor(test_mat_data):
+    A, sol = test_mat_data
+    rhs = A @ sol
+    Ainv = pymatsolver.Mumps(A, is_symmetric=True)
+    npt.assert_allclose(Ainv * rhs, sol, atol=TOL)
 
-def test_multiFactorsInMem():
-    n = 100
-    A = sp.rand(n, n, 0.7)+sp.identity(n)
-    x = np.ones((n, 10))
-    rhs = A * x
-    solvers = [pymatsolver.Mumps(A) for _ in range(20)]
+    # scale rows and columns
+    D = sp.diags(np.random.rand(A.shape[0]) + 1.0)
+    A2 = D.T @ A @ D
 
-    for Ainv in solvers:
-        npt.assert_allclose(Ainv * rhs, x, rtol=TOL)
-        Ainv.clean()
-
-    for Ainv in solvers:
-        npt.assert_allclose(Ainv * rhs, x, rtol=TOL)
+    rhs2 = A2 @ sol
+    Ainv.factor(A2)
+    npt.assert_allclose(Ainv * rhs2, sol, atol=TOL)

@@ -8,7 +8,7 @@ import os
 if not pymatsolver.AvailableSolvers['Pardiso']:
     pytest.skip(reason="Pardiso solver is not installed", allow_module_level=True)
 else:
-    from pydiso.mkl_solver import PardisoTypeConversionWarning, get_mkl_pardiso_max_threads
+    from pydiso.mkl_solver import get_mkl_pardiso_max_threads
 
 TOL = 1e-10
 
@@ -19,37 +19,74 @@ def test_mat_data():
     A = A + sp.spdiags(np.ones(nSize), 0, nSize, nSize)
     A = A.T*A
     A = A.tocsr()
-    np.random.seed(1)
-    sol = np.random.rand(nSize, 5)
-    rhs = A.dot(sol)
-    return A, rhs, sol
+    sol = np.linspace(0.9, 1.1, nSize)
+    sol = np.repeat(sol[:, None], 5, axis=-1)
+    return A, sol
 
 @pytest.mark.parametrize('transpose', [True, False])
 @pytest.mark.parametrize('dtype', [np.float64, np.complex128])
-def test_solve(test_mat_data, dtype, transpose):
-    A, rhs, sol = test_mat_data
-    sol = sol.astype(dtype)
-    rhs = rhs.astype(dtype)
-    A = A.astype(dtype)
-    if transpose:
-        with pytest.warns(PardisoTypeConversionWarning):
-            Ainv = pymatsolver.Pardiso(A.T).T
+@pytest.mark.parametrize('symmetry', ["S", "H", None])
+def test_solve(test_mat_data, dtype, transpose, symmetry):
+
+    A, sol = test_mat_data
+
+    if symmetry is None:
+        D = sp.diags(np.linspace(2, 3, A.shape[0]))
+        A = D @ A
+        symmetric = False
+        hermitian = False
+    elif symmetry == "H":
+        D = sp.diags(np.linspace(2, 3, A.shape[0]))
+        if np.issubdtype(dtype, np.complexfloating):
+            D = D + 1j * sp.diags(np.linspace(3, 4, A.shape[0]))
+        A = D @ A @ D.T.conjugate()
+        symmetric = False
+        hermitian = True
     else:
-        Ainv = pymatsolver.Pardiso(A)
+        symmetric = True
+        hermitian = False
+
+    sol = sol.astype(dtype)
+    A = A.astype(dtype)
+
+    Ainv = pymatsolver.Pardiso(A, is_symmetric=symmetric, is_hermitian=hermitian)
+    if transpose:
+        rhs = A.T @ sol
+        Ainv = Ainv.T
+    else:
+        rhs = A @ sol
+
     for i in range(rhs.shape[1]):
         npt.assert_allclose(Ainv * rhs[:, i], sol[:, i], atol=TOL)
     npt.assert_allclose(Ainv * rhs, sol, atol=TOL)
 
-def test_symmetric_solve(test_mat_data):
-    A, rhs, sol = test_mat_data
-    Ainv = pymatsolver.Pardiso(A, is_symmetric=True)
-    for i in range(rhs.shape[1]):
-        npt.assert_allclose(Ainv * rhs[:, i], sol[:, i], atol=TOL)
-    npt.assert_allclose(Ainv * rhs, sol, atol=TOL)
+@pytest.mark.parametrize('transpose', [True, False])
+@pytest.mark.parametrize('dtype', [np.float64, np.complex128])
+def test_pardiso_positive_definite(dtype, transpose):
+    n = 5
+    if dtype == np.float64:
+        L = sp.diags([1, -1], [0, -1], shape=(n, n))
+    else:
+        L = sp.diags([1, -1j], [0, -1], shape=(n, n))
+    D = sp.diags(np.linspace(1, 2, n))
+    A_pd = L @ D @ (L.T.conjugate())
+
+    sol = np.linspace(0.9, 1.1, n)
+
+    is_symmetric = dtype == np.float64
+    Ainv = pymatsolver.Pardiso(A_pd, is_symmetric=is_symmetric, is_hermitian=True, is_positive_definite=True)
+    if transpose:
+        rhs = A_pd.T @ sol
+        Ainv = Ainv.T
+    else:
+        rhs = A_pd @ sol
+
+    npt.assert_allclose(Ainv @ rhs, sol)
 
 
 def test_refactor(test_mat_data):
-    A, rhs, sol = test_mat_data
+    A, sol = test_mat_data
+    rhs = A @ sol
     Ainv = pymatsolver.Pardiso(A, is_symmetric=True)
     npt.assert_allclose(Ainv * rhs, sol, atol=TOL)
 
@@ -62,7 +99,7 @@ def test_refactor(test_mat_data):
     npt.assert_allclose(Ainv * rhs2, sol, atol=TOL)
 
 def test_n_threads(test_mat_data):
-    A, rhs, sol = test_mat_data
+    A, sol = test_mat_data
 
     max_threads = get_mkl_pardiso_max_threads()
     print(f'testing setting n_threads to 1 and {max_threads}')
@@ -85,7 +122,8 @@ def test_n_threads(test_mat_data):
         Ainv.n_threads = "2"
 
 def test_inacurrate_symmetry(test_mat_data):
-    A, rhs, sol = test_mat_data
+    A, sol = test_mat_data
+    rhs = A @ sol
     # make A not symmetric
     D = sp.diags(np.linspace(2, 3, A.shape[0]))
     A = A @ D
@@ -106,6 +144,7 @@ def test_pardiso_fdem():
     rhs = np.load(os.path.join(base_path, 'RHS.npy'))
 
     Ainv = pymatsolver.Pardiso(A, check_accuracy=True)
+    print(Ainv.is_symmetric)
 
     sol = Ainv * rhs
 
