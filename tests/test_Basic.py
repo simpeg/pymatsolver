@@ -15,6 +15,10 @@ class IdentitySolver(pymatsolver.solvers.Base):
     def _solve_multiple(self, rhs):
         return rhs
 
+    def clean(self):
+        # this is to test that the __del__ still executes if the object doesn't successfully clean.
+        raise MemoryError("Nothing to cleanup!")
+
 class NotTransposableIdentitySolver(IdentitySolver):
     """ A class that can't be transposed."""
 

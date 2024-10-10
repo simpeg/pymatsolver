@@ -28,13 +28,13 @@ def _valid_kwargs_for_func(func, **kwargs):
             sig.bind_partial(**{key: value})
             valid_kwargs[key] = value
         except TypeError:
-            warnings.warn(f'Unused keyword argument "{key}" for {func.__name__}.', stacklevel=3)
+            warnings.warn(f'Unused keyword argument "{key}" for {func.__name__}.', UserWarning, stacklevel=3)
             # stack level of three because we want the warning issued at the call
             # to the wrapped solver's `__init__` method.
     return valid_kwargs
 
 
-def WrapDirect(fun, factorize=True, name=None):
+def wrap_direct(fun, factorize=True, name=None):
     """Wraps a direct Solver.
 
     Parameters
@@ -121,6 +121,7 @@ def WrapDirect(fun, factorize=True, name=None):
             "__init__": __init__,
             "_solve_single": _solve_single,
             "_solve_multiple": _solve_multiple,
+            "kwargs": kwargs,
             "clean": clean,
         }
     )
@@ -146,7 +147,7 @@ def WrapDirect(fun, factorize=True, name=None):
     return WrappedClass
 
 
-def WrapIterative(fun, check_accuracy=None, accuracy_tol=None, name=None):
+def wrap_iterative(fun, check_accuracy=None, accuracy_tol=None, name=None):
     """
     Wraps an iterative Solver.
 
@@ -229,6 +230,7 @@ def WrapIterative(fun, check_accuracy=None, accuracy_tol=None, name=None):
             "__init__": __init__,
             "_solve_single": _solve_single,
             "_solve_multiple": _solve_multiple,
+            "kwargs": kwargs,
         }
     )
     WrappedClass.__doc__ = f"""Wrapped {class_name} solver.
@@ -253,3 +255,6 @@ def WrapIterative(fun, check_accuracy=None, accuracy_tol=None, name=None):
 
     return WrappedClass
 
+
+WrapDirect = wrap_direct
+WrapIterative = wrap_iterative

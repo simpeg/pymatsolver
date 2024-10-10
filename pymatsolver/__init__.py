@@ -62,8 +62,8 @@ AvailableSolvers = {
 
 # Simple solvers
 from .solvers import Diagonal, Triangle, Forward, Backward
-from .wrappers import WrapDirect
-from .wrappers import WrapIterative
+from .wrappers import wrap_direct, WrapDirect
+from .wrappers import wrap_iterative, WrapIterative
 
 # Scipy Iterative solvers
 from .iterative import SolverCG
