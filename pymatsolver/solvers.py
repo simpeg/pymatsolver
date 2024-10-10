@@ -455,7 +455,7 @@ class Diagonal(Base):
         return rhs / self._diagonal[:, None]
 
 
-class TriangularSolver(Base):
+class Triangle(Base):
     """A solver for a diagonal matrix.
 
     Parameters
@@ -512,7 +512,7 @@ class TriangularSolver(Base):
         return trans
 
 
-class Forward(TriangularSolver):
+class Forward(Triangle):
     """A solver for a lower triangular matrix.
 
     Parameters
@@ -538,7 +538,7 @@ class Forward(TriangularSolver):
         super().__init__(A, lower=True, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs)
 
 
-class Backward(TriangularSolver):
+class Backward(Triangle):
     """A solver for ann upper triangular matrix.
 
     Parameters

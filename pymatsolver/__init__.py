@@ -24,6 +24,7 @@ Triangular
 .. autosummary::
   :toctree: generated/
 
+  Triangle
   Forward
   Backward
 
@@ -60,7 +61,7 @@ AvailableSolvers = {
 }
 
 # Simple solvers
-from .solvers import Diagonal, Forward, Backward
+from .solvers import Diagonal, Triangle, Forward, Backward
 from .wrappers import WrapDirect
 from .wrappers import WrapIterative
 
