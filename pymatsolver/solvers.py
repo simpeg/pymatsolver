@@ -47,6 +47,8 @@ class Base(ABC):
     __numpy_ufunc__ = True
     __array_ufunc__ = None
 
+    _is_conjugate = False
+
     def __init__(
             self, A, is_symmetric=None, is_positive_definite=False, is_hermitian=None, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs
     ):
@@ -251,7 +253,13 @@ class Base(ABC):
         return self.__class__
 
     def transpose(self):
-        """Return the transposed solve operator."""
+        """Return the transposed solve operator.
+
+        Returns
+        -------
+        pymatsolver.solvers.Base
+        """
+
         if self.is_symmetric:
             return self
         if self._transpose_class is None:
@@ -273,6 +281,23 @@ class Base(ABC):
             `T` is an alias for `transpose()`.
         """
         return self.transpose()
+
+    def conjugate(self):
+        """Return the complex conjugate version of this solver.
+
+        Returns
+        -------
+        pymatsolver.solvers.Base
+        """
+        if self.is_real:
+            return self
+        else:
+            # make a shallow copy of myself
+            conjugated = copy.copy(self)
+            conjugated._is_conjugate = not self._is_conjugate
+            return conjugated
+
+    conj = conjugate
 
     def _compute_accuracy(self, rhs, x):
         resid_norm = np.linalg.norm(rhs - self.A @ x)
@@ -308,6 +333,8 @@ class Base(ABC):
         if ndim == 1:
             if len(rhs) != n:
                 raise ValueError(f'Expected a vector of length {n}, got {len(rhs)}')
+            if self._is_conjugate:
+                rhs = rhs.conjugate()
             x = self._solve_single(rhs)
         else:
             if ndim == 2 and rhs.shape[-1] == 1:
@@ -331,6 +358,8 @@ class Base(ABC):
                 # (which is more common for direct solvers).
                 rhs = rhs.transpose()
                 # should end up with shape (n, -1)
+            if self._is_conjugate:
+                rhs = rhs.conjugate()
             x = self._solve_multiple(rhs)
             if do_broadcast:
                 # undo the reshaping above
@@ -347,6 +376,9 @@ class Base(ABC):
         #TODO remove this in v0.4.0.
         if x.size == n:
             x = x.reshape(-1)
+
+        if self._is_conjugate:
+            x = x.conjugate()
         return x
 
     @abstractmethod
