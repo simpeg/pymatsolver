@@ -7,7 +7,11 @@ from abc import ABC, abstractmethod
 import copy
 
 
-class PymatsolverAccuracyError(Exception):
+class SolverAccuracyError(Exception):
+    pass
+
+
+class UnusedArgumentWarning(UserWarning):
     pass
 
 
@@ -93,7 +97,7 @@ class Base(ABC):
         if kwargs:
             warnings.warn(
                 f"Unused keyword arguments for {self.__class__.__name__}: {kwargs.keys()}",
-                UserWarning,
+                UnusedArgumentWarning,
                 stacklevel=3
             )
 
@@ -275,7 +279,7 @@ class Base(ABC):
         rhs_norm = np.linalg.norm(rhs)
         tolerance = max(self.check_rtol * rhs_norm, self.check_atol)
         if resid_norm > tolerance:
-            raise PymatsolverAccuracyError(
+            raise SolverAccuracyError(
                 f'Accuracy on solve is above tolerance: {resid_norm} > {tolerance}'
             )
 

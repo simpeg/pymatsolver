@@ -1,4 +1,5 @@
 from pymatsolver import SolverCG, SolverLU, wrap_direct, wrap_iterative
+from pymatsolver.solvers import UnusedArgumentWarning
 import pytest
 import scipy.sparse as sp
 import warnings
@@ -10,7 +11,7 @@ import numpy as np
 def test_wrapper_unused_kwargs(solver_class):
     A = sp.eye(10)
 
-    with pytest.warns(UserWarning, match="Unused keyword argument.*"):
+    with pytest.warns(UnusedArgumentWarning, match="Unused keyword argument.*"):
         solver_class(A, not_a_keyword_arg=True)
 
 def test_good_arg_iterative():

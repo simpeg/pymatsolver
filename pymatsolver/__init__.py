@@ -63,7 +63,7 @@ from .iterative import BiCGJacobi
 from .direct import Solver, pardiso
 from .direct import SolverLU
 
-from .solvers import PymatsolverAccuracyError
+from .solvers import SolverAccuracyError
 from .direct import Pardiso, Mumps
 from .direct.pardiso import _available as _pardiso_available
 from .direct.mumps import _available as _mumps_available

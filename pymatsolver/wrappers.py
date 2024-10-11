@@ -2,7 +2,7 @@ import warnings
 from inspect import signature
 import numpy as np
 
-from pymatsolver.solvers import Base
+from pymatsolver.solvers import Base, UnusedArgumentWarning
 
 def _valid_kwargs_for_func(func, **kwargs):
     """Validates keyword arguments for a function by inspecting its signature.
@@ -28,7 +28,7 @@ def _valid_kwargs_for_func(func, **kwargs):
             sig.bind_partial(**{key: value})
             valid_kwargs[key] = value
         except TypeError:
-            warnings.warn(f'Unused keyword argument "{key}" for {func.__name__}.', UserWarning, stacklevel=3)
+            warnings.warn(f'Unused keyword argument "{key}" for {func.__name__}.', UnusedArgumentWarning, stacklevel=3)
             # stack level of three because we want the warning issued at the call
             # to the wrapped solver's `__init__` method.
     return valid_kwargs

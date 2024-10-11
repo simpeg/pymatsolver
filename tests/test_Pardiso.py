@@ -128,7 +128,7 @@ def test_inacurrate_symmetry(test_mat_data):
     D = sp.diags(np.linspace(2, 3, A.shape[0]))
     A = A @ D
     Ainv = pymatsolver.Pardiso(A, is_symmetric=True, check_accuracy=True)
-    with pytest.raises(pymatsolver.PymatsolverAccuracyError):
+    with pytest.raises(pymatsolver.SolverAccuracyError):
         Ainv * rhs
 
 
