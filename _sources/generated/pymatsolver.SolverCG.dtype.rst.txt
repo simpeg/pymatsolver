@@ -1,0 +1,6 @@
+pymatsolver.SolverCG.dtype
+==========================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: SolverCG.dtype

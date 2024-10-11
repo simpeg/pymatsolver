@@ -1,0 +1,6 @@
+pymatsolver.Solver.check\_rtol
+==============================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Solver.check_rtol

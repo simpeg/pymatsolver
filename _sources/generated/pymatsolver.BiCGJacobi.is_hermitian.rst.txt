@@ -1,0 +1,6 @@
+pymatsolver.BiCGJacobi.is\_hermitian
+====================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: BiCGJacobi.is_hermitian

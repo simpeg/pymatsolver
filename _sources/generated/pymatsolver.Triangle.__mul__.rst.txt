@@ -1,0 +1,6 @@
+pymatsolver.Triangle.\_\_mul\_\_
+================================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Triangle.__mul__

@@ -1,0 +1,6 @@
+pymatsolver.BiCGJacobi.transpose
+================================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: BiCGJacobi.transpose

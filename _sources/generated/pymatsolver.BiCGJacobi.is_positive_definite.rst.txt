@@ -1,0 +1,6 @@
+pymatsolver.BiCGJacobi.is\_positive\_definite
+=============================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: BiCGJacobi.is_positive_definite

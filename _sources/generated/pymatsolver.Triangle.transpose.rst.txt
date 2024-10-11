@@ -1,0 +1,6 @@
+pymatsolver.Triangle.transpose
+==============================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Triangle.transpose

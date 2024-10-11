@@ -1,0 +1,6 @@
+pymatsolver.Mumps.get\_attributes
+=================================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Mumps.get_attributes

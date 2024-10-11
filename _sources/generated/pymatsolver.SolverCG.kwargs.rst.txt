@@ -1,0 +1,6 @@
+pymatsolver.SolverCG.kwargs
+===========================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: SolverCG.kwargs

@@ -15,7 +15,11 @@
       
          Base.__mul__
          Base.clean
-         Base.set_kwargs
+         Base.conj
+         Base.conjugate
+         Base.get_attributes
+         Base.solve
+         Base.transpose
       
   
 
@@ -25,12 +29,16 @@
       .. autosummary::
          :toctree:
       
+         Base.A
          Base.T
-         Base.accuracy_tol
          Base.check_accuracy
+         Base.check_atol
+         Base.check_rtol
+         Base.dtype
          Base.is_hermitian
          Base.is_positive_definite
          Base.is_real
          Base.is_symmetric
+         Base.shape
   
   

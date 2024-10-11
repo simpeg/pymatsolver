@@ -1,0 +1,6 @@
+pymatsolver.Forward.dtype
+=========================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Forward.dtype

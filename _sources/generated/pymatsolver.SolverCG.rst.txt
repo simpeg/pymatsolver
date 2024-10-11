@@ -15,7 +15,11 @@
       
          SolverCG.__mul__
          SolverCG.clean
-         SolverCG.set_kwargs
+         SolverCG.conj
+         SolverCG.conjugate
+         SolverCG.get_attributes
+         SolverCG.solve
+         SolverCG.transpose
       
          SolverCG.__mul__
   
@@ -26,12 +30,17 @@
       .. autosummary::
          :toctree:
       
+         SolverCG.A
          SolverCG.T
-         SolverCG.accuracy_tol
          SolverCG.check_accuracy
+         SolverCG.check_atol
+         SolverCG.check_rtol
+         SolverCG.dtype
          SolverCG.is_hermitian
          SolverCG.is_positive_definite
          SolverCG.is_real
          SolverCG.is_symmetric
+         SolverCG.kwargs
+         SolverCG.shape
   
   

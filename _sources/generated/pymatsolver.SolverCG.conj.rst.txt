@@ -1,0 +1,6 @@
+pymatsolver.SolverCG.conj
+=========================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: SolverCG.conj

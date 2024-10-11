@@ -1,0 +1,6 @@
+pymatsolver.Backward.transpose
+==============================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Backward.transpose

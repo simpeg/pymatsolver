@@ -1,0 +1,47 @@
+﻿pymatsolver.Mumps
+=================
+
+.. currentmodule:: pymatsolver
+
+.. inheritance-diagram:: Mumps
+    :parts: 1
+
+.. autoclass:: Mumps
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Mumps.__mul__
+         Mumps.clean
+         Mumps.conj
+         Mumps.conjugate
+         Mumps.factor
+         Mumps.get_attributes
+         Mumps.solve
+         Mumps.transpose
+      
+         Mumps.__mul__
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Mumps.A
+         Mumps.T
+         Mumps.check_accuracy
+         Mumps.check_atol
+         Mumps.check_rtol
+         Mumps.dtype
+         Mumps.is_hermitian
+         Mumps.is_positive_definite
+         Mumps.is_real
+         Mumps.is_symmetric
+         Mumps.ordering
+         Mumps.shape
+  
+  

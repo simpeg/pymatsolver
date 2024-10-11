@@ -15,7 +15,11 @@
       
          SolverLU.__mul__
          SolverLU.clean
-         SolverLU.set_kwargs
+         SolverLU.conj
+         SolverLU.conjugate
+         SolverLU.get_attributes
+         SolverLU.solve
+         SolverLU.transpose
       
          SolverLU.__mul__
   
@@ -26,12 +30,17 @@
       .. autosummary::
          :toctree:
       
+         SolverLU.A
          SolverLU.T
-         SolverLU.accuracy_tol
          SolverLU.check_accuracy
+         SolverLU.check_atol
+         SolverLU.check_rtol
+         SolverLU.dtype
          SolverLU.is_hermitian
          SolverLU.is_positive_definite
          SolverLU.is_real
          SolverLU.is_symmetric
+         SolverLU.kwargs
+         SolverLU.shape
   
   

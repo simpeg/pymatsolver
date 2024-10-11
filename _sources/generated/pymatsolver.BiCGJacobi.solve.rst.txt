@@ -1,0 +1,6 @@
+pymatsolver.BiCGJacobi.solve
+============================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: BiCGJacobi.solve

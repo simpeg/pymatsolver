@@ -1,0 +1,6 @@
+pymatsolver.Backward.check\_atol
+================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Backward.check_atol

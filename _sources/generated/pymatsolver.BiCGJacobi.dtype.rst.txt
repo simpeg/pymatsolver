@@ -1,0 +1,6 @@
+pymatsolver.BiCGJacobi.dtype
+============================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: BiCGJacobi.dtype

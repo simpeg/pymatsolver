@@ -1,0 +1,6 @@
+pymatsolver.Mumps.is\_symmetric
+===============================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Mumps.is_symmetric

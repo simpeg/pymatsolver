@@ -1,0 +1,6 @@
+pymatsolver.Backward.lower
+==========================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Backward.lower

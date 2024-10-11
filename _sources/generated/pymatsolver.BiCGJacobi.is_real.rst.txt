@@ -1,0 +1,6 @@
+pymatsolver.BiCGJacobi.is\_real
+===============================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: BiCGJacobi.is_real

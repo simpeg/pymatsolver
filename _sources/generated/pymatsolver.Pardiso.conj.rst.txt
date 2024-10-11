@@ -1,0 +1,6 @@
+pymatsolver.Pardiso.conj
+========================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Pardiso.conj

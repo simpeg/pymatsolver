@@ -1,0 +1,6 @@
+pymatsolver.BiCGJacobi.shape
+============================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: BiCGJacobi.shape

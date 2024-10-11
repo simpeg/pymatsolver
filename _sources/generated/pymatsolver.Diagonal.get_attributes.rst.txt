@@ -1,0 +1,6 @@
+pymatsolver.Diagonal.get\_attributes
+====================================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Diagonal.get_attributes

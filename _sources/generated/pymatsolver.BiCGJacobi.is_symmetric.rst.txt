@@ -1,0 +1,6 @@
+pymatsolver.BiCGJacobi.is\_symmetric
+====================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: BiCGJacobi.is_symmetric

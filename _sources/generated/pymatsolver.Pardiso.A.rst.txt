@@ -1,0 +1,6 @@
+pymatsolver.Pardiso.A
+=====================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Pardiso.A

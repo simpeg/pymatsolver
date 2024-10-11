@@ -1,0 +1,6 @@
+pymatsolver.Triangle.is\_positive\_definite
+===========================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Triangle.is_positive_definite

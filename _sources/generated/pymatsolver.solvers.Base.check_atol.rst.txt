@@ -1,0 +1,6 @@
+pymatsolver.solvers.Base.check\_atol
+====================================
+
+.. currentmodule:: pymatsolver.solvers
+
+.. autoproperty:: Base.check_atol

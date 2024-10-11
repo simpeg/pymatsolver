@@ -1,0 +1,6 @@
+pymatsolver.Triangle.clean
+==========================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Triangle.clean

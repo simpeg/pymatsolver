@@ -1,0 +1,6 @@
+pymatsolver.Backward.shape
+==========================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Backward.shape

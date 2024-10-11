@@ -1,0 +1,6 @@
+pymatsolver.Pardiso.get\_attributes
+===================================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Pardiso.get_attributes

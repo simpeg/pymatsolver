@@ -1,0 +1,6 @@
+pymatsolver.Solver.get\_attributes
+==================================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Solver.get_attributes

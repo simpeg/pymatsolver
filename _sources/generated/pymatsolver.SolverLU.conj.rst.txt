@@ -1,0 +1,6 @@
+pymatsolver.SolverLU.conj
+=========================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: SolverLU.conj

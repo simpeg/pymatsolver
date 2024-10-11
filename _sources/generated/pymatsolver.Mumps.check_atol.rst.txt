@@ -1,0 +1,6 @@
+pymatsolver.Mumps.check\_atol
+=============================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Mumps.check_atol

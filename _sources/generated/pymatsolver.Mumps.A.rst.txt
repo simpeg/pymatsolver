@@ -1,0 +1,6 @@
+pymatsolver.Mumps.A
+===================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Mumps.A

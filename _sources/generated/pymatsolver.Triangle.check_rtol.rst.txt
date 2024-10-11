@@ -1,0 +1,6 @@
+pymatsolver.Triangle.check\_rtol
+================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Triangle.check_rtol

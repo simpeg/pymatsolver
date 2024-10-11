@@ -15,8 +15,12 @@
       
          Pardiso.__mul__
          Pardiso.clean
+         Pardiso.conj
+         Pardiso.conjugate
          Pardiso.factor
-         Pardiso.set_kwargs
+         Pardiso.get_attributes
+         Pardiso.solve
+         Pardiso.transpose
       
          Pardiso.__mul__
   
@@ -27,13 +31,17 @@
       .. autosummary::
          :toctree:
       
+         Pardiso.A
          Pardiso.T
-         Pardiso.accuracy_tol
          Pardiso.check_accuracy
+         Pardiso.check_atol
+         Pardiso.check_rtol
+         Pardiso.dtype
          Pardiso.is_hermitian
          Pardiso.is_positive_definite
          Pardiso.is_real
          Pardiso.is_symmetric
          Pardiso.n_threads
+         Pardiso.shape
   
   

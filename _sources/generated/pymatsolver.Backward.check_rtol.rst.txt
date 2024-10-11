@@ -1,0 +1,6 @@
+pymatsolver.Backward.check\_rtol
+================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Backward.check_rtol

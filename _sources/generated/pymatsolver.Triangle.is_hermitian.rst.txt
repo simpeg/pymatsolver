@@ -1,0 +1,6 @@
+pymatsolver.Triangle.is\_hermitian
+==================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Triangle.is_hermitian

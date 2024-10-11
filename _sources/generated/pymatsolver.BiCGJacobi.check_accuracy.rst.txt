@@ -1,0 +1,6 @@
+pymatsolver.BiCGJacobi.check\_accuracy
+======================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: BiCGJacobi.check_accuracy

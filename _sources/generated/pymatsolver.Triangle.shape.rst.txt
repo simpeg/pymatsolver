@@ -1,0 +1,6 @@
+pymatsolver.Triangle.shape
+==========================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Triangle.shape

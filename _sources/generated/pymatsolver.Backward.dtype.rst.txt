@@ -1,0 +1,6 @@
+pymatsolver.Backward.dtype
+==========================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Backward.dtype

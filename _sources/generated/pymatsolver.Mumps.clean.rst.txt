@@ -1,0 +1,6 @@
+pymatsolver.Mumps.clean
+=======================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Mumps.clean

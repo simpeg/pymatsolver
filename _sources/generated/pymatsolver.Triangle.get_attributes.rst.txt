@@ -1,0 +1,6 @@
+pymatsolver.Triangle.get\_attributes
+====================================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Triangle.get_attributes

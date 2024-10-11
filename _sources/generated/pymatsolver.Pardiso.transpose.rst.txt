@@ -1,0 +1,6 @@
+pymatsolver.Pardiso.transpose
+=============================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Pardiso.transpose

@@ -15,7 +15,11 @@
       
          Forward.__mul__
          Forward.clean
-         Forward.set_kwargs
+         Forward.conj
+         Forward.conjugate
+         Forward.get_attributes
+         Forward.solve
+         Forward.transpose
       
          Forward.__mul__
   
@@ -26,12 +30,17 @@
       .. autosummary::
          :toctree:
       
+         Forward.A
          Forward.T
-         Forward.accuracy_tol
          Forward.check_accuracy
+         Forward.check_atol
+         Forward.check_rtol
+         Forward.dtype
          Forward.is_hermitian
          Forward.is_positive_definite
          Forward.is_real
          Forward.is_symmetric
+         Forward.lower
+         Forward.shape
   
   

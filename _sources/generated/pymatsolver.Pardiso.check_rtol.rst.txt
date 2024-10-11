@@ -1,0 +1,6 @@
+pymatsolver.Pardiso.check\_rtol
+===============================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Pardiso.check_rtol

@@ -1,0 +1,6 @@
+pymatsolver.Solver.dtype
+========================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Solver.dtype

@@ -1,0 +1,6 @@
+pymatsolver.Triangle.check\_atol
+================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Triangle.check_atol

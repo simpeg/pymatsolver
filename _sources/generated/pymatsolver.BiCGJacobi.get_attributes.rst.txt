@@ -1,0 +1,6 @@
+pymatsolver.BiCGJacobi.get\_attributes
+======================================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: BiCGJacobi.get_attributes

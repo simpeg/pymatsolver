@@ -1,0 +1,6 @@
+pymatsolver.SolverCG.check\_rtol
+================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: SolverCG.check_rtol

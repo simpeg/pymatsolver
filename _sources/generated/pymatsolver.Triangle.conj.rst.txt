@@ -1,0 +1,6 @@
+pymatsolver.Triangle.conj
+=========================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Triangle.conj

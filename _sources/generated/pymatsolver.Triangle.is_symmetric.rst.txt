@@ -1,0 +1,6 @@
+pymatsolver.Triangle.is\_symmetric
+==================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Triangle.is_symmetric

@@ -1,0 +1,6 @@
+pymatsolver.Backward.get\_attributes
+====================================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Backward.get_attributes

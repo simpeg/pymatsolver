@@ -1,0 +1,6 @@
+pymatsolver.SolverCG.get\_attributes
+====================================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: SolverCG.get_attributes

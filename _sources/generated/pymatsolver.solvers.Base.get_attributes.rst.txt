@@ -1,0 +1,6 @@
+pymatsolver.solvers.Base.get\_attributes
+========================================
+
+.. currentmodule:: pymatsolver.solvers
+
+.. automethod:: Base.get_attributes

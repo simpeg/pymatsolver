@@ -1,0 +1,6 @@
+pymatsolver.Diagonal.A
+======================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Diagonal.A

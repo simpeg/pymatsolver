@@ -1,0 +1,6 @@
+pymatsolver.Triangle.dtype
+==========================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Triangle.dtype

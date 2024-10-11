@@ -1,0 +1,46 @@
+﻿pymatsolver.Triangle
+====================
+
+.. currentmodule:: pymatsolver
+
+.. inheritance-diagram:: Triangle
+    :parts: 1
+
+.. autoclass:: Triangle
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Triangle.__mul__
+         Triangle.clean
+         Triangle.conj
+         Triangle.conjugate
+         Triangle.get_attributes
+         Triangle.solve
+         Triangle.transpose
+      
+         Triangle.__mul__
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         Triangle.A
+         Triangle.T
+         Triangle.check_accuracy
+         Triangle.check_atol
+         Triangle.check_rtol
+         Triangle.dtype
+         Triangle.is_hermitian
+         Triangle.is_positive_definite
+         Triangle.is_real
+         Triangle.is_symmetric
+         Triangle.lower
+         Triangle.shape
+  
+  

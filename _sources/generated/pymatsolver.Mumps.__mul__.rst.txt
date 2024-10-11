@@ -1,0 +1,6 @@
+pymatsolver.Mumps.\_\_mul\_\_
+=============================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Mumps.__mul__

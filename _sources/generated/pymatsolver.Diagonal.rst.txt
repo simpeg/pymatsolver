@@ -15,7 +15,11 @@
       
          Diagonal.__mul__
          Diagonal.clean
-         Diagonal.set_kwargs
+         Diagonal.conj
+         Diagonal.conjugate
+         Diagonal.get_attributes
+         Diagonal.solve
+         Diagonal.transpose
       
          Diagonal.__mul__
   
@@ -26,12 +30,16 @@
       .. autosummary::
          :toctree:
       
+         Diagonal.A
          Diagonal.T
-         Diagonal.accuracy_tol
          Diagonal.check_accuracy
+         Diagonal.check_atol
+         Diagonal.check_rtol
+         Diagonal.dtype
          Diagonal.is_hermitian
          Diagonal.is_positive_definite
          Diagonal.is_real
          Diagonal.is_symmetric
+         Diagonal.shape
   
   

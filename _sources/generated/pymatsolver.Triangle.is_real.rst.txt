@@ -1,0 +1,6 @@
+pymatsolver.Triangle.is\_real
+=============================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Triangle.is_real

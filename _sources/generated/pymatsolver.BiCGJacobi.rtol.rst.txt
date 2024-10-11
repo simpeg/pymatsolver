@@ -1,0 +1,6 @@
+pymatsolver.BiCGJacobi.rtol
+===========================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: BiCGJacobi.rtol

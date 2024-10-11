@@ -1,0 +1,6 @@
+pymatsolver.Diagonal.check\_atol
+================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Diagonal.check_atol

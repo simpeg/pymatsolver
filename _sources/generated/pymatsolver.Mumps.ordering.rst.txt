@@ -1,0 +1,6 @@
+pymatsolver.Mumps.ordering
+==========================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Mumps.ordering

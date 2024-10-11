@@ -1,168 +1,435 @@
 
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" data-content_root="./" >
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Index &#8212; pymatsolver 0.2.0 documentation</title>
-    
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
-
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-
-    
-      
-
-    
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/css/blank.css" />
-    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
-
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <link rel="shortcut icon" href="_static/logo-block.ico"/>
-    <link rel="index" title="Index" href="#" />
-    <link rel="search" title="Search" href="search.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
-  </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
-
-    
-    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
-
-  <div id="navbar-start">
-    
-    
-<a class="navbar-brand" href="index.html">
-<p class="title">pymatsolver</p>
-</a>
-
-    
-  </div>
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
-    <div id="navbar-center" class="mr-auto">
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=ecdcfaf4" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=938c9ccc"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <link rel="icon" href="_static/logo-block.ico"/>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pymatsolver 0.2.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
       
-      <div class="navbar-center-item">
-        <ul id="navbar-main-elements" class="navbar-nav">
-    <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="api.html">
-  API
- </a>
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    API
+  </a>
 </li>
 
-    
-    <li class="nav-item">
-        <a class="nav-link nav-external" href="https://simpeg.xyz">SimPEG<i class="fas fa-external-link-alt"></i></a>
-    </li>
-    
-    <li class="nav-item">
-        <a class="nav-link nav-external" href="http://slack.simpeg.xyz">Contact<i class="fas fa-external-link-alt"></i></a>
-    </li>
-    
-</ul>
-      </div>
-      
-    </div>
 
-    <div id="navbar-end">
-      
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
-        <li class="nav-item">
-          <a class="nav-link" href="https://github.com/simpeg/pymatsolverr" rel="noopener" target="_blank" title="GitHub">
-            <span><i class="fab fa-github"></i></span>
-            <label class="sr-only">GitHub</label>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="http://slack.simpeg.xyz/" rel="noopener" target="_blank" title="Slack">
-            <span><i class="fab fa-slack"></i></span>
-            <label class="sr-only">Slack</label>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="https://simpeg.discourse.group/" rel="noopener" target="_blank" title="Discourse">
-            <span><i class="fab fa-discourse"></i></span>
-            <label class="sr-only">Discourse</label>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="https://www.youtube.com/c/geoscixyz" rel="noopener" target="_blank" title="Youtube">
-            <span><i class="fab fa-youtube"></i></span>
-            <label class="sr-only">Youtube</label>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="https://twitter.com/simpegpy" rel="noopener" target="_blank" title="Twitter">
-            <span><i class="fab fa-twitter"></i></span>
-            <label class="sr-only">Twitter</label>
-          </a>
-        </li>
-      </ul>
-      </div>
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://simpeg.xyz">
+    SimPEG
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="http://slack.simpeg.xyz">
+    Contact
+  </a>
+</li>
+
+  </ul>
+</nav></div>
       
     </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/simpeg/pymatsolver" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://slack.simpeg.xyz/" title="Slack" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-slack fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Slack</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://simpeg.discourse.group/" title="Discourse" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-discourse fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Discourse</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://www.youtube.com/c/geoscixyz" title="Youtube" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-youtube fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Youtube</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/simpegpy" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
   </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
 </div>
-    </nav>
-    
 
-    <div class="container-xl">
-      <div class="row">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
           
-            
-            <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-  <div class="bd-toc-item active">
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://simpeg.xyz">
+    SimPEG
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="http://slack.simpeg.xyz">
+    Contact
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/simpeg/pymatsolver" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="http://slack.simpeg.xyz/" title="Slack" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-slack fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Slack</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://simpeg.discourse.group/" title="Discourse" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-discourse fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Discourse</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://www.youtube.com/c/geoscixyz" title="Youtube" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-youtube fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Youtube</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/simpegpy" title="Twitter" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+</ul></div>
+        
+      </div>
     
   </div>
-</nav>
-            </div>
-            
-          
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
 
-          
-          <div class="d-none d-xl-block col-xl-2 bd-toc">
-            
-          </div>
-          
 
-          
-          
-            
-          
-          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
               
-              <div>
+              <div class="bd-header-article d-print-none"></div>
+              
+              
+              
                 
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
 
 <h1 id="index">Index</h1>
 
@@ -173,10 +440,15 @@
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
  | <a href="#I"><strong>I</strong></a>
+ | <a href="#K"><strong>K</strong></a>
+ | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  
@@ -187,11 +459,13 @@
       <li><a href="generated/pymatsolver.Backward.__mul__.html#pymatsolver.Backward.__mul__">__mul__() (pymatsolver.Backward method)</a>
 
       <ul>
-        <li><a href="generated/pymatsolver.BicgJacobi.__mul__.html#pymatsolver.BicgJacobi.__mul__">(pymatsolver.BicgJacobi method)</a>
+        <li><a href="generated/pymatsolver.BiCGJacobi.__mul__.html#pymatsolver.BiCGJacobi.__mul__">(pymatsolver.BiCGJacobi method)</a>
 </li>
         <li><a href="generated/pymatsolver.Diagonal.__mul__.html#pymatsolver.Diagonal.__mul__">(pymatsolver.Diagonal method)</a>
 </li>
         <li><a href="generated/pymatsolver.Forward.__mul__.html#pymatsolver.Forward.__mul__">(pymatsolver.Forward method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Mumps.__mul__.html#pymatsolver.Mumps.__mul__">(pymatsolver.Mumps method)</a>
 </li>
         <li><a href="generated/pymatsolver.Pardiso.__mul__.html#pymatsolver.Pardiso.__mul__">(pymatsolver.Pardiso method)</a>
 </li>
@@ -203,6 +477,8 @@
 </li>
         <li><a href="generated/pymatsolver.solvers.Base.__mul__.html#pymatsolver.solvers.Base.__mul__">(pymatsolver.solvers.Base method)</a>
 </li>
+        <li><a href="generated/pymatsolver.Triangle.__mul__.html#pymatsolver.Triangle.__mul__">(pymatsolver.Triangle method)</a>
+</li>
       </ul></li>
   </ul></td>
 </tr></table>
@@ -210,26 +486,34 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="generated/pymatsolver.Backward.accuracy_tol.html#pymatsolver.Backward.accuracy_tol">accuracy_tol (pymatsolver.Backward property)</a>
+      <li><a href="generated/pymatsolver.Backward.A.html#pymatsolver.Backward.A">A (pymatsolver.Backward property)</a>
 
       <ul>
-        <li><a href="generated/pymatsolver.BicgJacobi.accuracy_tol.html#pymatsolver.BicgJacobi.accuracy_tol">(pymatsolver.BicgJacobi property)</a>
+        <li><a href="generated/pymatsolver.BiCGJacobi.A.html#pymatsolver.BiCGJacobi.A">(pymatsolver.BiCGJacobi property)</a>
 </li>
-        <li><a href="generated/pymatsolver.Diagonal.accuracy_tol.html#pymatsolver.Diagonal.accuracy_tol">(pymatsolver.Diagonal property)</a>
+        <li><a href="generated/pymatsolver.Diagonal.A.html#pymatsolver.Diagonal.A">(pymatsolver.Diagonal property)</a>
 </li>
-        <li><a href="generated/pymatsolver.Forward.accuracy_tol.html#pymatsolver.Forward.accuracy_tol">(pymatsolver.Forward property)</a>
+        <li><a href="generated/pymatsolver.Forward.A.html#pymatsolver.Forward.A">(pymatsolver.Forward property)</a>
 </li>
-        <li><a href="generated/pymatsolver.Pardiso.accuracy_tol.html#pymatsolver.Pardiso.accuracy_tol">(pymatsolver.Pardiso property)</a>
+        <li><a href="generated/pymatsolver.Mumps.A.html#pymatsolver.Mumps.A">(pymatsolver.Mumps property)</a>
 </li>
-        <li><a href="generated/pymatsolver.Solver.accuracy_tol.html#pymatsolver.Solver.accuracy_tol">(pymatsolver.Solver property)</a>
+        <li><a href="generated/pymatsolver.Pardiso.A.html#pymatsolver.Pardiso.A">(pymatsolver.Pardiso property)</a>
 </li>
-        <li><a href="generated/pymatsolver.SolverCG.accuracy_tol.html#pymatsolver.SolverCG.accuracy_tol">(pymatsolver.SolverCG property)</a>
+        <li><a href="generated/pymatsolver.Solver.A.html#pymatsolver.Solver.A">(pymatsolver.Solver property)</a>
 </li>
-        <li><a href="generated/pymatsolver.SolverLU.accuracy_tol.html#pymatsolver.SolverLU.accuracy_tol">(pymatsolver.SolverLU property)</a>
+        <li><a href="generated/pymatsolver.SolverCG.A.html#pymatsolver.SolverCG.A">(pymatsolver.SolverCG property)</a>
 </li>
-        <li><a href="generated/pymatsolver.solvers.Base.accuracy_tol.html#pymatsolver.solvers.Base.accuracy_tol">(pymatsolver.solvers.Base property)</a>
+        <li><a href="generated/pymatsolver.SolverLU.A.html#pymatsolver.SolverLU.A">(pymatsolver.SolverLU property)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.A.html#pymatsolver.solvers.Base.A">(pymatsolver.solvers.Base property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Triangle.A.html#pymatsolver.Triangle.A">(pymatsolver.Triangle property)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.BiCGJacobi.atol.html#pymatsolver.BiCGJacobi.atol">atol (pymatsolver.BiCGJacobi property)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -242,7 +526,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/pymatsolver.solvers.Base.html#pymatsolver.solvers.Base">Base (class in pymatsolver.solvers)</a>
 </li>
-      <li><a href="generated/pymatsolver.BicgJacobi.html#pymatsolver.BicgJacobi">BicgJacobi (class in pymatsolver)</a>
+      <li><a href="generated/pymatsolver.BiCGJacobi.html#pymatsolver.BiCGJacobi">BiCGJacobi (class in pymatsolver)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -253,11 +537,13 @@
       <li><a href="generated/pymatsolver.Backward.check_accuracy.html#pymatsolver.Backward.check_accuracy">check_accuracy (pymatsolver.Backward property)</a>
 
       <ul>
-        <li><a href="generated/pymatsolver.BicgJacobi.check_accuracy.html#pymatsolver.BicgJacobi.check_accuracy">(pymatsolver.BicgJacobi property)</a>
+        <li><a href="generated/pymatsolver.BiCGJacobi.check_accuracy.html#pymatsolver.BiCGJacobi.check_accuracy">(pymatsolver.BiCGJacobi property)</a>
 </li>
         <li><a href="generated/pymatsolver.Diagonal.check_accuracy.html#pymatsolver.Diagonal.check_accuracy">(pymatsolver.Diagonal property)</a>
 </li>
         <li><a href="generated/pymatsolver.Forward.check_accuracy.html#pymatsolver.Forward.check_accuracy">(pymatsolver.Forward property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Mumps.check_accuracy.html#pymatsolver.Mumps.check_accuracy">(pymatsolver.Mumps property)</a>
 </li>
         <li><a href="generated/pymatsolver.Pardiso.check_accuracy.html#pymatsolver.Pardiso.check_accuracy">(pymatsolver.Pardiso property)</a>
 </li>
@@ -269,17 +555,69 @@
 </li>
         <li><a href="generated/pymatsolver.solvers.Base.check_accuracy.html#pymatsolver.solvers.Base.check_accuracy">(pymatsolver.solvers.Base property)</a>
 </li>
+        <li><a href="generated/pymatsolver.Triangle.check_accuracy.html#pymatsolver.Triangle.check_accuracy">(pymatsolver.Triangle property)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/pymatsolver.Backward.check_atol.html#pymatsolver.Backward.check_atol">check_atol (pymatsolver.Backward property)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.BiCGJacobi.check_atol.html#pymatsolver.BiCGJacobi.check_atol">(pymatsolver.BiCGJacobi property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Diagonal.check_atol.html#pymatsolver.Diagonal.check_atol">(pymatsolver.Diagonal property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Forward.check_atol.html#pymatsolver.Forward.check_atol">(pymatsolver.Forward property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Mumps.check_atol.html#pymatsolver.Mumps.check_atol">(pymatsolver.Mumps property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Pardiso.check_atol.html#pymatsolver.Pardiso.check_atol">(pymatsolver.Pardiso property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Solver.check_atol.html#pymatsolver.Solver.check_atol">(pymatsolver.Solver property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverCG.check_atol.html#pymatsolver.SolverCG.check_atol">(pymatsolver.SolverCG property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverLU.check_atol.html#pymatsolver.SolverLU.check_atol">(pymatsolver.SolverLU property)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.check_atol.html#pymatsolver.solvers.Base.check_atol">(pymatsolver.solvers.Base property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Triangle.check_atol.html#pymatsolver.Triangle.check_atol">(pymatsolver.Triangle property)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/pymatsolver.Backward.check_rtol.html#pymatsolver.Backward.check_rtol">check_rtol (pymatsolver.Backward property)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.BiCGJacobi.check_rtol.html#pymatsolver.BiCGJacobi.check_rtol">(pymatsolver.BiCGJacobi property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Diagonal.check_rtol.html#pymatsolver.Diagonal.check_rtol">(pymatsolver.Diagonal property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Forward.check_rtol.html#pymatsolver.Forward.check_rtol">(pymatsolver.Forward property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Mumps.check_rtol.html#pymatsolver.Mumps.check_rtol">(pymatsolver.Mumps property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Pardiso.check_rtol.html#pymatsolver.Pardiso.check_rtol">(pymatsolver.Pardiso property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Solver.check_rtol.html#pymatsolver.Solver.check_rtol">(pymatsolver.Solver property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverCG.check_rtol.html#pymatsolver.SolverCG.check_rtol">(pymatsolver.SolverCG property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverLU.check_rtol.html#pymatsolver.SolverLU.check_rtol">(pymatsolver.SolverLU property)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.check_rtol.html#pymatsolver.solvers.Base.check_rtol">(pymatsolver.solvers.Base property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Triangle.check_rtol.html#pymatsolver.Triangle.check_rtol">(pymatsolver.Triangle property)</a>
+</li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/pymatsolver.Backward.clean.html#pymatsolver.Backward.clean">clean() (pymatsolver.Backward method)</a>
 
       <ul>
-        <li><a href="generated/pymatsolver.BicgJacobi.clean.html#pymatsolver.BicgJacobi.clean">(pymatsolver.BicgJacobi method)</a>
+        <li><a href="generated/pymatsolver.BiCGJacobi.clean.html#pymatsolver.BiCGJacobi.clean">(pymatsolver.BiCGJacobi method)</a>
 </li>
         <li><a href="generated/pymatsolver.Diagonal.clean.html#pymatsolver.Diagonal.clean">(pymatsolver.Diagonal method)</a>
 </li>
         <li><a href="generated/pymatsolver.Forward.clean.html#pymatsolver.Forward.clean">(pymatsolver.Forward method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Mumps.clean.html#pymatsolver.Mumps.clean">(pymatsolver.Mumps method)</a>
 </li>
         <li><a href="generated/pymatsolver.Pardiso.clean.html#pymatsolver.Pardiso.clean">(pymatsolver.Pardiso method)</a>
 </li>
@@ -291,6 +629,56 @@
 </li>
         <li><a href="generated/pymatsolver.solvers.Base.clean.html#pymatsolver.solvers.Base.clean">(pymatsolver.solvers.Base method)</a>
 </li>
+        <li><a href="generated/pymatsolver.Triangle.clean.html#pymatsolver.Triangle.clean">(pymatsolver.Triangle method)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/pymatsolver.Backward.conj.html#pymatsolver.Backward.conj">conj() (pymatsolver.Backward method)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.BiCGJacobi.conj.html#pymatsolver.BiCGJacobi.conj">(pymatsolver.BiCGJacobi method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Diagonal.conj.html#pymatsolver.Diagonal.conj">(pymatsolver.Diagonal method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Forward.conj.html#pymatsolver.Forward.conj">(pymatsolver.Forward method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Mumps.conj.html#pymatsolver.Mumps.conj">(pymatsolver.Mumps method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Pardiso.conj.html#pymatsolver.Pardiso.conj">(pymatsolver.Pardiso method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Solver.conj.html#pymatsolver.Solver.conj">(pymatsolver.Solver method)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverCG.conj.html#pymatsolver.SolverCG.conj">(pymatsolver.SolverCG method)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverLU.conj.html#pymatsolver.SolverLU.conj">(pymatsolver.SolverLU method)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.conj.html#pymatsolver.solvers.Base.conj">(pymatsolver.solvers.Base method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Triangle.conj.html#pymatsolver.Triangle.conj">(pymatsolver.Triangle method)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/pymatsolver.Backward.conjugate.html#pymatsolver.Backward.conjugate">conjugate() (pymatsolver.Backward method)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.BiCGJacobi.conjugate.html#pymatsolver.BiCGJacobi.conjugate">(pymatsolver.BiCGJacobi method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Diagonal.conjugate.html#pymatsolver.Diagonal.conjugate">(pymatsolver.Diagonal method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Forward.conjugate.html#pymatsolver.Forward.conjugate">(pymatsolver.Forward method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Mumps.conjugate.html#pymatsolver.Mumps.conjugate">(pymatsolver.Mumps method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Pardiso.conjugate.html#pymatsolver.Pardiso.conjugate">(pymatsolver.Pardiso method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Solver.conjugate.html#pymatsolver.Solver.conjugate">(pymatsolver.Solver method)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverCG.conjugate.html#pymatsolver.SolverCG.conjugate">(pymatsolver.SolverCG method)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverLU.conjugate.html#pymatsolver.SolverLU.conjugate">(pymatsolver.SolverLU method)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.conjugate.html#pymatsolver.solvers.Base.conjugate">(pymatsolver.solvers.Base method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Triangle.conjugate.html#pymatsolver.Triangle.conjugate">(pymatsolver.Triangle method)</a>
+</li>
       </ul></li>
   </ul></td>
 </tr></table>
@@ -300,15 +688,41 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/pymatsolver.Diagonal.html#pymatsolver.Diagonal">Diagonal (class in pymatsolver)</a>
 </li>
+      <li><a href="generated/pymatsolver.Backward.dtype.html#pymatsolver.Backward.dtype">dtype (pymatsolver.Backward property)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.BiCGJacobi.dtype.html#pymatsolver.BiCGJacobi.dtype">(pymatsolver.BiCGJacobi property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Diagonal.dtype.html#pymatsolver.Diagonal.dtype">(pymatsolver.Diagonal property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Forward.dtype.html#pymatsolver.Forward.dtype">(pymatsolver.Forward property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Mumps.dtype.html#pymatsolver.Mumps.dtype">(pymatsolver.Mumps property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Pardiso.dtype.html#pymatsolver.Pardiso.dtype">(pymatsolver.Pardiso property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Solver.dtype.html#pymatsolver.Solver.dtype">(pymatsolver.Solver property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverCG.dtype.html#pymatsolver.SolverCG.dtype">(pymatsolver.SolverCG property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverLU.dtype.html#pymatsolver.SolverLU.dtype">(pymatsolver.SolverLU property)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.dtype.html#pymatsolver.solvers.Base.dtype">(pymatsolver.solvers.Base property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Triangle.dtype.html#pymatsolver.Triangle.dtype">(pymatsolver.Triangle property)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="generated/pymatsolver.BicgJacobi.factor.html#pymatsolver.BicgJacobi.factor">factor() (pymatsolver.BicgJacobi method)</a>
+      <li><a href="generated/pymatsolver.BiCGJacobi.factor.html#pymatsolver.BiCGJacobi.factor">factor() (pymatsolver.BiCGJacobi method)</a>
 
       <ul>
+        <li><a href="generated/pymatsolver.Mumps.factor.html#pymatsolver.Mumps.factor">(pymatsolver.Mumps method)</a>
+</li>
         <li><a href="generated/pymatsolver.Pardiso.factor.html#pymatsolver.Pardiso.factor">(pymatsolver.Pardiso method)</a>
 </li>
       </ul></li>
@@ -319,17 +733,49 @@
   </ul></td>
 </tr></table>
 
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.Backward.get_attributes.html#pymatsolver.Backward.get_attributes">get_attributes() (pymatsolver.Backward method)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.BiCGJacobi.get_attributes.html#pymatsolver.BiCGJacobi.get_attributes">(pymatsolver.BiCGJacobi method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Diagonal.get_attributes.html#pymatsolver.Diagonal.get_attributes">(pymatsolver.Diagonal method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Forward.get_attributes.html#pymatsolver.Forward.get_attributes">(pymatsolver.Forward method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Mumps.get_attributes.html#pymatsolver.Mumps.get_attributes">(pymatsolver.Mumps method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Pardiso.get_attributes.html#pymatsolver.Pardiso.get_attributes">(pymatsolver.Pardiso method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Solver.get_attributes.html#pymatsolver.Solver.get_attributes">(pymatsolver.Solver method)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverCG.get_attributes.html#pymatsolver.SolverCG.get_attributes">(pymatsolver.SolverCG method)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverLU.get_attributes.html#pymatsolver.SolverLU.get_attributes">(pymatsolver.SolverLU method)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.get_attributes.html#pymatsolver.solvers.Base.get_attributes">(pymatsolver.solvers.Base method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Triangle.get_attributes.html#pymatsolver.Triangle.get_attributes">(pymatsolver.Triangle method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/pymatsolver.Backward.is_hermitian.html#pymatsolver.Backward.is_hermitian">is_hermitian (pymatsolver.Backward property)</a>
 
       <ul>
-        <li><a href="generated/pymatsolver.BicgJacobi.is_hermitian.html#pymatsolver.BicgJacobi.is_hermitian">(pymatsolver.BicgJacobi property)</a>
+        <li><a href="generated/pymatsolver.BiCGJacobi.is_hermitian.html#pymatsolver.BiCGJacobi.is_hermitian">(pymatsolver.BiCGJacobi property)</a>
 </li>
         <li><a href="generated/pymatsolver.Diagonal.is_hermitian.html#pymatsolver.Diagonal.is_hermitian">(pymatsolver.Diagonal property)</a>
 </li>
         <li><a href="generated/pymatsolver.Forward.is_hermitian.html#pymatsolver.Forward.is_hermitian">(pymatsolver.Forward property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Mumps.is_hermitian.html#pymatsolver.Mumps.is_hermitian">(pymatsolver.Mumps property)</a>
 </li>
         <li><a href="generated/pymatsolver.Pardiso.is_hermitian.html#pymatsolver.Pardiso.is_hermitian">(pymatsolver.Pardiso property)</a>
 </li>
@@ -341,15 +787,19 @@
 </li>
         <li><a href="generated/pymatsolver.solvers.Base.is_hermitian.html#pymatsolver.solvers.Base.is_hermitian">(pymatsolver.solvers.Base property)</a>
 </li>
+        <li><a href="generated/pymatsolver.Triangle.is_hermitian.html#pymatsolver.Triangle.is_hermitian">(pymatsolver.Triangle property)</a>
+</li>
       </ul></li>
       <li><a href="generated/pymatsolver.Backward.is_positive_definite.html#pymatsolver.Backward.is_positive_definite">is_positive_definite (pymatsolver.Backward property)</a>
 
       <ul>
-        <li><a href="generated/pymatsolver.BicgJacobi.is_positive_definite.html#pymatsolver.BicgJacobi.is_positive_definite">(pymatsolver.BicgJacobi property)</a>
+        <li><a href="generated/pymatsolver.BiCGJacobi.is_positive_definite.html#pymatsolver.BiCGJacobi.is_positive_definite">(pymatsolver.BiCGJacobi property)</a>
 </li>
         <li><a href="generated/pymatsolver.Diagonal.is_positive_definite.html#pymatsolver.Diagonal.is_positive_definite">(pymatsolver.Diagonal property)</a>
 </li>
         <li><a href="generated/pymatsolver.Forward.is_positive_definite.html#pymatsolver.Forward.is_positive_definite">(pymatsolver.Forward property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Mumps.is_positive_definite.html#pymatsolver.Mumps.is_positive_definite">(pymatsolver.Mumps property)</a>
 </li>
         <li><a href="generated/pymatsolver.Pardiso.is_positive_definite.html#pymatsolver.Pardiso.is_positive_definite">(pymatsolver.Pardiso property)</a>
 </li>
@@ -361,17 +811,21 @@
 </li>
         <li><a href="generated/pymatsolver.solvers.Base.is_positive_definite.html#pymatsolver.solvers.Base.is_positive_definite">(pymatsolver.solvers.Base property)</a>
 </li>
+        <li><a href="generated/pymatsolver.Triangle.is_positive_definite.html#pymatsolver.Triangle.is_positive_definite">(pymatsolver.Triangle property)</a>
+</li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/pymatsolver.Backward.is_real.html#pymatsolver.Backward.is_real">is_real (pymatsolver.Backward property)</a>
 
       <ul>
-        <li><a href="generated/pymatsolver.BicgJacobi.is_real.html#pymatsolver.BicgJacobi.is_real">(pymatsolver.BicgJacobi property)</a>
+        <li><a href="generated/pymatsolver.BiCGJacobi.is_real.html#pymatsolver.BiCGJacobi.is_real">(pymatsolver.BiCGJacobi property)</a>
 </li>
         <li><a href="generated/pymatsolver.Diagonal.is_real.html#pymatsolver.Diagonal.is_real">(pymatsolver.Diagonal property)</a>
 </li>
         <li><a href="generated/pymatsolver.Forward.is_real.html#pymatsolver.Forward.is_real">(pymatsolver.Forward property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Mumps.is_real.html#pymatsolver.Mumps.is_real">(pymatsolver.Mumps property)</a>
 </li>
         <li><a href="generated/pymatsolver.Pardiso.is_real.html#pymatsolver.Pardiso.is_real">(pymatsolver.Pardiso property)</a>
 </li>
@@ -383,15 +837,19 @@
 </li>
         <li><a href="generated/pymatsolver.solvers.Base.is_real.html#pymatsolver.solvers.Base.is_real">(pymatsolver.solvers.Base property)</a>
 </li>
+        <li><a href="generated/pymatsolver.Triangle.is_real.html#pymatsolver.Triangle.is_real">(pymatsolver.Triangle property)</a>
+</li>
       </ul></li>
       <li><a href="generated/pymatsolver.Backward.is_symmetric.html#pymatsolver.Backward.is_symmetric">is_symmetric (pymatsolver.Backward property)</a>
 
       <ul>
-        <li><a href="generated/pymatsolver.BicgJacobi.is_symmetric.html#pymatsolver.BicgJacobi.is_symmetric">(pymatsolver.BicgJacobi property)</a>
+        <li><a href="generated/pymatsolver.BiCGJacobi.is_symmetric.html#pymatsolver.BiCGJacobi.is_symmetric">(pymatsolver.BiCGJacobi property)</a>
 </li>
         <li><a href="generated/pymatsolver.Diagonal.is_symmetric.html#pymatsolver.Diagonal.is_symmetric">(pymatsolver.Diagonal property)</a>
 </li>
         <li><a href="generated/pymatsolver.Forward.is_symmetric.html#pymatsolver.Forward.is_symmetric">(pymatsolver.Forward property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Mumps.is_symmetric.html#pymatsolver.Mumps.is_symmetric">(pymatsolver.Mumps property)</a>
 </li>
         <li><a href="generated/pymatsolver.Pardiso.is_symmetric.html#pymatsolver.Pardiso.is_symmetric">(pymatsolver.Pardiso property)</a>
 </li>
@@ -403,6 +861,36 @@
 </li>
         <li><a href="generated/pymatsolver.solvers.Base.is_symmetric.html#pymatsolver.solvers.Base.is_symmetric">(pymatsolver.solvers.Base property)</a>
 </li>
+        <li><a href="generated/pymatsolver.Triangle.is_symmetric.html#pymatsolver.Triangle.is_symmetric">(pymatsolver.Triangle property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.Solver.kwargs.html#pymatsolver.Solver.kwargs">kwargs (pymatsolver.Solver property)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.SolverCG.kwargs.html#pymatsolver.SolverCG.kwargs">(pymatsolver.SolverCG property)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverLU.kwargs.html#pymatsolver.SolverLU.kwargs">(pymatsolver.SolverLU property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.Backward.lower.html#pymatsolver.Backward.lower">lower (pymatsolver.Backward property)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.Forward.lower.html#pymatsolver.Forward.lower">(pymatsolver.Forward property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Triangle.lower.html#pymatsolver.Triangle.lower">(pymatsolver.Triangle property)</a>
+</li>
       </ul></li>
   </ul></td>
 </tr></table>
@@ -410,10 +898,8 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="generated/pymatsolver.BicgJacobi.maxiter.html#pymatsolver.BicgJacobi.maxiter">maxiter (pymatsolver.BicgJacobi attribute)</a>
+      <li><a href="generated/pymatsolver.BiCGJacobi.maxiter.html#pymatsolver.BiCGJacobi.maxiter">maxiter (pymatsolver.BiCGJacobi property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     module
 
@@ -422,12 +908,24 @@
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.Mumps.html#pymatsolver.Mumps">Mumps (class in pymatsolver)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/pymatsolver.Pardiso.n_threads.html#pymatsolver.Pardiso.n_threads">n_threads (pymatsolver.Pardiso property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.Mumps.ordering.html#pymatsolver.Mumps.ordering">ordering (pymatsolver.Mumps property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -449,34 +947,68 @@
   </ul></td>
 </tr></table>
 
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/pymatsolver.BiCGJacobi.rtol.html#pymatsolver.BiCGJacobi.rtol">rtol (pymatsolver.BiCGJacobi property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="generated/pymatsolver.Backward.set_kwargs.html#pymatsolver.Backward.set_kwargs">set_kwargs() (pymatsolver.Backward method)</a>
+      <li><a href="generated/pymatsolver.Backward.shape.html#pymatsolver.Backward.shape">shape (pymatsolver.Backward property)</a>
 
       <ul>
-        <li><a href="generated/pymatsolver.BicgJacobi.set_kwargs.html#pymatsolver.BicgJacobi.set_kwargs">(pymatsolver.BicgJacobi method)</a>
+        <li><a href="generated/pymatsolver.BiCGJacobi.shape.html#pymatsolver.BiCGJacobi.shape">(pymatsolver.BiCGJacobi property)</a>
 </li>
-        <li><a href="generated/pymatsolver.Diagonal.set_kwargs.html#pymatsolver.Diagonal.set_kwargs">(pymatsolver.Diagonal method)</a>
+        <li><a href="generated/pymatsolver.Diagonal.shape.html#pymatsolver.Diagonal.shape">(pymatsolver.Diagonal property)</a>
 </li>
-        <li><a href="generated/pymatsolver.Forward.set_kwargs.html#pymatsolver.Forward.set_kwargs">(pymatsolver.Forward method)</a>
+        <li><a href="generated/pymatsolver.Forward.shape.html#pymatsolver.Forward.shape">(pymatsolver.Forward property)</a>
 </li>
-        <li><a href="generated/pymatsolver.Pardiso.set_kwargs.html#pymatsolver.Pardiso.set_kwargs">(pymatsolver.Pardiso method)</a>
+        <li><a href="generated/pymatsolver.Mumps.shape.html#pymatsolver.Mumps.shape">(pymatsolver.Mumps property)</a>
 </li>
-        <li><a href="generated/pymatsolver.Solver.set_kwargs.html#pymatsolver.Solver.set_kwargs">(pymatsolver.Solver method)</a>
+        <li><a href="generated/pymatsolver.Pardiso.shape.html#pymatsolver.Pardiso.shape">(pymatsolver.Pardiso property)</a>
 </li>
-        <li><a href="generated/pymatsolver.SolverCG.set_kwargs.html#pymatsolver.SolverCG.set_kwargs">(pymatsolver.SolverCG method)</a>
+        <li><a href="generated/pymatsolver.Solver.shape.html#pymatsolver.Solver.shape">(pymatsolver.Solver property)</a>
 </li>
-        <li><a href="generated/pymatsolver.SolverLU.set_kwargs.html#pymatsolver.SolverLU.set_kwargs">(pymatsolver.SolverLU method)</a>
+        <li><a href="generated/pymatsolver.SolverCG.shape.html#pymatsolver.SolverCG.shape">(pymatsolver.SolverCG property)</a>
 </li>
-        <li><a href="generated/pymatsolver.solvers.Base.set_kwargs.html#pymatsolver.solvers.Base.set_kwargs">(pymatsolver.solvers.Base method)</a>
+        <li><a href="generated/pymatsolver.SolverLU.shape.html#pymatsolver.SolverLU.shape">(pymatsolver.SolverLU property)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.shape.html#pymatsolver.solvers.Base.shape">(pymatsolver.solvers.Base property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Triangle.shape.html#pymatsolver.Triangle.shape">(pymatsolver.Triangle property)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/pymatsolver.Backward.solve.html#pymatsolver.Backward.solve">solve() (pymatsolver.Backward method)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.BiCGJacobi.solve.html#pymatsolver.BiCGJacobi.solve">(pymatsolver.BiCGJacobi method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Diagonal.solve.html#pymatsolver.Diagonal.solve">(pymatsolver.Diagonal method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Forward.solve.html#pymatsolver.Forward.solve">(pymatsolver.Forward method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Mumps.solve.html#pymatsolver.Mumps.solve">(pymatsolver.Mumps method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Pardiso.solve.html#pymatsolver.Pardiso.solve">(pymatsolver.Pardiso method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Solver.solve.html#pymatsolver.Solver.solve">(pymatsolver.Solver method)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverCG.solve.html#pymatsolver.SolverCG.solve">(pymatsolver.SolverCG method)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverLU.solve.html#pymatsolver.SolverLU.solve">(pymatsolver.SolverLU method)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.solve.html#pymatsolver.solvers.Base.solve">(pymatsolver.solvers.Base method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Triangle.solve.html#pymatsolver.Triangle.solve">(pymatsolver.Triangle method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/pymatsolver.Solver.html#pymatsolver.Solver">Solver (class in pymatsolver)</a>
-</li>
-      <li><a href="generated/pymatsolver.BicgJacobi.solver.html#pymatsolver.BicgJacobi.solver">solver (pymatsolver.BicgJacobi attribute)</a>
 </li>
       <li><a href="generated/pymatsolver.SolverCG.html#pymatsolver.SolverCG">SolverCG (class in pymatsolver)</a>
 </li>
@@ -491,11 +1023,13 @@
       <li><a href="generated/pymatsolver.Backward.T.html#pymatsolver.Backward.T">T (pymatsolver.Backward property)</a>
 
       <ul>
-        <li><a href="generated/pymatsolver.BicgJacobi.T.html#pymatsolver.BicgJacobi.T">(pymatsolver.BicgJacobi property)</a>
+        <li><a href="generated/pymatsolver.BiCGJacobi.T.html#pymatsolver.BiCGJacobi.T">(pymatsolver.BiCGJacobi property)</a>
 </li>
         <li><a href="generated/pymatsolver.Diagonal.T.html#pymatsolver.Diagonal.T">(pymatsolver.Diagonal property)</a>
 </li>
         <li><a href="generated/pymatsolver.Forward.T.html#pymatsolver.Forward.T">(pymatsolver.Forward property)</a>
+</li>
+        <li><a href="generated/pymatsolver.Mumps.T.html#pymatsolver.Mumps.T">(pymatsolver.Mumps property)</a>
 </li>
         <li><a href="generated/pymatsolver.Pardiso.T.html#pymatsolver.Pardiso.T">(pymatsolver.Pardiso property)</a>
 </li>
@@ -507,46 +1041,110 @@
 </li>
         <li><a href="generated/pymatsolver.solvers.Base.T.html#pymatsolver.solvers.Base.T">(pymatsolver.solvers.Base property)</a>
 </li>
+        <li><a href="generated/pymatsolver.Triangle.T.html#pymatsolver.Triangle.T">(pymatsolver.Triangle property)</a>
+</li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="generated/pymatsolver.BicgJacobi.tol.html#pymatsolver.BicgJacobi.tol">tol (pymatsolver.BicgJacobi attribute)</a>
+      <li><a href="generated/pymatsolver.Backward.transpose.html#pymatsolver.Backward.transpose">transpose() (pymatsolver.Backward method)</a>
+
+      <ul>
+        <li><a href="generated/pymatsolver.BiCGJacobi.transpose.html#pymatsolver.BiCGJacobi.transpose">(pymatsolver.BiCGJacobi method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Diagonal.transpose.html#pymatsolver.Diagonal.transpose">(pymatsolver.Diagonal method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Forward.transpose.html#pymatsolver.Forward.transpose">(pymatsolver.Forward method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Mumps.transpose.html#pymatsolver.Mumps.transpose">(pymatsolver.Mumps method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Pardiso.transpose.html#pymatsolver.Pardiso.transpose">(pymatsolver.Pardiso method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Solver.transpose.html#pymatsolver.Solver.transpose">(pymatsolver.Solver method)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverCG.transpose.html#pymatsolver.SolverCG.transpose">(pymatsolver.SolverCG method)</a>
+</li>
+        <li><a href="generated/pymatsolver.SolverLU.transpose.html#pymatsolver.SolverLU.transpose">(pymatsolver.SolverLU method)</a>
+</li>
+        <li><a href="generated/pymatsolver.solvers.Base.transpose.html#pymatsolver.solvers.Base.transpose">(pymatsolver.solvers.Base method)</a>
+</li>
+        <li><a href="generated/pymatsolver.Triangle.transpose.html#pymatsolver.Triangle.transpose">(pymatsolver.Triangle method)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/pymatsolver.Triangle.html#pymatsolver.Triangle">Triangle (class in pymatsolver)</a>
 </li>
   </ul></td>
 </tr></table>
 
 
 
-              </div>
+                </article>
               
               
-              <!-- Previous / next buttons -->
-<div class='prev-next-area'>
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
 </div>
+                </footer>
               
-          </main>
-          
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-      </div>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2017, Rowan Cockett.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.0.
+    <br/>
+  </p>
+</div>
+      
     </div>
   
-  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
-<footer class="footer mt-5 mt-md-0">
-  <div class="container">
-    
-    <div class="footer-item">
-      <p class="copyright">
-    &copy; Copyright 2017, Rowan Cockett.<br>
-</p>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
     </div>
-    
-    <div class="footer-item">
-      <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br>
-</p>
-    </div>
-    
-  </div>
-</footer>
+  
+</div>
+
+  </footer>
   </body>
 </html>

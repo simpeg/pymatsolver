@@ -1,0 +1,6 @@
+pymatsolver.SolverCG.shape
+==========================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: SolverCG.shape

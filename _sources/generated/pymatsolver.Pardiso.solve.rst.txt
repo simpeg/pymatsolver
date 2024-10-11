@@ -1,0 +1,6 @@
+pymatsolver.Pardiso.solve
+=========================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Pardiso.solve

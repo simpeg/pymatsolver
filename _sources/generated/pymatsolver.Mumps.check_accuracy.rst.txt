@@ -1,0 +1,6 @@
+pymatsolver.Mumps.check\_accuracy
+=================================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Mumps.check_accuracy

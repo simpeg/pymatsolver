@@ -15,7 +15,11 @@
       
          Solver.__mul__
          Solver.clean
-         Solver.set_kwargs
+         Solver.conj
+         Solver.conjugate
+         Solver.get_attributes
+         Solver.solve
+         Solver.transpose
       
          Solver.__mul__
   
@@ -26,12 +30,17 @@
       .. autosummary::
          :toctree:
       
+         Solver.A
          Solver.T
-         Solver.accuracy_tol
          Solver.check_accuracy
+         Solver.check_atol
+         Solver.check_rtol
+         Solver.dtype
          Solver.is_hermitian
          Solver.is_positive_definite
          Solver.is_real
          Solver.is_symmetric
+         Solver.kwargs
+         Solver.shape
   
   

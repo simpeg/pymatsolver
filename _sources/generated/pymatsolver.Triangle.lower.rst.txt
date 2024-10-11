@@ -1,0 +1,6 @@
+pymatsolver.Triangle.lower
+==========================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Triangle.lower

@@ -1,0 +1,6 @@
+pymatsolver.SolverLU.transpose
+==============================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: SolverLU.transpose

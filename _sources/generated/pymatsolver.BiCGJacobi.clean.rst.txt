@@ -1,0 +1,6 @@
+pymatsolver.BiCGJacobi.clean
+============================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: BiCGJacobi.clean

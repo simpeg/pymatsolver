@@ -1,0 +1,6 @@
+pymatsolver.Forward.conj
+========================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Forward.conj

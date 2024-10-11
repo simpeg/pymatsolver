@@ -1,0 +1,6 @@
+pymatsolver.SolverLU.conjugate
+==============================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: SolverLU.conjugate

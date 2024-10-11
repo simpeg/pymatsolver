@@ -1,0 +1,6 @@
+pymatsolver.BiCGJacobi.atol
+===========================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: BiCGJacobi.atol

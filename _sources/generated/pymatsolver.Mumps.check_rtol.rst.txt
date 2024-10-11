@@ -1,0 +1,6 @@
+pymatsolver.Mumps.check\_rtol
+=============================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Mumps.check_rtol

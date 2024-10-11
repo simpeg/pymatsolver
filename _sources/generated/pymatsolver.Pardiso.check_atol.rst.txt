@@ -1,0 +1,6 @@
+pymatsolver.Pardiso.check\_atol
+===============================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: Pardiso.check_atol

@@ -1,0 +1,6 @@
+pymatsolver.SolverLU.A
+======================
+
+.. currentmodule:: pymatsolver
+
+.. autoproperty:: SolverLU.A
