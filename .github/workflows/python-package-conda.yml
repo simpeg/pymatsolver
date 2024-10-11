@@ -62,6 +62,13 @@ jobs:
       run: |
         make coverage
 
+    - name: Generate Source Distribution
+      if: ${{ (matrix.os == 'ubuntu-latest') && (matrix.python-version == '3.11') }}
+      run: |
+        pip install build twine
+        python -m build --sdist .
+        twine check dist/*
+
     - name: Test Documentation
       if: ${{ (matrix.os == 'ubuntu-latest') && (matrix.python-version == '3.11') }}
       run: |
@@ -111,8 +118,9 @@ jobs:
 
     - name: Generate Source Distribution
       run: |
-        pip install build
+        pip install build twine
         python -m build --sdist .
+        twine check dist/*
 
     - name: Build Documentation
       run: |
@@ -121,15 +129,16 @@ jobs:
         cd ..
 
     - name: GitHub Pages
-      uses: crazy-max/ghaction-github-pages@v2.5.0
+      uses: crazy-max/ghaction-github-pages@v4
       with:
         build_dir: docs/_build/html
         jekyll: false
+        keep_history: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: pypi-publish
-      uses: pypa/gh-action-pypi-publish@v1.4.2
+      uses: pypa/gh-action-pypi-publish@v1
       with:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
