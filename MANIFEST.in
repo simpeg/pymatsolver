@@ -1,0 +1,5 @@
+prune .github
+prune docs
+prune tests
+exclude .gitignore MANIFEST.in .pre-commit-config.yaml
+exclude .git_archival.txt .gitattributes Makefile
