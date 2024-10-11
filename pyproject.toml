@@ -16,6 +16,7 @@ keywords = [
 dependencies = [
     "numpy>=1.21",
     "scipy>=1.8",
+    "packaging",
 ]
 classifiers = [
     'Development Status :: 4 - Beta',
