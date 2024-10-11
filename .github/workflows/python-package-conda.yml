@@ -65,7 +65,7 @@ jobs:
     - name: Test Documentation
       if: ${{ (matrix.os == 'ubuntu-latest') && (matrix.python-version == '3.11') }}
       run: |
-        pip install -r requirements_docs.txt
+        pip install .[docs]
         cd docs
         make html
         cd ..
