@@ -1,6 +1,10 @@
 from pymatsolver.solvers import Base
-from pydiso.mkl_solver import MKLPardisoSolver
-from pydiso.mkl_solver import set_mkl_pardiso_threads, get_mkl_pardiso_max_threads
+try:
+    from pydiso.mkl_solver import MKLPardisoSolver
+    from pydiso.mkl_solver import set_mkl_pardiso_threads, get_mkl_pardiso_max_threads
+    _available = True
+except ImportError:
+    _available = False
 
 class Pardiso(Base):
     """The Pardiso direct solver.
@@ -39,6 +43,8 @@ class Pardiso(Base):
     _transposed = False
 
     def __init__(self, A, n_threads=None, is_symmetric=None, is_positive_definite=False, is_hermitian=None, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
+        if not _available:
+            raise ImportError("Pardiso solver requires the pydiso package to be installed.")
         super().__init__(A, is_symmetric=is_symmetric, is_positive_definite=is_positive_definite, is_hermitian=is_hermitian, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs)
         self.solver = MKLPardisoSolver(
             self.A,

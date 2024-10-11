@@ -1,5 +1,10 @@
 from pymatsolver.solvers import Base
-from mumps import Context
+try:
+    from mumps import Context
+    _available = True
+except ImportError:
+    Context = None
+    _available = False
 
 class Mumps(Base):
     """The MUMPS direct solver.
@@ -33,6 +38,10 @@ class Mumps(Base):
     _transposed = False
 
     def __init__(self, A, ordering=None, is_symmetric=None, is_positive_definite=False, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
+        if not _available:
+            raise ImportError(
+                "The Mumps solver requires the python-mumps package to be installed."
+            )
         is_hermitian = kwargs.pop('is_hermitian', False)
         super().__init__(A, is_symmetric=is_symmetric, is_positive_definite=is_positive_definite, is_hermitian=is_hermitian, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs)
         if ordering is None:

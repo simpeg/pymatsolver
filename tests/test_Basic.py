@@ -4,6 +4,7 @@ import pytest
 import scipy.sparse as sp
 import pymatsolver
 from pymatsolver import Diagonal
+from pymatsolver.solvers import UnusedArgumentWarning
 
 TOL = 1e-12
 
@@ -84,7 +85,7 @@ def test_errors_and_warnings():
     with pytest.warns(FutureWarning, match="accuracy_tol is deprecated.*"):
         IdentitySolver(np.full((4, 4), 1), accuracy_tol=0.41)
 
-    with pytest.warns(UserWarning, match="Unused keyword arguments.*"):
+    with pytest.warns(UnusedArgumentWarning, match="Unused keyword arguments.*"):
         IdentitySolver(np.full((4, 4), 1), not_an_argument=4)
 
     with pytest.raises(TypeError, match="is_symmetric must be a boolean."):

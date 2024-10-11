@@ -1,0 +1,97 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = 'pymatsolver'
+description = "pymatsolver: Matrix Solvers for Python"
+readme = 'README.rst'
+requires-python = '>=3.10'
+authors = [
+  {name = 'SimPEG developers', email = 'rowanc1@gmail.com'},
+]
+keywords = [
+    'matrix solver',
+]
+dependencies = [
+    "numpy>=1.21",
+    "scipy>=1.8",
+]
+classifiers = [
+    'Development Status :: 4 - Beta',
+    'Intended Audience :: Developers',
+    'Intended Audience :: Science/Research',
+    'License :: OSI Approved :: MIT License',
+    'Programming Language :: Python',
+    'Topic :: Scientific/Engineering',
+    'Topic :: Scientific/Engineering :: Mathematics',
+    'Topic :: Scientific/Engineering :: Physics',
+    'Operating System :: Microsoft :: Windows',
+    'Operating System :: POSIX',
+    'Operating System :: Unix',
+    'Operating System :: MacOS',
+    'Natural Language :: English',
+]
+dynamic = ["version"]
+
+[project.license]
+file = 'LICENSE'
+
+[project.urls]
+Homepage = 'https://simpeg.xyz'
+Documentation = 'https://simpeg.xyz/pymatsolver/'
+Repository = 'https://github.com/simpeg/pymatsolver'
+
+[project.optional-dependencies]
+pardiso = ["pydiso"]
+mumps = ["python-mumps"]
+docs = [
+    "sphinx",
+    "numpydoc",
+    "pydata-sphinx-theme"
+]
+
+tests = [
+    "pytest",
+    "pytest-cov",
+]
+
+build = [
+    "setuptools_scm>=8",
+    "setuptools>=64",
+]
+
+[tool.setuptools.packages.find]
+include = ["pymatsolver*"]
+
+[tool.setuptools_scm]
+
+[tool.coverage.run]
+source = ["pymatsolver", "tests"]
+
+[tool.coverage.report]
+ignore_errors = false
+show_missing = true
+# Regexes for lines to exclude from consideration
+exclude_also = [
+    # Don't complain about missing debug-only code:
+    "def __repr__",
+    "if self\\.debug",
+
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "AbstractMethodError",
+
+    # Don't complain if non-runnable code isn't run:
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "except PackageNotFoundError:",
+
+    # Don't complain about abstract methods, they aren't run:
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.coverage.html]
+directory = "coverage_html_report"
+

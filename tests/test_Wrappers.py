@@ -1,4 +1,5 @@
 from pymatsolver import SolverCG, SolverLU, wrap_direct, wrap_iterative
+from pymatsolver.solvers import UnusedArgumentWarning
 import pytest
 import scipy.sparse as sp
 import warnings
@@ -10,7 +11,7 @@ import numpy as np
 def test_wrapper_unused_kwargs(solver_class):
     A = sp.eye(10)
 
-    with pytest.warns(UserWarning, match="Unused keyword argument.*"):
+    with pytest.warns(UnusedArgumentWarning, match="Unused keyword argument.*"):
         solver_class(A, not_a_keyword_arg=True)
 
 def test_good_arg_iterative():
@@ -59,18 +60,20 @@ def test_direct_clean_function():
     Ainv = WrappedClass(A)
     assert Ainv.A is A
     assert Ainv.solver.A is A
+
+    rhs = np.array([0.9, 1.0])
+    npt.assert_equal(Ainv @ rhs, rhs)
+
     Ainv.clean()
     assert Ainv.solver.A is None
 
 def test_iterative_deprecations():
-    def iterative_solver(A, x):
-        return x
 
     with pytest.warns(FutureWarning, match="check_accuracy and accuracy_tol were unused.*"):
-        wrap_iterative(iterative_solver, check_accuracy=True)
+        wrap_iterative(lambda a, x: x, check_accuracy=True)
 
     with pytest.warns(FutureWarning, match="check_accuracy and accuracy_tol were unused.*"):
-        wrap_iterative(iterative_solver, accuracy_tol=1E-3)
+        wrap_iterative(lambda a, x: x, accuracy_tol=1E-3)
 
 def test_non_scipy_iterative():
     def iterative_solver(A, x):

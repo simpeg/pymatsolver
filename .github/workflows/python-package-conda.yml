@@ -62,10 +62,17 @@ jobs:
       run: |
         make coverage
 
+    - name: Generate Source Distribution
+      if: ${{ (matrix.os == 'ubuntu-latest') && (matrix.python-version == '3.11') }}
+      run: |
+        pip install build twine
+        python -m build --sdist .
+        twine check dist/*
+
     - name: Test Documentation
       if: ${{ (matrix.os == 'ubuntu-latest') && (matrix.python-version == '3.11') }}
       run: |
-        pip install -r requirements_docs.txt
+        pip install .[docs]
         cd docs
         make html
         cd ..
@@ -79,13 +86,15 @@ jobs:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   distribute:
-    name: Distributing from 3.8
+    name: Distributing
     needs: build-and-test
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash -l {0}
+    env:
+      PYTHON_VERSION: '3.11'
 
     steps:
     - uses: actions/checkout@v4
@@ -93,24 +102,25 @@ jobs:
       uses: conda-incubator/setup-miniconda@v3
       with:
         auto-update-conda: true
-        activate-environment: dev
-        python-version: 3.8
+        channels: conda-forge
+        python-version: ${{ env.PYTHON_VERSION }}
 
-    - name: Install Env
+    - name: Install Base Env
       run: |
         conda info
         conda list
         conda config --show
-        conda install --quiet --yes -c conda-forge pip numpy scipy pydiso
-        pip install -r requirements_docs.txt
+        conda install --quiet --yes pip numpy scipy
 
     - name: Install Our Package
       run: |
-        pip install -v -e .
+        pip install -v -e .[docs]
 
     - name: Generate Source Distribution
       run: |
-        python setup.py sdist
+        pip install build twine
+        python -m build --sdist .
+        twine check dist/*
 
     - name: Build Documentation
       run: |
@@ -119,15 +129,16 @@ jobs:
         cd ..
 
     - name: GitHub Pages
-      uses: crazy-max/ghaction-github-pages@v2.5.0
+      uses: crazy-max/ghaction-github-pages@v4
       with:
         build_dir: docs/_build/html
         jekyll: false
+        keep_history: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: pypi-publish
-      uses: pypa/gh-action-pypi-publish@v1.4.2
+      uses: pypa/gh-action-pypi-publish@v1
       with:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
