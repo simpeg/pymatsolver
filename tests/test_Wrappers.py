@@ -63,14 +63,12 @@ def test_direct_clean_function():
     assert Ainv.solver.A is None
 
 def test_iterative_deprecations():
-    def iterative_solver(A, x):
-        return x
 
     with pytest.warns(FutureWarning, match="check_accuracy and accuracy_tol were unused.*"):
-        wrap_iterative(iterative_solver, check_accuracy=True)
+        wrap_iterative(lambda a, x: x, check_accuracy=True)
 
     with pytest.warns(FutureWarning, match="check_accuracy and accuracy_tol were unused.*"):
-        wrap_iterative(iterative_solver, accuracy_tol=1E-3)
+        wrap_iterative(lambda a, x: x, accuracy_tol=1E-3)
 
 def test_non_scipy_iterative():
     def iterative_solver(A, x):
