@@ -67,7 +67,6 @@ include = ["pymatsolver*"]
 [tool.setuptools_scm]
 
 [tool.coverage.run]
-branch = true
 source = ["pymatsolver", "tests"]
 
 [tool.coverage.report]
