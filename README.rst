@@ -9,7 +9,7 @@ pymatsolver
     :target: https://github.com/simpeg/pymatsolver/blob/master/LICENSE
     :alt: MIT license.
 
-.. image:: https://codecov.io/gh/simpeg/pymatsolver/branch/master/graph/badge.svg
+.. image:: https://codecov.io/gh/simpeg/pymatsolver/branch/main/graph/badge.svg?token=8uQoxzxf3r
     :target: https://codecov.io/gh/simpeg/pymatsolver
     :alt: Coverage status
 
@@ -32,60 +32,34 @@ All solvers work with :code:`scipy.sparse` matricies, and a single or multiple r
 
 * L/U Triangular Solves
 * Wrapping of SciPy matrix solvers (direct and indirect)
-* Pardiso solvers now that MKL comes with conda!
-* Mumps solver with nice error messages
+* Pardiso solvers
+* Mumps solvers
 
 
-Installing Mumps
-================
+Installing Solvers
+==================
+Often, there are faster solvers available for your system than the default scipy factorizations available.
+pymatsolver provides a consistent interface to both MKL's ``Pardiso`` routines and the ``MUMPS`` solver package. To
+make use of these we use intermediate wrappers for the libraries that must be installed separately.
 
-We have not been able to get the pip install to work because of multiple dependencies on fortran libraries.
-However, the linux and mac installs are relatively easy. Note that you must have mumps pre-installed,
-currently we have only got this working for the sequential version, so when you are installing,
-you will need to point to that one. You can also look at the `.travis.yml` file for how to get it working on TravisCI.
+Pardiso
+-------
+The Pardiso interface is recommended for Intel processor based systems. The interface is enabled by
+the ``pydiso`` python package, which can be installed through conda-forge as:
 
-Linux
+.. code::
+
+    conda install -c conda-forge pydiso
+
+Mumps
 -----
+Mumps is available for all platforms. The mumps interface is enabled by installing the ``python-mumps``
+wrapper package. This can easily be installed through conda-forge with:
 
-From a clean install on Ubuntu:
+.. code::
 
-.. code-block:: bash
+    conda install -c conda-forge python-mumps
 
-    apt-get update
-    apt-get -y install gcc gfortran git libopenmpi-dev libmumps-seq-dev libblas-dev liblapack-dev
-
-    # Install all the python you need!
-    wget http://repo.continuum.io/miniconda/Miniconda-3.8.3-Linux-x86_64.sh -O miniconda.sh;
-    chmod +x miniconda.sh
-    ./miniconda.sh -b
-    export PATH=/root/anaconda/bin:/root/miniconda/bin:$PATH
-    conda update --yes conda
-    conda install --yes numpy scipy matplotlib cython ipython pytest coverage
-
-    git clone https://github.com/rowanc1/pymatsolver.git
-    cd pymatsolver
-    make mumps
-
-Mac
----
-
-This assumes that you have Brew and some python installed (numpy, scipy):
-
-.. code-block:: bash
-
-    brew install mumps --with-scotch5 --without-mpi
-
-    git clone https://github.com/rowanc1/pymatsolver.git
-    cd pymatsolver
-    make mumps_mac
-
-If you have problems you may have to go into the Makefile and update the pointers to Lib and Include for the various libraries.
-
-This command is helpful for finding dependencies. You should also take note of have happens when brew installs mumps.
-
-.. code-block:: bash
-
-    mpicc --showme
 
 
 Code:
@@ -93,7 +67,7 @@ https://github.com/simpeg/pymatsolver
 
 
 Tests:
-https://travis-ci.org/simpeg/pymatsolver
+https://github.com/simpeg/pymatsolver/actions
 
 
 Bugs & Issues:
