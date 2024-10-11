@@ -1,7 +1,8 @@
 .PHONY: build coverage lint graphs tests docs mumps mumps_mac mumps_install_mac
 
 coverage:
-	pytest --cov-config=pyproject.toml --cov-report=xml -s -v
+	pytest --cov --cov-config=pyproject.toml -s -v
+	coverage xml
 
 tests:
 	pytest
