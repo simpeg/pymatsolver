@@ -59,6 +59,10 @@ def test_direct_clean_function():
     Ainv = WrappedClass(A)
     assert Ainv.A is A
     assert Ainv.solver.A is A
+
+    rhs = np.array([0.9, 1.0])
+    npt.assert_equal(Ainv @ rhs, rhs)
+
     Ainv.clean()
     assert Ainv.solver.A is None
 
