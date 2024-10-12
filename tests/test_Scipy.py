@@ -1,5 +1,6 @@
 from pymatsolver import Solver, Diagonal, SolverCG, SolverLU
 import scipy.sparse as sp
+from scipy.sparse.linalg import aslinearoperator
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -56,6 +57,17 @@ def test_solver(a_matrix, n_rhs, solver):
     Ainv.clean()
 
     npt.assert_allclose(x, b, atol=tol)
+
+@pytest.mark.parametrize('dtype', [np.float64, np.complex128])
+def test_iterative_solver_linear_op(dtype):
+    n = 10
+    A = aslinearoperator(sp.eye(n).astype(dtype))
+
+    Ainv = SolverCG(A)
+
+    rhs = np.linspace(0.9, 1.1, n)
+
+    npt.assert_allclose(Ainv @ rhs, rhs)
 
 @pytest.mark.parametrize('n_rhs', [1, 5])
 def test_diag_solver(n_rhs):

@@ -77,8 +77,10 @@ class Base(ABC):
         if is_symmetric is None:
             if sp.issparse(A):
                 is_symmetric = (A.T != A).nnz == 0
-            else:
+            elif isinstance(A, np.ndarray):
                 is_symmetric = issymmetric(A)
+            else:
+                is_symmetric = False
         self.is_symmetric = is_symmetric
         if is_hermitian is None:
             if self.is_real:
@@ -86,8 +88,10 @@ class Base(ABC):
             else:
                 if sp.issparse(A):
                     is_hermitian = (A.T.conjugate() != A).nnz == 0
-                else:
+                elif isinstance(A, np.ndarray):
                     is_hermitian = ishermitian(A)
+                else:
+                    is_hermitian = False
 
         self.is_hermitian = is_hermitian
 
