@@ -58,9 +58,10 @@ def test_solver(a_matrix, n_rhs, solver):
 
     npt.assert_allclose(x, b, atol=tol)
 
-def test_iterative_solver_linear_op():
+@pytest.mark.parametrize('dtype', [np.float64, np.complex128])
+def test_iterative_solver_linear_op(dtype):
     n = 10
-    A = aslinearoperator(sp.eye(n))
+    A = aslinearoperator(sp.eye(n).astype(dtype))
 
     Ainv = SolverCG(A)
 
