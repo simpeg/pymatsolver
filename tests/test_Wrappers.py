@@ -14,11 +14,13 @@ def test_wrapper_unused_kwargs(solver_class):
     with pytest.warns(UnusedArgumentWarning, match="Unused keyword argument.*"):
         solver_class(A, not_a_keyword_arg=True)
 
+
 def test_good_arg_iterative():
     # Ensure this doesn't throw a warning!
     with warnings.catch_warnings():
         warnings.simplefilter("error")
         SolverCG(sp.eye(10), rtol=1e-4)
+
 
 def test_good_arg_direct():
     # Ensure this doesn't throw a warning!
@@ -38,7 +40,6 @@ def test_bad_direct_function():
 
     with pytest.raises(TypeError, match="instance returned by.*"):
         WrappedClass(sp.eye(2))
-
 
 
 def test_direct_clean_function():
@@ -67,6 +68,7 @@ def test_direct_clean_function():
     Ainv.clean()
     assert Ainv.solver.A is None
 
+
 def test_iterative_deprecations():
 
     with pytest.warns(FutureWarning, match="check_accuracy and accuracy_tol were unused.*"):
@@ -74,6 +76,7 @@ def test_iterative_deprecations():
 
     with pytest.warns(FutureWarning, match="check_accuracy and accuracy_tol were unused.*"):
         wrap_iterative(lambda a, x: x, accuracy_tol=1E-3)
+
 
 def test_non_scipy_iterative():
     def iterative_solver(A, x):
