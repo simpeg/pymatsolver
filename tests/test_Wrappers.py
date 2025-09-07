@@ -5,6 +5,7 @@ import scipy.sparse as sp
 import warnings
 import numpy.testing as npt
 import numpy as np
+import re
 
 
 @pytest.mark.parametrize("solver_class", [SolverCG, SolverLU])
@@ -69,12 +70,18 @@ def test_direct_clean_function():
     assert Ainv.solver.A is None
 
 
-def test_iterative_deprecations():
+def test_iterative_removals():
 
-    with pytest.warns(FutureWarning, match="check_accuracy and accuracy_tol were unused.*"):
+    with pytest.raises(
+        TypeError,
+        match=re.escape("wrap_iterative() got an unexpected keyword argument 'check_accuracy'")
+    ):
         wrap_iterative(lambda a, x: x, check_accuracy=True)
 
-    with pytest.warns(FutureWarning, match="check_accuracy and accuracy_tol were unused.*"):
+    with pytest.raises(
+        TypeError,
+        match=re.escape("wrap_iterative() got an unexpected keyword argument 'accuracy_tol'")
+    ):
         wrap_iterative(lambda a, x: x, accuracy_tol=1E-3)
 
 

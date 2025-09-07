@@ -39,7 +39,7 @@ def test_solve(test_mat_data, dtype, transpose, symmetric):
 
 def test_errors_and_warnings(test_mat_data):
     A, sol = test_mat_data
-    with pytest.warns(FutureWarning):
+    with pytest.raises(TypeError, match="The symmetric keyword.*"):
         Ainv = BicgJacobi(A, symmetric=True)
 
     with pytest.raises(ValueError):

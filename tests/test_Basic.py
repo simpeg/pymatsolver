@@ -56,15 +56,21 @@ def test_basic_solve():
     Ainv = IdentitySolver(np.eye(4))
 
     rhs = np.arange(4)
+    rhs1d = np.arange(4).reshape(4, 1)
     rhs2d = np.arange(8).reshape(4, 2)
     rhs3d = np.arange(24).reshape(3, 4, 2)
 
     npt.assert_equal(Ainv @ rhs, rhs)
+    npt.assert_equal(Ainv @ rhs1d, rhs1d)
     npt.assert_equal(Ainv @ rhs2d, rhs2d)
     npt.assert_equal(Ainv @ rhs3d, rhs3d)
 
     npt.assert_equal(rhs @ Ainv, rhs)
     npt.assert_equal(rhs * Ainv, rhs)
+
+
+    npt.assert_equal(rhs1d.T @ Ainv, rhs1d.T)
+    npt.assert_equal(rhs1d.T * Ainv, rhs1d.T)
 
     npt.assert_equal(rhs2d.T @ Ainv, rhs2d.T)
     npt.assert_equal(rhs2d.T * Ainv, rhs2d.T)
@@ -82,7 +88,7 @@ def test_errors_and_warnings():
     with pytest.raises(ValueError, match="A is not a square matrix."):
         IdentitySolver(np.full((3, 5), 1))
 
-    with pytest.warns(FutureWarning, match="accuracy_tol is deprecated.*"):
+    with pytest.raises(TypeError, match=r"'accuracy_tol' was removed.*"):
         IdentitySolver(np.full((4, 4), 1), accuracy_tol=0.41)
 
     with pytest.warns(UnusedArgumentWarning, match="Unused keyword arguments.*"):
@@ -110,10 +116,6 @@ def test_errors_and_warnings():
     with pytest.raises(ValueError, match="Second to last dimension should be.*"):
         Ainv = IdentitySolver(np.eye(4, 4))
         Ainv @ np.ones((3, 2))
-
-    with pytest.warns(FutureWarning, match="In Future pymatsolver v0.4.0, passing a vector.*"):
-        Ainv = IdentitySolver(np.eye(4, 4))
-        Ainv @ np.ones((4, 1))
 
     with pytest.raises(NotImplementedError, match="The transpose for the.*"):
         Ainv = NotTransposableIdentitySolver(np.eye(4, 4), is_symmetric=False)
