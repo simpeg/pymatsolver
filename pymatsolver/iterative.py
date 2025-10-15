@@ -21,9 +21,6 @@ class BiCGJacobi(Base):
     ----------
     A : matrix
         The matrix to solve, must have a ``diagonal()`` method.
-    symmetric: boolean, optional
-        .. deprecated:: 0.3.0
-            `symmetric` is deprecated. It is unused, and will be removed in pymatsolver 0.4.0.
     maxiter : int, optional
         The maximum number of BiCG iterations to perform.
     rtol : float, optional
@@ -36,21 +33,14 @@ class BiCGJacobi(Base):
         The relative tolerance to check against for accuracy.
     check_atol : float, optional
         The absolute tolerance to check against for accuracy.
-    accuracy_tol : float, optional
-        Relative accuracy tolerance.
-        .. deprecated:: 0.3.0
-            `accuracy_tol` will be removed in pymatsolver 0.4.0. Use `check_rtol` and `check_atol` instead.
     **kwargs
         Extra keyword arguments passed to the base class.
     """
 
-    def __init__(self, A, symmetric=None, maxiter=1000, rtol=1E-6, atol=0.0, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
-        if symmetric is not None:
-            warnings.warn(
-                "The symmetric keyword argument is unused and is deprecated. It will be removed in pymatsolver 0.4.0.",
-                FutureWarning, stacklevel=2
-            )
-        super().__init__(A, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs)
+    def __init__(self, A, maxiter=1000, rtol=1E-6, atol=0.0, check_accuracy=False, check_rtol=1e-6, check_atol=0, **kwargs):
+        if "symmetric" in kwargs:
+            raise TypeError("The symmetric keyword argument was been removed in pymatsolver 0.4.0.")
+        super().__init__(A, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, **kwargs)
         self._factored = False
         self.maxiter = maxiter
         self.rtol = rtol

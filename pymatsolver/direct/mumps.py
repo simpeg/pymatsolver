@@ -28,22 +28,18 @@ class Mumps(Base):
         The relative tolerance to check against for accuracy.
     check_atol : float, optional
         The absolute tolerance to check against for accuracy.
-    accuracy_tol : float, optional
-        Relative accuracy tolerance.
-        .. deprecated:: 0.3.0
-            `accuracy_tol` will be removed in pymatsolver 0.4.0. Use `check_rtol` and `check_atol` instead.
     **kwargs
         Extra keyword arguments. If there are any left here a warning will be raised.
     """
     _transposed = False
 
-    def __init__(self, A, ordering=None, is_symmetric=None, is_positive_definite=False, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
+    def __init__(self, A, ordering=None, is_symmetric=None, is_positive_definite=False, check_accuracy=False, check_rtol=1e-6, check_atol=0, **kwargs):
         if not _available:
             raise ImportError(
                 "The Mumps solver requires the python-mumps package to be installed."
             )
         is_hermitian = kwargs.pop('is_hermitian', False)
-        super().__init__(A, is_symmetric=is_symmetric, is_positive_definite=is_positive_definite, is_hermitian=is_hermitian, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs)
+        super().__init__(A, is_symmetric=is_symmetric, is_positive_definite=is_positive_definite, is_hermitian=is_hermitian, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, **kwargs)
         if ordering is None:
             ordering = "metis"
         self.ordering = ordering

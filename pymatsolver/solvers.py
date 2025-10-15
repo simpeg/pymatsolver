@@ -36,10 +36,6 @@ class Base(ABC):
         The relative tolerance to check against for accuracy.
     check_atol : float, optional
         The absolute tolerance to check against for accuracy.
-    accuracy_tol : float, optional
-        Relative accuracy tolerance.
-        .. deprecated:: 0.3.0
-            `accuracy_tol` will be removed in pymatsolver 0.4.0. Use `check_rtol` and `check_atol` instead.
     **kwargs
         Extra keyword arguments. If there are any left here a warning will be raised.
     """
@@ -50,7 +46,7 @@ class Base(ABC):
     _is_conjugate = False
 
     def __init__(
-            self, A, is_symmetric=None, is_positive_definite=False, is_hermitian=None, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs
+            self, A, is_symmetric=None, is_positive_definite=False, is_hermitian=None, check_accuracy=False, check_rtol=1e-6, check_atol=0, **kwargs
     ):
         # don't make any assumptions on what A is, let the individual solvers handle that
         shape = A.shape
@@ -61,13 +57,8 @@ class Base(ABC):
         self._A = A
         self._dtype = np.dtype(A.dtype)
 
-        if accuracy_tol is not None:
-            warnings.warn(
-                "accuracy_tol is deprecated and will be removed in v0.4.0, use check_rtol and check_atol.",
-                FutureWarning,
-                stacklevel=3
-            )
-            check_rtol = accuracy_tol
+        if 'accuracy_tol' in kwargs:
+            raise TypeError("'accuracy_tol' was removed in v0.4.0, use 'check_rtol' and 'check_atol'.")
 
         self.check_accuracy = check_accuracy
         self.check_rtol = check_rtol
@@ -341,14 +332,6 @@ class Base(ABC):
                 rhs = rhs.conjugate()
             x = self._solve_single(rhs)
         else:
-            if ndim == 2 and rhs.shape[-1] == 1:
-                warnings.warn(
-                    "In Future pymatsolver v0.4.0, passing a vector of shape (n, 1) to the solve method "
-                    "will return an array with shape (n, 1), instead of always returning a flattened array. "
-                    "This is to be consistent with numpy.linalg.solve broadcasting.",
-                    FutureWarning,
-                    stacklevel=2
-                )
             if rhs.shape[-2] != n:
                 raise ValueError(f'Second to last dimension should be {n}, got {rhs.shape}')
             do_broadcast = rhs.ndim > 2
@@ -376,10 +359,6 @@ class Base(ABC):
 
         if self.check_accuracy:
             self._compute_accuracy(rhs, x)
-
-        #TODO remove this in v0.4.0.
-        if x.size == n:
-            x = x.reshape(-1)
 
         if self._is_conjugate:
             x = x.conjugate()
@@ -449,15 +428,11 @@ class Diagonal(Base):
         The relative tolerance to check against for accuracy.
     check_atol : float, optional
         The absolute tolerance to check against for accuracy.
-    accuracy_tol : float, optional
-        Relative accuracy tolerance.
-        .. deprecated:: 0.3.0
-            `accuracy_tol` will be removed in pymatsolver 0.4.0. Use `check_rtol` and `check_atol` instead.
     **kwargs
         Extra keyword arguments passed to the base class.
     """
 
-    def __init__(self, A, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
+    def __init__(self, A, check_accuracy=False, check_rtol=1e-6, check_atol=0, **kwargs):
         try:
             self._diagonal = np.asarray(A.diagonal())
             if not np.all(self._diagonal):
@@ -469,7 +444,7 @@ class Diagonal(Base):
         is_hermitian = kwargs.pop("is_hermitian", None)
         is_positive_definite = kwargs.pop("is_positive_definite", None)
         super().__init__(
-            A, is_symmetric=True, is_hermitian=False, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs
+            A, is_symmetric=True, is_hermitian=False, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, **kwargs
         )
         if is_positive_definite is None:
             if self.is_real:
@@ -510,15 +485,11 @@ class Triangle(Base):
         The relative tolerance to check against for accuracy.
     check_atol : float, optional
         The absolute tolerance to check against for accuracy.
-    accuracy_tol : float, optional
-        Relative accuracy tolerance.
-        .. deprecated:: 0.3.0
-            `accuracy_tol` will be removed in pymatsolver 0.4.0. Use `check_rtol` and `check_atol` instead.
     **kwargs
         Extra keyword arguments passed to the base class.
     """
 
-    def __init__(self, A, lower=True, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
+    def __init__(self, A, lower=True, check_accuracy=False, check_rtol=1e-6, check_atol=0, **kwargs):
         # pop off unneeded keyword arguments.
         is_hermitian = kwargs.pop("is_hermitian", False)
         is_symmetric = kwargs.pop("is_symmetric", False)
@@ -526,7 +497,7 @@ class Triangle(Base):
         if not (sp.issparse(A) and A.format in ['csr', 'csc']):
             A = sp.csc_matrix(A)
         A.sum_duplicates()
-        super().__init__(A, is_hermitian=is_hermitian, is_symmetric=is_symmetric, is_positive_definite=is_positive_definite, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs)
+        super().__init__(A, is_hermitian=is_hermitian, is_symmetric=is_symmetric, is_positive_definite=is_positive_definite, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, **kwargs)
 
         self.lower = lower
 
@@ -565,17 +536,13 @@ class Forward(Triangle):
         The relative tolerance to check against for accuracy.
     check_atol : float, optional
         The absolute tolerance to check against for accuracy.
-    accuracy_tol : float, optional
-        Relative accuracy tolerance.
-        .. deprecated:: 0.3.0
-            `accuracy_tol` will be removed in pymatsolver 0.4.0. Use `check_rtol` and `check_atol` instead.
     **kwargs
         Extra keyword arguments passed to the base class.
     """
 
-    def __init__(self, A, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
+    def __init__(self, A, check_accuracy=False, check_rtol=1e-6, check_atol=0, **kwargs):
         kwargs.pop("lower", None)
-        super().__init__(A, lower=True, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs)
+        super().__init__(A, lower=True, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, **kwargs)
 
 
 class Backward(Triangle):
@@ -591,19 +558,15 @@ class Backward(Triangle):
         The relative tolerance to check against for accuracy.
     check_atol : float, optional
         The absolute tolerance to check against for accuracy.
-    accuracy_tol : float, optional
-        Relative accuracy tolerance.
-        .. deprecated:: 0.3.0
-            `accuracy_tol` will be removed in pymatsolver 0.4.0. Use `check_rtol` and `check_atol` instead.
     **kwargs
         Extra keyword arguments passed to the base class.
     """
 
     _transpose_class = Forward
 
-    def __init__(self, A, check_accuracy=False, check_rtol=1e-6, check_atol=0, accuracy_tol=None, **kwargs):
+    def __init__(self, A, check_accuracy=False, check_rtol=1e-6, check_atol=0, **kwargs):
         kwargs.pop("lower", None)
-        super().__init__(A, lower=False, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, accuracy_tol=accuracy_tol, **kwargs)
+        super().__init__(A, lower=False, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, **kwargs)
 
 
 Forward._transpose_class = Backward

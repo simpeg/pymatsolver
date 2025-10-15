@@ -1,14 +1,6 @@
 name: Testing
 
-on:
-  push:
-    branches:
-      - 'main'
-    tags:
-      - 'v*'
-  pull_request:
-    branches:
-      - '*'
+on: [push, pull_request]
 
 jobs:
   build-and-test:
@@ -20,10 +12,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # NOTE: macOS-13 is the last Intel runner.
-        os: [ubuntu-latest, windows-latest, macOS-13, macOS-latest]
+        os: [ubuntu-latest, windows-latest, macOS-15-intel, macOS-latest]
         solver: [mumps, pardiso]
-        python-version : ['3.10', '3.11', '3.12']
+        python-version : ['3.11', '3.12', '3.13', '3.14']
+        include:
+          - os: ubuntu-latest
+            python-version: '3.13'
+            full-test: true
         exclude:
           - os: macOS-latest
             solver: pardiso
@@ -63,14 +58,14 @@ jobs:
         make coverage
 
     - name: Generate Source Distribution
-      if: ${{ (matrix.os == 'ubuntu-latest') && (matrix.python-version == '3.11') }}
+      if: ${{ matrix.full-test }}
       run: |
         pip install build twine
         python -m build --sdist .
         twine check dist/*
 
     - name: Test Documentation
-      if: ${{ (matrix.os == 'ubuntu-latest') && (matrix.python-version == '3.11') }}
+      if: ${{ matrix.full-test }}
       run: |
         pip install .[docs]
         cd docs
@@ -78,7 +73,7 @@ jobs:
         cd ..
 
     - name: Upload coverage
-      if: ${{ (matrix.os == 'ubuntu-latest') && (matrix.python-version  == '3.11') }}
+      if: ${{ matrix.full-test }}
       uses: codecov/codecov-action@v4
       with:
         verbose: true # optional (default = false)
@@ -94,7 +89,7 @@ jobs:
       run:
         shell: bash -l {0}
     env:
-      PYTHON_VERSION: '3.11'
+      PYTHON_VERSION: '3.13'
 
     steps:
     - uses: actions/checkout@v4
