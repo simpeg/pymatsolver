@@ -142,6 +142,11 @@ def test_pardiso_fdem():
 
     A = sp.csr_matrix((data, indices, indptr), shape=(13872, 13872))
     rhs = np.load(os.path.join(base_path, 'RHS.npy'))
+    # The rhs has many exact zeros, which would compare round-off against zero in the
+    # element-wise check below. Offset every entry by a small fraction of its column's largest
+    # magnitude, along the entry's own phase (angle(0) == 0), so no entry is shifted towards zero.
+    offset = 1e-3 * np.abs(rhs).max(axis=0)
+    rhs = rhs + offset * np.exp(1j * np.angle(rhs))
 
     Ainv = pymatsolver.Pardiso(A, check_accuracy=True)
     print(Ainv.is_symmetric)
