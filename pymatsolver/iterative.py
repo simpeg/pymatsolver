@@ -83,7 +83,11 @@ class BiCGJacobi(Base):
         attrs["atol"] = self.atol
         return attrs
 
-    def factor(self):
+    def _refactor(self, A):
+        self._A = A
+        self._factored = False
+
+    def _factor(self):
         if self._factored:
             return
         nSize = self.A.shape[0]
@@ -97,7 +101,7 @@ class BiCGJacobi(Base):
 
 
     def _solve_single(self, rhs):
-        self.factor()
+        self._factor()
         sol, info = bicgstab(
             self.A, rhs,
             maxiter=self.maxiter,
@@ -107,7 +111,7 @@ class BiCGJacobi(Base):
         return sol
 
     def _solve_multiple(self, rhs):
-        self.factor()
+        self._factor()
         sol = np.empty_like(rhs)
         for icol in range(rhs.shape[1]):
             sol[:, icol] = self._solve_single(rhs[:, icol])

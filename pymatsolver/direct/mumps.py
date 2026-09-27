@@ -1,4 +1,4 @@
-from pymatsolver.solvers import Base
+from pymatsolver.solvers import _SharedFactorBase
 try:
     from mumps import Context
     _available = True
@@ -6,7 +6,7 @@ except ImportError:
     Context = None
     _available = False
 
-class Mumps(Base):
+class Mumps(_SharedFactorBase):
     """The MUMPS direct solver.
 
     This solver uses the python-mumps wrappers to factorize a sparse matrix, and use that factorization for solving.
@@ -31,7 +31,6 @@ class Mumps(Base):
     **kwargs
         Extra keyword arguments. If there are any left here a warning will be raised.
     """
-    _transposed = False
 
     def __init__(self, A, ordering=None, is_symmetric=None, is_positive_definite=False, check_accuracy=False, check_rtol=1e-6, check_atol=0, **kwargs):
         if not _available:
@@ -75,39 +74,25 @@ class Mumps(Base):
         attrs['ordering'] = self.ordering
         return attrs
 
-    def transpose(self):
-        trans_obj = Mumps.__new__(Mumps)
-        trans_obj._A = self.A
-        for attr, value in self.get_attributes().items():
-            setattr(trans_obj, attr, value)
-        trans_obj.solver = self.solver
-        trans_obj._transposed = not self._transposed
-        return trans_obj
+    def _do_factor(self, reuse_analysis):
+        pivot_tol = 0.0 if self.is_positive_definite else 0.01
+        self.solver.factor(
+            ordering=self.ordering, reuse_analysis=reuse_analysis, pivot_tol=pivot_tol
+        )
 
-    def factor(self, A=None):
-        """(Re)factor the A matrix.
-
-        Parameters
-        ----------
-        A : scipy.sparse.spmatrix
-            The matrix to be factorized. If a previous factorization has been performed, this will
-            reuse the previous factorization's analysis.
-        """
+    def _refactor(self, A):
+        # if it was previously factored then re-use the analysis.
         reuse_analysis = self._factored
-        do_factor = not self._factored
-        if A is not None and A is not self.A:
-            # if it was previously factored then re-use the analysis.
-            self._set_A(A)
-            self._A = A
-            do_factor = True
-        if do_factor:
-            pivot_tol = 0.0 if self.is_positive_definite else 0.01
-            self.solver.factor(
-                ordering=self.ordering, reuse_analysis=reuse_analysis, pivot_tol=pivot_tol
-            )
+        self._A = A
+        self._set_A(self._shared.A)
+        self._do_factor(reuse_analysis)
+
+    def _factor(self):
+        if not self._factored:
+            self._do_factor(reuse_analysis=False)
 
     def _solve_multiple(self, rhs):
-        self.factor()
+        self._factor()
         if self._transposed:
             self.solver.mumps_instance.icntl[9] = 0
         else:

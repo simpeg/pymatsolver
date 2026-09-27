@@ -1,4 +1,4 @@
-from pymatsolver.solvers import Base
+from pymatsolver.solvers import _SharedFactorBase
 try:
     from pydiso.mkl_solver import MKLPardisoSolver
     from pydiso.mkl_solver import set_mkl_pardiso_threads, get_mkl_pardiso_max_threads
@@ -6,7 +6,7 @@ try:
 except ImportError:
     _available = False
 
-class Pardiso(Base):
+class Pardiso(_SharedFactorBase):
     """The Pardiso direct solver.
 
     This solver uses the `pydiso` Intel MKL wrapper to factorize a sparse matrix, and use that
@@ -35,8 +35,6 @@ class Pardiso(Base):
     **kwargs
         Extra keyword arguments. If there are any left here a warning will be raised.
     """
-
-    _transposed = False
 
     def __init__(self, A, n_threads=None, is_symmetric=None, is_positive_definite=False, is_hermitian=None, check_accuracy=False, check_rtol=1e-6, check_atol=0, **kwargs):
         if not _available:
@@ -89,31 +87,14 @@ class Pardiso(Base):
             else:
                 return 13
 
-    def factor(self, A=None):
-        """(Re)factor the A matrix.
-
-        Parameters
-        ----------
-        A : scipy.sparse.spmatrix
-            The matrix to be factorized. If a previous factorization has been performed, this will
-            reuse the previous factorization's analysis.
-        """
-        if A is not None and self.A is not A:
-            self._A = A
-            self.solver.refactor(self.A)
+    def _refactor(self, A):
+        self._A = A
+        # reuses the previous factorization's analysis.
+        self.solver.refactor(self._shared.A)
 
     def _solve_multiple(self, rhs):
         sol = self.solver.solve(rhs, transpose=self._transposed)
         return sol
-
-    def transpose(self):
-        trans_obj = Pardiso.__new__(Pardiso)
-        trans_obj._A = self.A
-        for attr, value in self.get_attributes().items():
-            setattr(trans_obj, attr, value)
-        trans_obj.solver = self.solver
-        trans_obj._transposed = not self._transposed
-        return trans_obj
 
     @property
     def n_threads(self):
