@@ -7,9 +7,9 @@ from packaging.version import Version
 from .wrappers import WrapIterative
 from .solvers import Base
 
-# The tol kwarg was removed from bicgstab in scipy 1.14.0.
+# The rtol kwarg was added to bicgstab in scipy 1.12.0 (deprecating tol), and tol was removed in 1.14.0.
 # See https://docs.scipy.org/doc/scipy-1.12.0/reference/generated/scipy.sparse.linalg.bicgstab.html
-RTOL_ARG_NAME = "rtol" if Version(scipy.__version__) >= Version("1.14.0") else "tol"
+RTOL_ARG_NAME = "rtol" if Version(scipy.__version__) >= Version("1.12.0") else "tol"
 
 SolverCG = WrapIterative(cg, name="SolverCG")
 SolverBiCG = WrapIterative(bicgstab, name="SolverBiCG")
@@ -38,8 +38,6 @@ class BiCGJacobi(Base):
     """
 
     def __init__(self, A, maxiter=1000, rtol=1E-6, atol=0.0, check_accuracy=False, check_rtol=1e-6, check_atol=0, **kwargs):
-        if "symmetric" in kwargs:
-            raise TypeError("The symmetric keyword argument was been removed in pymatsolver 0.4.0.")
         super().__init__(A, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, **kwargs)
         self._factored = False
         self.maxiter = maxiter

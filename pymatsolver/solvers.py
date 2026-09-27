@@ -40,7 +40,6 @@ class Base(ABC):
         Extra keyword arguments. If there are any left here a warning will be raised.
     """
 
-    __numpy_ufunc__ = True
     __array_ufunc__ = None
 
     _is_conjugate = False
@@ -56,9 +55,6 @@ class Base(ABC):
             raise ValueError("A is not a square matrix.")
         self._A = A
         self._dtype = np.dtype(A.dtype)
-
-        if 'accuracy_tol' in kwargs:
-            raise TypeError("'accuracy_tol' was removed in v0.4.0, use 'check_rtol' and 'check_atol'.")
 
         self.check_accuracy = check_accuracy
         self.check_rtol = check_rtol
