@@ -90,7 +90,7 @@ def __getattr__(name):
         new_name, obj = _DEPRECATED_ALIASES[name]
         import warnings
         warnings.warn(
-            f"pymatsolver.{name} is deprecated and will be removed in v0.5.0, "
+            f"pymatsolver.{name} is deprecated and will be removed in v0.6.0, "
             f"use pymatsolver.{new_name} instead.",
             FutureWarning,
             stacklevel=2,
