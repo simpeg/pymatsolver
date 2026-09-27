@@ -79,8 +79,24 @@ AvailableSolvers = {
     "Mumps": _mumps_available,
 }
 
-BicgJacobi = BiCGJacobi  # backwards compatibility
-PardisoSolver = Pardiso  # backwards compatibility
+_DEPRECATED_ALIASES = {
+    "BicgJacobi": ("BiCGJacobi", BiCGJacobi),
+    "PardisoSolver": ("Pardiso", Pardiso),
+}
+
+
+def __getattr__(name):
+    if name in _DEPRECATED_ALIASES:
+        new_name, obj = _DEPRECATED_ALIASES[name]
+        import warnings
+        warnings.warn(
+            f"pymatsolver.{name} is deprecated and will be removed in v0.5.0, "
+            f"use pymatsolver.{new_name} instead.",
+            FutureWarning,
+            stacklevel=2,
+        )
+        return obj
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 if not AvailableSolvers["Pardiso"]:
     SolverHelp['Pardiso'] = """Pardiso is not working

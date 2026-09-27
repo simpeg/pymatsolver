@@ -225,3 +225,10 @@ def test_diagonal_inferance():
     assert Ainv.is_symmetric
     assert not Ainv.is_hermitian
     assert not Ainv.is_positive_definite
+
+
+@pytest.mark.parametrize("old_name, new_name", [("BicgJacobi", "BiCGJacobi"), ("PardisoSolver", "Pardiso")])
+def test_deprecated_aliases(old_name, new_name):
+    with pytest.warns(FutureWarning, match=f"pymatsolver.{old_name} is deprecated"):
+        obj = getattr(pymatsolver, old_name)
+    assert obj is getattr(pymatsolver, new_name)
