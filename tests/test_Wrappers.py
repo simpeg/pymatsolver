@@ -43,6 +43,32 @@ def test_bad_direct_function():
         WrappedClass(sp.eye(2))
 
 
+def test_bad_direct_function_on_refactor():
+    class Empty():
+        def __init__(self, A):
+            self.A = A
+
+    class Good(Empty):
+        def solve(self, x):
+            return x
+
+    # returns a valid solver the first call (at construction), and one missing
+    # a solve() method on the second call (triggered by a refactor).
+    calls = []
+
+    def flaky_direct_func(A):
+        calls.append(A)
+        if len(calls) == 1:
+            return Good(A)
+        return Empty(A)
+
+    WrappedClass = wrap_direct(flaky_direct_func, factorize=True)
+    Ainv = WrappedClass(sp.eye(2))
+
+    with pytest.raises(TypeError, match="instance returned by.*"):
+        Ainv.factor(sp.eye(2) * 2)
+
+
 def test_direct_clean_function():
     def direct_func(A):
         class Empty():

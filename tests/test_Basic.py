@@ -88,9 +88,6 @@ def test_errors_and_warnings():
     with pytest.raises(ValueError, match="A is not a square matrix."):
         IdentitySolver(np.full((3, 5), 1))
 
-    with pytest.raises(TypeError, match=r"'accuracy_tol' was removed.*"):
-        IdentitySolver(np.full((4, 4), 1), accuracy_tol=0.41)
-
     with pytest.warns(UnusedArgumentWarning, match="Unused keyword arguments.*"):
         IdentitySolver(np.full((4, 4), 1), not_an_argument=4)
 
@@ -228,3 +225,10 @@ def test_diagonal_inferance():
     assert Ainv.is_symmetric
     assert not Ainv.is_hermitian
     assert not Ainv.is_positive_definite
+
+
+@pytest.mark.parametrize("old_name, new_name", [("BicgJacobi", "BiCGJacobi"), ("PardisoSolver", "Pardiso")])
+def test_deprecated_aliases(old_name, new_name):
+    with pytest.warns(FutureWarning, match=f"pymatsolver.{old_name} is deprecated"):
+        obj = getattr(pymatsolver, old_name)
+    assert obj is getattr(pymatsolver, new_name)

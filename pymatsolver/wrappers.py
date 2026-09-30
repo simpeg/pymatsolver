@@ -113,6 +113,14 @@ def wrap_direct(fun, factorize=True, name=None):
         if factorize and hasattr(self.solver, 'clean'):
             self.solver.clean()
 
+    def _refactor(self, A):
+        self._A = A
+        if factorize:
+            self.clean()
+            self.solver = fun(self.A, **self.kwargs)
+            if not hasattr(self.solver, "solve"):
+                raise TypeError(f"instance returned by {fun.__name__} must have a solve() method.")
+
     class_name = str(name if name is not None else fun.__name__)
     WrappedClass = type(
         class_name,
@@ -123,6 +131,7 @@ def wrap_direct(fun, factorize=True, name=None):
             "_solve_multiple": _solve_multiple,
             "kwargs": kwargs,
             "clean": clean,
+            "_refactor": _refactor,
         }
     )
     WrappedClass.__doc__ = f"""Wrapped {class_name} solver.

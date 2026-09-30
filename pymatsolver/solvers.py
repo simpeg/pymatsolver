@@ -5,6 +5,7 @@ from scipy.sparse.linalg import spsolve_triangular
 from scipy.linalg import issymmetric, ishermitian
 from abc import ABC, abstractmethod
 import copy
+import types
 
 
 class SolverAccuracyError(Exception):
@@ -40,7 +41,6 @@ class Base(ABC):
         Extra keyword arguments. If there are any left here a warning will be raised.
     """
 
-    __numpy_ufunc__ = True
     __array_ufunc__ = None
 
     _is_conjugate = False
@@ -56,9 +56,6 @@ class Base(ABC):
             raise ValueError("A is not a square matrix.")
         self._A = A
         self._dtype = np.dtype(A.dtype)
-
-        if 'accuracy_tol' in kwargs:
-            raise TypeError("'accuracy_tol' was removed in v0.4.0, use 'check_rtol' and 'check_atol'.")
 
         self.check_accuracy = check_accuracy
         self.check_rtol = check_rtol
@@ -372,6 +369,39 @@ class Base(ABC):
     def _solve_multiple(self, rhs):
         ...
 
+    def factor(self, A=None):
+        """(Re)factor the matrix.
+
+        Parameters
+        ----------
+        A : optional
+            A new matrix to replace the current one. It must have the same shape and dtype as
+            the current matrix, and should share its symmetry and definiteness properties, which
+            are not re-checked. For solvers that reuse a symbolic analysis (e.g. `Pardiso` and
+            `Mumps`), it must also have the same sparsity pattern. If ``None`` (or the current
+            matrix), this performs the factorization if it has not been done yet.
+
+        Notes
+        -----
+        Transposed and conjugated solvers created from a `Pardiso` or `Mumps` solver share its
+        factorization, and are updated along with it. For other solvers, those previously created
+        objects continue to use the old matrix.
+        """
+        if A is not None and A is not self.A:
+            if A.shape != self.shape:
+                raise ValueError(f"A must have shape {self.shape}, got {A.shape}.")
+            if np.dtype(A.dtype) != self.dtype:
+                raise ValueError(f"A must have dtype {self.dtype}, got {A.dtype}.")
+            self._refactor(A)
+        else:
+            self._factor()
+
+    def _refactor(self, A):
+        self._A = A
+
+    def _factor(self):
+        pass
+
     def clean(self):
         pass
 
@@ -415,6 +445,45 @@ class Base(ABC):
         return attrs
 
 
+class _SharedFactorMixin:
+    """Mixin for solvers whose transposed and conjugated views share one factorization.
+
+    The matrix and the underlying solver object are stored on a shared namespace, so that
+    re-factoring any view updates all of them. Classes using this mixin should inherit from
+    it before `Base` (or another `Base` subclass) so that its overrides take precedence.
+    """
+
+    _transposed = False
+
+    def __init__(self, A, **kwargs):
+        self._shared = types.SimpleNamespace(A=None, solver=None)
+        super().__init__(A, **kwargs)
+
+    @property
+    def _A(self):
+        A = self._shared.A
+        return A.T if self._transposed else A
+
+    @_A.setter
+    def _A(self, value):
+        # always store the matrix in its un-transposed orientation.
+        self._shared.A = value.T if self._transposed else value
+
+    @property
+    def solver(self):
+        """The underlying solver object shared by this solver's transposed and conjugated views."""
+        return self._shared.solver
+
+    @solver.setter
+    def solver(self, value):
+        self._shared.solver = value
+
+    def transpose(self):
+        trans_obj = copy.copy(self)
+        trans_obj._transposed = not self._transposed
+        return trans_obj
+
+
 class Diagonal(Base):
     """A solver for a diagonal matrix.
 
@@ -433,13 +502,7 @@ class Diagonal(Base):
     """
 
     def __init__(self, A, check_accuracy=False, check_rtol=1e-6, check_atol=0, **kwargs):
-        try:
-            self._diagonal = np.asarray(A.diagonal())
-            if not np.all(self._diagonal):
-                # this works because 0.0 evaluates as False!
-                raise ValueError("Diagonal matrix has a zero along the diagonal.")
-        except AttributeError:
-            raise TypeError("A must have a diagonal() method.")
+        self._set_diagonal(A)
         kwargs.pop("is_symmetric", None)
         is_hermitian = kwargs.pop("is_hermitian", None)
         is_positive_definite = kwargs.pop("is_positive_definite", None)
@@ -461,6 +524,20 @@ class Diagonal(Base):
                 # can only be hermitian if all imaginary components on diagonal are zero.
                 is_hermitian = not np.any(self._diagonal.imag)
         self.is_hermitian = is_hermitian
+
+    def _set_diagonal(self, A):
+        try:
+            diagonal = np.asarray(A.diagonal())
+        except AttributeError:
+            raise TypeError("A must have a diagonal() method.")
+        if not np.all(diagonal):
+            # this works because 0.0 evaluates as False!
+            raise ValueError("Diagonal matrix has a zero along the diagonal.")
+        self._diagonal = diagonal
+
+    def _refactor(self, A):
+        self._set_diagonal(A)
+        self._A = A
 
     def _solve_single(self, rhs):
         return rhs / self._diagonal
@@ -494,12 +571,20 @@ class Triangle(Base):
         is_hermitian = kwargs.pop("is_hermitian", False)
         is_symmetric = kwargs.pop("is_symmetric", False)
         is_positive_definite = kwargs.pop("is_positive_definite", False)
-        if not (sp.issparse(A) and A.format in ['csr', 'csc']):
-            A = sp.csc_matrix(A)
-        A.sum_duplicates()
+        A = self._prepare_matrix(A)
         super().__init__(A, is_hermitian=is_hermitian, is_symmetric=is_symmetric, is_positive_definite=is_positive_definite, check_accuracy=check_accuracy, check_rtol=check_rtol, check_atol=check_atol, **kwargs)
 
         self.lower = lower
+
+    @staticmethod
+    def _prepare_matrix(A):
+        if not (sp.issparse(A) and A.format in ['csr', 'csc']):
+            A = sp.csc_matrix(A)
+        A.sum_duplicates()
+        return A
+
+    def _refactor(self, A):
+        self._A = self._prepare_matrix(A)
 
     @property
     def lower(self):

@@ -1,4 +1,4 @@
-from pymatsolver import BicgJacobi
+from pymatsolver import BiCGJacobi
 import numpy as np
 import numpy.testing as npt
 import scipy.sparse as sp
@@ -30,29 +30,26 @@ def test_solve(test_mat_data, dtype, transpose, symmetric):
         A = D @ A
     rhs = A @ sol
     if transpose:
-        Ainv = BicgJacobi(A.T, is_symmetric=symmetric).T
+        Ainv = BiCGJacobi(A.T, is_symmetric=symmetric).T
     else:
-        Ainv = BicgJacobi(A, is_symmetric=symmetric)
+        Ainv = BiCGJacobi(A, is_symmetric=symmetric)
     Ainv.maxiter = 2000
     solb = Ainv * rhs
     npt.assert_allclose(rhs, A @ solb, rtol=RTOL)
 
 def test_errors_and_warnings(test_mat_data):
     A, sol = test_mat_data
-    with pytest.raises(TypeError, match="The symmetric keyword.*"):
-        Ainv = BicgJacobi(A, symmetric=True)
+    with pytest.raises(ValueError):
+        Ainv = BiCGJacobi(A, rtol=0.0)
 
     with pytest.raises(ValueError):
-        Ainv = BicgJacobi(A, rtol=0.0)
-
-    with pytest.raises(ValueError):
-        Ainv = BicgJacobi(A, atol=-1.0)
+        Ainv = BiCGJacobi(A, atol=-1.0)
 
 def test_shallow_copy(test_mat_data):
     A, sol = test_mat_data
-    Ainv = BicgJacobi(A, maxiter=100, rtol=1.0E-3, atol=1.0E-16)
+    Ainv = BiCGJacobi(A, maxiter=100, rtol=1.0E-3, atol=1.0E-16)
 
     attrs = Ainv.get_attributes()
 
-    new_Ainv = BicgJacobi(A, **attrs)
+    new_Ainv = BiCGJacobi(A, **attrs)
     assert attrs == new_Ainv.get_attributes()
