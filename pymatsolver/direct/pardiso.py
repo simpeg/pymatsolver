@@ -1,4 +1,4 @@
-from pymatsolver.solvers import _SharedFactorBase
+from pymatsolver.solvers import Base, _SharedFactorMixin
 try:
     from pydiso.mkl_solver import MKLPardisoSolver
     from pydiso.mkl_solver import set_mkl_pardiso_threads, get_mkl_pardiso_max_threads
@@ -6,7 +6,7 @@ try:
 except ImportError:
     _available = False
 
-class Pardiso(_SharedFactorBase):
+class Pardiso(_SharedFactorMixin, Base):
     """The Pardiso direct solver.
 
     This solver uses the `pydiso` Intel MKL wrapper to factorize a sparse matrix, and use that

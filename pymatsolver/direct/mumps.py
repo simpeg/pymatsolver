@@ -1,4 +1,4 @@
-from pymatsolver.solvers import _SharedFactorBase
+from pymatsolver.solvers import Base, _SharedFactorMixin
 try:
     from mumps import Context
     _available = True
@@ -6,7 +6,7 @@ except ImportError:
     Context = None
     _available = False
 
-class Mumps(_SharedFactorBase):
+class Mumps(_SharedFactorMixin, Base):
     """The MUMPS direct solver.
 
     This solver uses the python-mumps wrappers to factorize a sparse matrix, and use that factorization for solving.

@@ -445,11 +445,12 @@ class Base(ABC):
         return attrs
 
 
-class _SharedFactorBase(Base):
-    """Base for solvers whose transposed and conjugated views share one factorization.
+class _SharedFactorMixin:
+    """Mixin for solvers whose transposed and conjugated views share one factorization.
 
     The matrix and the underlying solver object are stored on a shared namespace, so that
-    re-factoring any view updates all of them.
+    re-factoring any view updates all of them. Classes using this mixin should inherit from
+    it before `Base` (or another `Base` subclass) so that its overrides take precedence.
     """
 
     _transposed = False
