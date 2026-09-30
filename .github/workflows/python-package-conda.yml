@@ -2,6 +2,10 @@ name: Testing
 
 on: [push, pull_request]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags') }}
+
 jobs:
   build-and-test:
     name: Testing (${{ matrix.python-version }} on ${{ matrix.os }}) with ${{ matrix.solver }}.
@@ -14,19 +18,19 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-15-intel, macOS-latest]
         solver: [mumps, pardiso]
-        python-version : ['3.11', '3.12', '3.13', '3.14']
+        python-version : ['3.12', '3.13', '3.14']
         include:
           - os: ubuntu-latest
-            python-version: '3.13'
+            python-version: '3.14'
             full-test: true
         exclude:
           - os: macOS-latest
             solver: pardiso
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: Setup Conda
-      uses: conda-incubator/setup-miniconda@v3
+      uses: conda-incubator/setup-miniconda@v4
       with:
         auto-update-conda: true
         channels: conda-forge
@@ -74,27 +78,32 @@ jobs:
 
     - name: Upload coverage
       if: ${{ matrix.full-test }}
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v7
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         verbose: true # optional (default = false)
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   distribute:
     name: Distributing
     needs: build-and-test
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
     runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/pymatsolver
+    permissions:
+      contents: write  # push docs to gh-pages
+      id-token: write  # PyPI trusted publishing
     defaults:
       run:
         shell: bash -l {0}
     env:
-      PYTHON_VERSION: '3.13'
+      PYTHON_VERSION: '3.14'
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: Setup Conda
-      uses: conda-incubator/setup-miniconda@v3
+      uses: conda-incubator/setup-miniconda@v4
       with:
         auto-update-conda: true
         channels: conda-forge
@@ -124,7 +133,7 @@ jobs:
         cd ..
 
     - name: GitHub Pages
-      uses: crazy-max/ghaction-github-pages@v4
+      uses: crazy-max/ghaction-github-pages@v5
       with:
         build_dir: docs/_build/html
         jekyll: false
@@ -135,6 +144,4 @@ jobs:
     - name: pypi-publish
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        user: __token__
-        password: ${{ secrets.PYPI_API_TOKEN }}
-        skip_existing: true
+        skip-existing: true
