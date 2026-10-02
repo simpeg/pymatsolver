@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = 'pymatsolver'
 description = "pymatsolver: Matrix Solvers for Python"
 readme = 'README.rst'
-requires-python = '>=3.10'
+requires-python = '>=3.12'
 authors = [
   {name = 'SimPEG developers', email = 'rowanc1@gmail.com'},
 ]
@@ -14,8 +14,8 @@ keywords = [
     'matrix solver',
 ]
 dependencies = [
-    "numpy>=1.21",
-    "scipy>=1.8",
+    "numpy>=1.26",
+    "scipy>=1.11.2",
     "packaging",
 ]
 classifiers = [
@@ -24,6 +24,11 @@ classifiers = [
     'Intended Audience :: Science/Research',
     'License :: OSI Approved :: MIT License',
     'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3 :: Only',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
+    'Programming Language :: Python :: 3.14',
     'Topic :: Scientific/Engineering',
     'Topic :: Scientific/Engineering :: Mathematics',
     'Topic :: Scientific/Engineering :: Physics',
