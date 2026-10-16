@@ -17,6 +17,7 @@
          Backward.clean
          Backward.conj
          Backward.conjugate
+         Backward.factor
          Backward.get_attributes
          Backward.solve
          Backward.transpose

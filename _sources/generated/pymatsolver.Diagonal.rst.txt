@@ -17,6 +17,7 @@
          Diagonal.clean
          Diagonal.conj
          Diagonal.conjugate
+         Diagonal.factor
          Diagonal.get_attributes
          Diagonal.solve
          Diagonal.transpose

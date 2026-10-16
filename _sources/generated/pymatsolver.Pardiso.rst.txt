@@ -43,5 +43,6 @@
          Pardiso.is_symmetric
          Pardiso.n_threads
          Pardiso.shape
+         Pardiso.solver
   
   

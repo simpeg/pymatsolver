@@ -1,0 +1,6 @@
+pymatsolver.Triangle.factor
+===========================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Triangle.factor

@@ -17,6 +17,7 @@
          SolverCG.clean
          SolverCG.conj
          SolverCG.conjugate
+         SolverCG.factor
          SolverCG.get_attributes
          SolverCG.solve
          SolverCG.transpose

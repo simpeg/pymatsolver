@@ -1,0 +1,6 @@
+pymatsolver.SolverCG.factor
+===========================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: SolverCG.factor

@@ -17,6 +17,7 @@
          Forward.clean
          Forward.conj
          Forward.conjugate
+         Forward.factor
          Forward.get_attributes
          Forward.solve
          Forward.transpose

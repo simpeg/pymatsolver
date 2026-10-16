@@ -43,5 +43,6 @@
          Mumps.is_symmetric
          Mumps.ordering
          Mumps.shape
+         Mumps.solver
   
   

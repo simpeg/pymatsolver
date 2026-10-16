@@ -17,6 +17,7 @@
          Solver.clean
          Solver.conj
          Solver.conjugate
+         Solver.factor
          Solver.get_attributes
          Solver.solve
          Solver.transpose

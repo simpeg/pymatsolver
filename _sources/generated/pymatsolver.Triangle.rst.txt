@@ -17,6 +17,7 @@
          Triangle.clean
          Triangle.conj
          Triangle.conjugate
+         Triangle.factor
          Triangle.get_attributes
          Triangle.solve
          Triangle.transpose

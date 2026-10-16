@@ -1,0 +1,6 @@
+pymatsolver.Backward.factor
+===========================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Backward.factor

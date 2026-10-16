@@ -1,0 +1,6 @@
+pymatsolver.solvers.Base.factor
+===============================
+
+.. currentmodule:: pymatsolver.solvers
+
+.. automethod:: Base.factor

@@ -1,0 +1,6 @@
+pymatsolver.Diagonal.factor
+===========================
+
+.. currentmodule:: pymatsolver
+
+.. automethod:: Diagonal.factor

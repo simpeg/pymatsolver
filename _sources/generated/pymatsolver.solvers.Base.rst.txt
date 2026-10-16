@@ -17,6 +17,7 @@
          Base.clean
          Base.conj
          Base.conjugate
+         Base.factor
          Base.get_attributes
          Base.solve
          Base.transpose

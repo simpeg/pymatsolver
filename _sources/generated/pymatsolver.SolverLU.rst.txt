@@ -17,6 +17,7 @@
          SolverLU.clean
          SolverLU.conj
          SolverLU.conjugate
+         SolverLU.factor
          SolverLU.get_attributes
          SolverLU.solve
          SolverLU.transpose
