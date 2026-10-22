@@ -41,7 +41,7 @@
          SolverLU.is_positive_definite
          SolverLU.is_real
          SolverLU.is_symmetric
-         SolverLU.kwargs
          SolverLU.shape
+         SolverLU.solver
   
   
