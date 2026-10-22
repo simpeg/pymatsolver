@@ -119,3 +119,52 @@ def test_non_scipy_iterative():
 
     Ainv = Wrapped(sp.eye(4))
     npt.assert_equal(Ainv @ np.arange(4), np.arange(4))
+
+
+@pytest.mark.parametrize('dtype', [np.float64, np.complex128])
+@pytest.mark.parametrize('n_rhs', [None, 3])
+@pytest.mark.parametrize('conjugate', [False, True])
+def test_splu_transpose_shares_factorization(dtype, n_rhs, conjugate):
+    rng = np.random.default_rng(1234)
+    n = 20
+    A = sp.random(n, n, density=0.2, random_state=rng) + n * sp.eye(n)
+    if dtype == np.complex128:
+        A = A + 1j * sp.random(n, n, density=0.2, random_state=rng)
+    A = A.tocsc().astype(dtype)
+    rhs = rng.random(n if n_rhs is None else (n, n_rhs)).astype(dtype)
+
+    Ainv = SolverLU(A, is_symmetric=False)
+    AinvT = Ainv.T
+    # the transposed solver reuses the same factorization rather than calling splu again.
+    assert AinvT.solver is Ainv.solver
+    assert AinvT.T.solver is Ainv.solver
+
+    if conjugate:
+        AinvT = AinvT.conj()
+        A_t = A.T.conjugate()
+    else:
+        A_t = A.T
+
+    expected = SolverLU(A_t.tocsc(), is_symmetric=False) @ rhs
+    npt.assert_allclose(AinvT @ rhs, expected, rtol=1e-8, atol=1e-10)
+    # the original is unaffected.
+    npt.assert_allclose(A @ (Ainv @ rhs), rhs, rtol=1e-8, atol=1e-10)
+
+
+def test_splu_transpose_symmetric_returns_self():
+    A = sp.diags([2.0, 4.0, 2.0], [-1, 0, 1], shape=(10, 10), format='csc')
+    Ainv = SolverLU(A)
+    assert Ainv.is_symmetric
+    assert Ainv.T is Ainv
+
+
+def test_splu_transpose_clean_and_kwargs():
+    A = sp.diags([1.0, 4.0, 2.0], [-1, 0, 1], shape=(10, 10), format='csc')
+    Ainv = SolverLU(A, is_symmetric=False, permc_spec='NATURAL')
+    AinvT = Ainv.T
+    Ainv.clean()
+    AinvT.clean()
+    rhs = np.ones(10)
+    npt.assert_allclose(A.T @ (AinvT @ rhs), rhs, atol=1e-10)
+    with pytest.warns(UnusedArgumentWarning):
+        SolverLU(A, not_a_kwarg=1)
