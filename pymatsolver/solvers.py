@@ -383,8 +383,8 @@ class Base(ABC):
 
         Notes
         -----
-        Transposed and conjugated solvers created from a `Pardiso` or `Mumps` solver share its
-        factorization, and are updated along with it. For other solvers, those previously created
+        Transposed and conjugated solvers created from a `SolverLU`, `Pardiso`, or `Mumps`
+        solver share its factorization, and are updated along with it. For other solvers, those previously created
         objects continue to use the old matrix.
         """
         if A is not None and A is not self.A:

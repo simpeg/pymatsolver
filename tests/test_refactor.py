@@ -17,7 +17,7 @@ SOLVERS = [
     pymatsolver.Mumps,
 ]
 
-SHARED_SOLVERS = [pymatsolver.Pardiso, pymatsolver.Mumps]
+SHARED_SOLVERS = [pymatsolver.SolverLU, pymatsolver.Pardiso, pymatsolver.Mumps]
 
 TOL = 1e-4
 
